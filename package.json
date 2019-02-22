@@ -1,0 +1,26 @@
+{
+  "name": "reixs",
+  "version": "0.1.1",
+  "description": "The HTTP request library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reixs/reixs.git"
+  },
+  "keywords": [
+    "fetch",
+    "http",
+    "ajax",
+    "xhr",
+    "reactive"
+  ],
+  "author": "Feng Chu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reixs/reixs/issues"
+  },
+  "homepage": "https://github.com/reixs/reixs#readme"
+}
