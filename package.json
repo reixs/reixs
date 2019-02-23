@@ -22,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/reixs/reixs/issues"
   },
-  "homepage": "https://github.com/reixs/reixs#readme"
+  "homepage": "https://github.com/reixs/reixs#readme",
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "browserify": "^16.2.3",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-eslint": "^5.0.0"
+  }
 }
