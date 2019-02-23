@@ -1,1 +1,1 @@
-module.exports = require('./src/reixs');
+module.exports = require('./src/reixs')
