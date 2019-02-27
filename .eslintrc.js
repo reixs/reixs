@@ -1,15 +1,20 @@
 module.exports = {
     root: true,
+    parser: 'babel-eslint',
     parserOptions: {
         ecmaVersion: 2018,
-        sourceType: 'module'
+        sourceType: 'module',
     },
     env: {
         es6: true,
         browser: true,
         node: true
     },
+    globals: {
+        reixs: false
+    },
     extends: 'eslint:recommended',
+    plugins: ['html'],
     rules: {
         'no-console': process.env.NODE_ENV !== 'production' ? 0 : 2,
 
@@ -23,7 +28,7 @@ module.exports = {
         'comma-style': 2,
         'computed-property-spacing': 2,
         'func-call-spacing': 2,
-        'func-style': 2,
+        'func-style': [2, 'declaration'],
         'function-paren-newline': 2,
         'id-blacklist': [2, 'data', 'err', 'e', 'cb', 'callback'],
         'id-length': [2, { min: 3, max: 15 }],
@@ -59,22 +64,12 @@ module.exports = {
         'nonblock-statement-body-position': 2,
         'object-curly-spacing': 2,
         'object-property-newline': 2,
-        'one-var': 2,
-        'one-var-declaration-per-line': 2,
+        'one-var': [2, 'never'],
         'operator-assignment': 2,
         'operator-linebreak': [2, 'before'],
-        'padded-blocks': 2,
+        'padded-blocks': [2, 'never'],
         'quote-props': [2, 'as-needed'],
         'quotes': [2, 'single'],
-        'require-jsdoc': [2, {
-            require: {
-                FunctionDeclaration: true,
-                MethodDefinition: true,
-                ClassDeclaration: true,
-                ArrowFunctionExpression: true,
-                FunctionExpression: true
-            }
-        }],
         'semi':[2, 'never'],
         'semi-spacing': 2,
         'sort-vars': 2,

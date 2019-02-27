@@ -4,7 +4,9 @@
   "description": "The HTTP request library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint --ext .js src",
+    "build": "npx gulp build"
   },
   "repository": {
     "type": "git",
@@ -25,9 +27,26 @@
   "homepage": "https://github.com/reixs/reixs#readme",
   "devDependencies": {
     "@babel/core": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.3.3",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-stage-0": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "browserify-versionify": "^1.0.6",
+    "eslint-plugin-html": "^5.0.3",
     "gulp": "^4.0.0",
-    "gulp-babel": "^8.0.0",
-    "gulp-eslint": "^5.0.0"
-  }
+    "gulp-eslint": "^5.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.1",
+    "pre-commit": "^1.2.2",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "pre-commit": [
+    "eslint"
+  ],
+  "dependencies": {}
 }
