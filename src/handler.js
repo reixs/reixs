@@ -1,6 +1,6 @@
 export default class {
-    constructor(...agus) {
-        const [global, globalPipes, url, method = 'get', params = null] = agus
+    constructor(...args) {
+        const [global, globalPipes, url, method = 'get', params = null] = args
         // Cannot be modified
         this.entity = fetch(url)
         this.globalHeader = {...global.globalHeader}
@@ -11,3 +11,4 @@ export default class {
         this.params = params
     }
 }
+

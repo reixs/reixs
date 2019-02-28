@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint --ext .js src",
-    "build": "npx gulp build"
+    "dev": "npx gulp watch",
+    "build": "npx gulp release"
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,10 @@
     "@babel/preset-stage-0": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babelify": "^10.0.0",
+    "browser-sync": "^2.26.3",
     "browserify": "^16.2.3",
     "browserify-versionify": "^1.0.6",
+    "del": "^3.0.0",
     "eslint-plugin-html": "^5.0.3",
     "gulp": "^4.0.0",
     "gulp-eslint": "^5.0.0",
@@ -43,7 +46,8 @@
     "gulp-uglify": "^3.0.1",
     "pre-commit": "^1.2.2",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
   },
   "pre-commit": [
     "eslint"

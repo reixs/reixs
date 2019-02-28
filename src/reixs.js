@@ -32,7 +32,6 @@ function createInstance(url, method, params) {
 function setPipes(name, ...funList) {
     globalPipes[name] = [...funList]
 }
-
 export default new Proxy(createInstance, {
     get(target, property) {
         switch (property) {
@@ -53,3 +52,5 @@ export default new Proxy(createInstance, {
         }
     }
 })
+
+
