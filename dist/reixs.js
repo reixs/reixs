@@ -86,6 +86,7 @@ function () {
         }
       }, _callee);
     }));
+    console.log(1);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -228,6 +229,46 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _utli = require("./shared/utli");
+
+var _default = {
+  get: function get(url, params) {
+    url = new URL(url);
+    Object.keys(params).forEach(function (key) {
+      return url.searchParams.append(key, params[key]);
+    });
+    var promise = fetch(url, {
+      method: 'get'
+    });
+    return (0, _utli.handleFetch)(promise);
+  }
+};
+exports.default = _default;
+
+},{"./shared/utli":6}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CONTENT_TYPE = exports.METHOD_TYPES = void 0;
+var METHOD_TYPES = ['get', 'post', 'form', 'push'];
+exports.METHOD_TYPES = METHOD_TYPES;
+var CONTENT_TYPE = {
+  JSON: 'application/json;charset=UTF-8',
+  FORM: 'application/x-www-form-urlencoded; charset=UTF-8'
+};
+exports.CONTENT_TYPE = CONTENT_TYPE;
+
+},{}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.checkStatus = checkStatus;
+exports.handleFetch = handleFetch;
+
 function checkStatus(response) {
   if (response.status === 200) {
     return response.json();
@@ -243,35 +284,6 @@ function handleFetch(promise) {
     return error;
   });
 }
-
-var _default = {
-  get: function get(url, params) {
-    url = new URL(url);
-    Object.keys(params).forEach(function (key) {
-      return url.searchParams.append(key, params[key]);
-    });
-    var promise = fetch(url, {
-      method: 'get'
-    });
-    return handleFetch(promise);
-  }
-};
-exports.default = _default;
-
-},{}],5:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CONTENT_TYPE = exports.METHOD_TYPES = void 0;
-var METHOD_TYPES = ['get', 'post', 'form', 'push'];
-exports.METHOD_TYPES = METHOD_TYPES;
-var CONTENT_TYPE = {
-  JSON: 'application/json;charset=UTF-8',
-  FORM: 'application/x-www-form-urlencoded; charset=UTF-8'
-};
-exports.CONTENT_TYPE = CONTENT_TYPE;
 
 },{}]},{},[1])(1)
 });

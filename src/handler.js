@@ -3,6 +3,7 @@ import request from './request'
 
 export default class {
     constructor(...args) {
+        console.log(1)
         const [global, globalPipes, url, method = 'get', params = null] = args
         // Cannot be modified
         this.url = url
