@@ -11,6 +11,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _constants = require("./shared/constants");
+
+var _request = _interopRequireDefault(require("./request"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -23,35 +29,123 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _default = function _default() {
-  _classCallCheck(this, _default);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _default =
+/*#__PURE__*/
+function () {
+  function _default() {
+    var _this = this;
+
+    _classCallCheck(this, _default);
+
+    this.observers = [];
+    this.x =
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee() {
+      var params,
+          type,
+          url,
+          method,
+          globalParams,
+          requestType,
+          requestParams,
+          data,
+          _args = arguments;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              params = _args.length > 0 && _args[0] !== undefined ? _args[0] : _this.params;
+              type = _args.length > 1 ? _args[1] : undefined;
+              url = _this.url, method = _this.method, globalParams = _this.globalParams;
+              requestType = type ? type : method;
+              requestParams = requestType === 'push' ? params : _objectSpread({}, globalParams, params);
+              _context.next = 7;
+              return _request.default[requestType](url, requestParams);
+
+            case 7:
+              data = _context.sent;
+
+              _this.execute(data);
+
+            case 9:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var global = args[0],
+        globalPipes = args[1],
+        _url = args[2],
+        _args$ = args[3],
+        _method = _args$ === void 0 ? 'get' : _args$,
+        _args$2 = args[4],
+        _params = _args$2 === void 0 ? null : _args$2; // Cannot be modified
+
+
+    this.url = _url;
+    this.globalHeader = _objectSpread({}, global.globalHeader);
+    this.globalParams = _objectSpread({}, global.globalParams);
+    this.globalReqPipes = _toConsumableArray(globalPipes.reqPipes);
+    this.globalResPipes = _toConsumableArray(globalPipes.resPipes);
+    this.params = _params;
+    this.setMethod(_method);
   }
 
-  var global = args[0],
-      globalPipes = args[1],
-      url = args[2],
-      _args$ = args[3],
-      method = _args$ === void 0 ? 'get' : _args$,
-      _args$2 = args[4],
-      params = _args$2 === void 0 ? null : _args$2; // Cannot be modified
+  _createClass(_default, [{
+    key: "on",
+    value: function on(observer) {
+      this.observers.push(observer);
+      return this;
+    }
+  }, {
+    key: "execute",
+    value: function execute(data) {
+      this.observers.forEach(function (observer) {
+        observer(data);
+      });
+    }
+  }, {
+    key: "setParams",
+    value: function setParams(params) {
+      this.params = params;
+    }
+  }, {
+    key: "setMethod",
+    value: function setMethod() {
+      var method = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-  this.entity = fetch(url);
-  this.globalHeader = _objectSpread({}, global.globalHeader);
-  this.globalParams = _objectSpread({}, global.globalParams);
-  this.globalReqPipes = _toConsumableArray(globalPipes.reqPipes);
-  this.globalResPipes = _toConsumableArray(globalPipes.resPipes);
-  this.method = method;
-  this.params = params;
-};
+      if (_constants.METHOD_TYPES.includes(method)) {
+        this.method = method;
+      } else {
+        throw new Error('Invalid method');
+      }
+    }
+  }]);
+
+  return _default;
+}();
 
 exports.default = _default;
 
-},{}],3:[function(require,module,exports){
+},{"./request":4,"./shared/constants":5}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -118,13 +212,68 @@ var _default = new Proxy(createInstance, {
     // Must be set to Object
     if (Reflect.has(global, property) && value.constructor === Object) {
       global[property] = value;
+    } else {
+      throw new Error('Invalid Settings');
     }
   }
 });
 
 exports.default = _default;
 
-},{"./handler":2}]},{},[1])(1)
+},{"./handler":2}],4:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function checkStatus(response) {
+  if (response.status === 200) {
+    return response.json();
+  } else {
+    throw new Error();
+  }
+}
+
+function handleFetch(promise) {
+  return promise.then(function (response) {
+    return checkStatus(response);
+  }).catch(function (error) {
+    return error;
+  });
+}
+
+var _default = {
+  get: function get(url, params) {
+    url = new URL(url);
+    Object.keys(params).forEach(function (key) {
+      return url.searchParams.append(key, params[key]);
+    });
+    var promise = fetch(url, {
+      method: 'get'
+    });
+    return handleFetch(promise);
+  }
+};
+exports.default = _default;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CONTENT_TYPE = exports.METHOD_TYPES = void 0;
+var METHOD_TYPES = ['get', 'post', 'form', 'push'];
+exports.METHOD_TYPES = METHOD_TYPES;
+var CONTENT_TYPE = {
+  JSON: 'application/json;charset=UTF-8',
+  FORM: 'application/x-www-form-urlencoded; charset=UTF-8'
+};
+exports.CONTENT_TYPE = CONTENT_TYPE;
+
+},{}]},{},[1])(1)
 });
 
 //# sourceMappingURL=reixs.js.map

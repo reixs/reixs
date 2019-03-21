@@ -16,7 +16,7 @@ module.exports = {
     extends: 'eslint:recommended',
     plugins: ['html'],
     rules: {
-        'no-console': process.env.NODE_ENV !== 'production' ? 0 : 2,
+        'no-console': 0,
 
         //Stylistic Issues
         'array-bracket-spacing': 2,     
@@ -30,8 +30,8 @@ module.exports = {
         'func-call-spacing': 2,
         'func-style': [2, 'declaration'],
         'function-paren-newline': 2,
-        'id-blacklist': [2, 'data', 'err', 'e', 'cb', 'callback'],
-        'id-length': [2, { min: 3, max: 15, properties: 'never'}],
+        'id-blacklist': [2, 'err', 'e', 'cb', 'callback'],
+        'id-length': [2, {max: 15, properties: 'never'}],
         'implicit-arrow-linebreak': 2,
         'indent': 2,
         'key-spacing': 2,

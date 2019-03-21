@@ -32,6 +32,7 @@ function createInstance(url, method, params) {
 function setPipes(name, ...funList) {
     globalPipes[name] = [...funList]
 }
+
 export default new Proxy(createInstance, {
     get(target, property) {
         switch (property) {
@@ -49,6 +50,8 @@ export default new Proxy(createInstance, {
         if (Reflect.has(global, property) 
             && value.constructor === Object) {
             global[property] = value
+        } else {
+            throw new Error('Invalid Settings')
         }
     }
 })
