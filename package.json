@@ -53,5 +53,7 @@
   "pre-commit": [
     "eslint"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@babel/runtime": "^7.4.4"
+  }
 }

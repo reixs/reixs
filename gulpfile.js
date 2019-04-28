@@ -12,15 +12,21 @@ const browserSync = require('browser-sync').create()
 const {task, src, dest, series} = require('gulp')
 
 // browserify options
-const customOpts = {
+const browserifyOpts = {
     entries: 'index.js',
     standalone: 'reixs',
     transform: ['babelify', 'browserify-versionify'],
     debug: true
 }
+// watchify options
+const watchifyOpts = {
+    delay: 1000,
+    ignoreWatch: ['**/node_modules/**']
+}
 
 // File modification the observable
-const observable = watchify(browserify(customOpts))
+const observable = browserify(browserifyOpts)
+observable.plugin(watchify, watchifyOpts)
 
 // Check the code
 function lint() {
@@ -33,7 +39,10 @@ function lint() {
 // File do bundle save
 function doBundle() {
     return observable.bundle()
-        .on('error', console.error.bind(console))
+        .on('error', error=>{
+            console.error(error.stack)
+            observable.close()
+        })
         .pipe(source('reixs.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
@@ -59,7 +68,7 @@ task('clean', function () {
 
 // Build reixs.js
 task('build', function () {
-    return browserify(customOpts)
+    return browserify(watchifyOpts)
         .bundle()
         .pipe(source('reixs.js'))
         .pipe(buffer())
@@ -70,7 +79,7 @@ task('build', function () {
 
 // Build reixs.main.js
 task('minimize', function () {
-    return browserify(customOpts)
+    return browserify(watchifyOpts)
         .bundle()
         .pipe(source('reixs.min.js'))
         .pipe(buffer())

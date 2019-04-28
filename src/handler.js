@@ -3,7 +3,6 @@ import request from './request'
 
 export default class {
     constructor(...args) {
-        console.log(1)
         const [global, globalPipes, url, method = 'get', params = null] = args
         // Cannot be modified
         this.url = url
@@ -22,7 +21,7 @@ export default class {
         return this
     }
     
-    x = async (params = this.params, type) =>{
+    request = async (params = this.params, type) =>{
         const {url, method, globalParams} = this
         const requestType = type ? type : method
         const requestParams = requestType === 'push' 
@@ -46,7 +45,7 @@ export default class {
     setParams(params) {
         this.params = params
     }
-
+    
     setMethod(method = null) {
         if (METHOD_TYPES.includes(method)) {
             this.method = method
