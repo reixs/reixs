@@ -9,6 +9,7 @@ const uglify = require('gulp-uglify')
 const eslint = require('gulp-eslint')
 const watchify = require('watchify')
 const browserSync = require('browser-sync').create()
+const proxy = require('http-proxy-middleware')
 const {task, src, dest, series} = require('gulp')
 
 // browserify options
@@ -23,6 +24,15 @@ const watchifyOpts = {
     delay: 1000,
     ignoreWatch: ['**/node_modules/**']
 }
+
+const proxyOpts = proxy('/api', {
+    target: 'http://api.apiopen.top',
+    changeOrigin: true,             
+    pathRewrite: {
+        '^/api': ''
+    },
+    logLevel: 'debug'
+})
 
 // File modification the observable
 const observable = browserify(browserifyOpts)
@@ -107,7 +117,8 @@ task('watch', function() {
                 index: 'sandbox/client.html'
             },
             port: 8000,
-            open: true
+            open: true,
+            middleware: [proxyOpts]
         })
     })
 })

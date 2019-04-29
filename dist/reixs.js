@@ -915,7 +915,7 @@ function () {
     var _this = this;
 
     (0, _classCallCheck2["default"])(this, _default);
-    this.observers = [];
+    this.tasks = [];
     this.request =
     /*#__PURE__*/
     (0, _asyncToGenerator2["default"])(
@@ -978,16 +978,16 @@ function () {
   }
 
   (0, _createClass2["default"])(_default, [{
-    key: "on",
-    value: function on(observer) {
-      this.observers.push(observer);
+    key: "task",
+    value: function task(_task) {
+      this.tasks.push(_task);
       return this;
     }
   }, {
     key: "execute",
     value: function execute(data) {
-      this.observers.forEach(function (observer) {
-        observer(data);
+      this.tasks.forEach(function (task) {
+        task(data);
       });
     }
   }, {
@@ -1147,7 +1147,7 @@ function handleFetch(promise) {
   return promise.then(function (response) {
     return checkStatus(response);
   })["catch"](function (error) {
-    return error;
+    throw error;
   });
 }
 

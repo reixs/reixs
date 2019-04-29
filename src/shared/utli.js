@@ -9,5 +9,7 @@ export function checkStatus(response) {
 export function handleFetch(promise) {
     return promise
         .then(response => checkStatus(response))
-        .catch(error => error)
+        .catch(error => {
+            throw error
+        })
 }

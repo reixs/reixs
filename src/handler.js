@@ -14,10 +14,10 @@ export default class {
         this.setMethod(method)
     }
 
-    observers = []
+    tasks = []
 
-    on(observer) {
-        this.observers.push(observer)
+    task(task) {
+        this.tasks.push(task)
         return this
     }
     
@@ -37,8 +37,8 @@ export default class {
     }
 
     execute(data) {
-        this.observers.forEach(observer =>{
-            observer(data)
+        this.tasks.forEach(task =>{
+            task(data)
         })
     }
 

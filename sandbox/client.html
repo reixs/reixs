@@ -14,7 +14,13 @@
 <script>
     // npm version
     console.log(`version:${reixs.version}`)
-    let cases = reixs('http://www.baidu.com')
-    console.log(cases.request())
-</script>
+    let cases = reixs(`${location.href}api/getAllUrl`)
+
+    cases.task(function(data){
+        console.log(1,data)
+    })
+
+    cases.request()
+    cases.request()
+</script>   
 </html>
