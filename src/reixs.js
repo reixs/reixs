@@ -1,4 +1,4 @@
-import Handler from './handler'
+import SeparateHandler from './core/separate-handler'
 
 // Multiple requests Shared
 const global = {
@@ -20,7 +20,7 @@ const globalPipes = {
  * @param {*} params  
  */
 function createInstance(url, method, params) {
-    return new Handler(global, globalPipes, url, method, params)
+    return new SeparateHandler(global, globalPipes, url, method, params)
 }
 
 /**
