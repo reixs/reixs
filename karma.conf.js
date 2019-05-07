@@ -14,23 +14,16 @@ module.exports = function(config) {
             transform: ['babelify', 'browserify-versionify']
         },
         reporters: ['progress', 'coverage'],
+
         // optionally, configure the reporter
         coverageReporter: {
             reporters: [
-                // generates ./coverage/lcov.info
-                {
-                    type: 'lcovonly',
-                    subdir: '.'
-                },
+            // generates ./coverage/lcov.info
+                {type: 'lcovonly',
+                    subdir: '.'},
                 // generates ./coverage/coverage-final.json
-                {
-                    type: 'json',
-                    subdir: '.'
-                },
-                {
-                    type: 'html',
-                    subdir: '.'
-                }
+                {type: 'json',
+                    subdir: '.'}
             ]
         },
         concurrency: Infinity
