@@ -4,7 +4,7 @@
   "description": "The HTTP request library",
   "main": "./dist/reixs.js",
   "scripts": {
-    "report-coverage": "codecov",
+    "report-coverage": "npx codecov",
     "test": "npx gulp test",
     "eslint": "eslint --ext .js src",
     "dev": "npx gulp watch",

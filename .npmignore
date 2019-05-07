@@ -5,6 +5,7 @@ node_modules/
 package-lock.json
 sandbox/
 test/
+coverage/
 .travis.yml
 karma.conf.js
 .eslintgnore
