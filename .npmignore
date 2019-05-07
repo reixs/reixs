@@ -4,6 +4,9 @@
 node_modules/
 package-lock.json
 sandbox/
+test/
+.travis.yml
+karma.conf.js
 .eslintgnore
 .eslintrc.js
 .gitignore

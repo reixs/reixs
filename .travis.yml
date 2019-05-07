@@ -1,11 +1,21 @@
 language: node_js
+
 node_js:
+<<<<<<< HEAD
   - 0.10
   - 0.11
   - 0.12
 
 script: 
   - npm install
+=======
+  - node
+
+before_script:
+  - npm install
+
+after_success:
+>>>>>>> develop
   - npm run test
 
 branches:

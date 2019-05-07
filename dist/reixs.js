@@ -1419,7 +1419,7 @@ var _default = new Proxy(createInstance, {
     switch (property) {
       // Replaced by browserify-versionify transform
       case 'version':
-        return '0.1.1';
+        return '0.1.0';
       // Set request and response pipe
 
       case 'reqPipes':
@@ -1469,6 +1469,8 @@ exports.handleFetch = handleFetch;
  * @param {Object} response 
  */
 function checkStatus(response) {
+  console.log(response);
+
   if (response.status >= 200 && response.status < 300) {
     var contentType = response.headers.get('content-type');
 
