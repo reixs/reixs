@@ -11,6 +11,7 @@ const watchify = require('watchify')
 const browserSync = require('browser-sync').create()
 const proxy = require('http-proxy-middleware')
 const {task, src, dest, series} = require('gulp')
+const {Server} = require('karma')
 
 // browserify options
 const browserifyOpts = {
@@ -98,6 +99,14 @@ task('minimize', function () {
         .pipe(dest('dist'))
 })
 
+// Run test once and exit
+task('test', function (done) {
+    new Server({
+        configFile: `${__dirname}/karma.conf.js`,
+        singleRun: true
+    }, done).start()
+})
+  
 // Output dist
 task('release', series('lint', 'clean', 'build', 'minimize'))
 

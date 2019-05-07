@@ -5,7 +5,7 @@
   "main": "./dist/reixs.js",
   "scripts": {
     "report-coverage": "codecov",
-    "test": "npx karma start",
+    "test": "npx gulp test",
     "eslint": "eslint --ext .js src",
     "dev": "npx gulp watch",
     "build": "npx gulp release"
