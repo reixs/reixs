@@ -4,7 +4,7 @@
   "description": "The HTTP request library",
   "main": "./dist/reixs.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx karma start",
     "eslint": "eslint --ext .js src",
     "dev": "npx gulp watch",
     "build": "npx gulp release"
@@ -45,6 +45,12 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.1",
     "http-proxy-middleware": "^0.19.1",
+    "jasmine": "^3.4.0",
+    "jasmine-core": "^3.4.0",
+    "karma": "^4.1.0",
+    "karma-browserify": "^6.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^2.0.1",
     "pre-commit": "^1.2.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",

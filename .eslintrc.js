@@ -12,7 +12,10 @@ module.exports = {
         node: true
     },
     globals: {
-        reixs: false
+        reixs: false,
+        describe:false,
+        it:false,
+        expect:false
     },
     extends: 'eslint:recommended',
     plugins: ['html'],
@@ -42,7 +45,6 @@ module.exports = {
         'lines-around-comment': 2,
         'lines-between-class-members': 2,
         'max-depth': 2,
-        'max-len': 2,
         'max-lines': 2,
         'max-nested-callbacks': [2, {max: 3}],
         'max-params': [2,{ max: 5 }],

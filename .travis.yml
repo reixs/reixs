@@ -1,9 +1,13 @@
 language: node_js
-node_js:
- - '0.10'
- - '0.11'
 
-script: npm run start
+node_js:
+  - node
+
+before_script:
+  - npm install
+
+after_success:
+  - npm run test
 
 branches:
   only:
