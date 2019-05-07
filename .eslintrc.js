@@ -4,6 +4,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
+        codeFrame: true
     },
     env: {
         es6: true,
@@ -45,7 +46,6 @@ module.exports = {
         'max-lines': 2,
         'max-nested-callbacks': [2, {max: 3}],
         'max-params': [2,{ max: 5 }],
-        'max-statements': 2,
         'max-statements-per-line': 2,
         'multiline-comment-style': 2,
         'new-cap': 2,

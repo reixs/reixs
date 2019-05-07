@@ -9,18 +9,60 @@
 </head>
 <body>
     <img src="sandbox/static/reixs.jpg">
+    <div class="config">
+        <select class="api" value=""></select>
+        <select class="type" value="get">
+            <option value="get">get</option>
+            <option value="post">post</option>
+            <option value="form">form</option>
+        </select>
+        <button class="test">request</button>
+    </div>
+    <div class="datadiv"></div>
 </body>
 <script src="dist/reixs.js"></script>
 <script>
     // npm version
     console.log(`version:${reixs.version}`)
-    let cases = reixs(`${location.href}api/getAllUrl`)
 
-    cases.task(function(data){
-        console.log(1,data)
-    })
+    const datadiv = document.querySelector('.datadiv')
+    const test = document.querySelector('.test')
+    const api = document.querySelector('.api')
+    const type = document.querySelector('.type')
 
-    cases.request()
-    cases.request()
+    const reApi = reixs(`${location.href}api/getAllUrl`)
+        .task(data=>{
+            api.innerHTML = data.map(item=>`<option value="${item}">${item}</option>`).join()
+        })
+        .task(data=>{
+            api.value = data[0]
+        })
+        .task(data=>{
+            cases.setUrl(`${location.href}api${api.value}`)
+        })
+        .error(e => {throw e})
+    reApi.get()
+
+
+    let cases = reixs()
+        .start(() => {
+            datadiv.innerHTML = 'loading...'
+        })
+        .task(data => {
+            datadiv.innerHTML = JSON.stringify(data)
+        })
+        .end(() => console.log('请求结束'))
+        .error(e => datadiv.innerHTML = e)
+    
+    api.onchange = function(){
+        cases.setUrl(`${location.href}api${api.value}`)
+    }
+
+    type.onchange = function(){
+        cases.setMethod(type.value)
+    }
+
+    test.onclick = cases.get
+
 </script>   
 </html>

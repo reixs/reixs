@@ -25,13 +25,13 @@ const watchifyOpts = {
     ignoreWatch: ['**/node_modules/**']
 }
 
+// proxy options
 const proxyOpts = proxy('/api', {
-    target: 'http://api.apiopen.top',
-    changeOrigin: true,             
+    target: 'https://api.apiopen.top/',
+    changeOrigin: true,           
     pathRewrite: {
         '^/api': ''
-    },
-    logLevel: 'debug'
+    }
 })
 
 // File modification the observable
@@ -51,7 +51,6 @@ function doBundle() {
     return observable.bundle()
         .on('error', error=>{
             console.error(error.stack)
-            observable.close()
         })
         .pipe(source('reixs.js'))
         .pipe(buffer())

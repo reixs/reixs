@@ -22,7 +22,7 @@ export default class extends Handler {
         }
 
         this.setMethod(method)
-
+    
         this.request = createRequest(
             config, 
             sendRequest, 
@@ -62,6 +62,15 @@ export default class extends Handler {
         }
     }
 
+    setUrl(url) {
+        if (typeof url === 'string') {
+            this.http.url = url
+        } else {
+            throw new Error('Invalid type')
+        }
+        return this
+    }
+    
     setHeader(header) {
         if (header.constructor === Object) {
             this.http.header = header
