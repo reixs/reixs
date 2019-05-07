@@ -1,23 +1,17 @@
 language: node_js
 
 node_js:
-<<<<<<< HEAD
-  - 0.10
-  - 0.11
-  - 0.12
-
-script: 
-  - npm install
-=======
   - node
 
+cache:
+  directories:
+    - node_modules
+
 before_script:
-  - npm install
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 
 after_success:
->>>>>>> develop
   - npm run test
+  - npm run report-coverage
 
-branches:
-  only:
-    - master

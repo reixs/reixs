@@ -4,6 +4,7 @@
   "description": "The HTTP request library",
   "main": "./dist/reixs.js",
   "scripts": {
+    "report-coverage": "codecov",
     "test": "npx karma start",
     "eslint": "eslint --ext .js src",
     "dev": "npx gulp watch",
@@ -50,6 +51,7 @@
     "karma": "^4.1.0",
     "karma-browserify": "^6.0.0",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
     "karma-jasmine": "^2.0.1",
     "pre-commit": "^1.2.2",
     "vinyl-buffer": "^1.0.1",

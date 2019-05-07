@@ -12,6 +12,27 @@ module.exports = function(config) {
             entries: 'index.js',
             standalone: 'reixs',
             transform: ['babelify', 'browserify-versionify']
-        }
+        },
+        reporters: ['progress', 'coverage'],
+        // optionally, configure the reporter
+        coverageReporter: {
+            reporters: [
+                // generates ./coverage/lcov.info
+                {
+                    type: 'lcovonly',
+                    subdir: '.'
+                },
+                // generates ./coverage/coverage-final.json
+                {
+                    type: 'json',
+                    subdir: '.'
+                },
+                {
+                    type: 'html',
+                    subdir: '.'
+                }
+            ]
+        },
+        concurrency: Infinity
     })
 }
