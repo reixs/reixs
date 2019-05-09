@@ -20,8 +20,8 @@ export default class {
 
     // Data filtering
     _pipes = {
-        globalReqPipes: [],
-        globalResPipes: []
+        reqPipes: [],
+        resPipes: []
     }
 
     // Task queue executed after the request is completed
@@ -42,6 +42,34 @@ export default class {
                 errorHook && errorHook(error)
             }
         }
+    }
+    
+    /**
+     * Set the request filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+    reqPipes(...pipes) {
+        if (pipes.find(pipe =>typeof pipe !== 'function')) {
+            throw new Error('Pipe must be a function')
+        } else {
+            this._pipes.reqPipes = [...pipes]
+        }
+        return this
+    }
+
+    /**
+     * Set the response filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+    resPipes(...pipes) {
+        if (pipes.find(pipe =>typeof pipe !== 'function')) {
+            throw new Error('Pipe must be a function')
+        } else {
+            this._pipes.resPipes = [...pipes]
+        }
+        return this
     }
 
     /**

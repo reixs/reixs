@@ -3,7 +3,19 @@
 
 module.exports = require('./src/reixs')["default"];
 
-},{"./src/reixs":20}],2:[function(require,module,exports){
+},{"./src/reixs":24}],2:[function(require,module,exports){
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+module.exports = _arrayWithoutHoles;
+},{}],3:[function(require,module,exports){
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -13,7 +25,7 @@ function _assertThisInitialized(self) {
 }
 
 module.exports = _assertThisInitialized;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -51,7 +63,7 @@ function _asyncToGenerator(fn) {
 }
 
 module.exports = _asyncToGenerator;
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -59,7 +71,7 @@ function _classCallCheck(instance, Constructor) {
 }
 
 module.exports = _classCallCheck;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -77,7 +89,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -86,7 +98,7 @@ function _getPrototypeOf(o) {
 }
 
 module.exports = _getPrototypeOf;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var setPrototypeOf = require("./setPrototypeOf");
 
 function _inherits(subClass, superClass) {
@@ -105,7 +117,7 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-},{"./setPrototypeOf":11}],8:[function(require,module,exports){
+},{"./setPrototypeOf":14}],9:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     "default": obj
@@ -113,7 +125,7 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 function _interopRequireWildcard(obj) {
   if (obj && obj.__esModule) {
     return obj;
@@ -140,7 +152,19 @@ function _interopRequireWildcard(obj) {
 }
 
 module.exports = _interopRequireWildcard;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+},{}],12:[function(require,module,exports){
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+module.exports = _nonIterableSpread;
+},{}],13:[function(require,module,exports){
 var _typeof = require("../helpers/typeof");
 
 var assertThisInitialized = require("./assertThisInitialized");
@@ -154,7 +178,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 module.exports = _possibleConstructorReturn;
-},{"../helpers/typeof":12,"./assertThisInitialized":2}],11:[function(require,module,exports){
+},{"../helpers/typeof":16,"./assertThisInitialized":3}],14:[function(require,module,exports){
 function _setPrototypeOf(o, p) {
   module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
@@ -165,7 +189,19 @@ function _setPrototypeOf(o, p) {
 }
 
 module.exports = _setPrototypeOf;
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+var arrayWithoutHoles = require("./arrayWithoutHoles");
+
+var iterableToArray = require("./iterableToArray");
+
+var nonIterableSpread = require("./nonIterableSpread");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+},{"./arrayWithoutHoles":2,"./iterableToArray":11,"./nonIterableSpread":12}],16:[function(require,module,exports){
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -183,10 +219,10 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],13:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":14}],14:[function(require,module,exports){
+},{"regenerator-runtime":18}],18:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -914,7 +950,7 @@ try {
   Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}],15:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -988,9 +1024,6 @@ function _default(config, sendRequest, execute, hook) {
           overtime,
           startHook,
           endHook,
-          _len,
-          par,
-          _key,
           mark,
           _ref2,
           timeout,
@@ -1024,18 +1057,13 @@ function _default(config, sendRequest, execute, hook) {
 
             case 8:
               wait = false;
-
-              for (_len = _args.length, par = new Array(_len), _key = 0; _key < _len; _key++) {
-                par[_key] = _args[_key];
-              }
-
-              startHook && startHook.apply(void 0, par);
+              startHook && startHook();
               mark = Symbol();
               sym = mark;
-              _context.next = 15;
-              return requestTimer(sendRequest.apply(void 0, par), overtime);
+              _context.next = 14;
+              return requestTimer(sendRequest.apply(void 0, _args), overtime);
 
-            case 15:
+            case 14:
               _ref2 = _context.sent;
               timeout = _ref2.timeout;
               data = _ref2.data;
@@ -1047,11 +1075,11 @@ function _default(config, sendRequest, execute, hook) {
                   execute(data);
                 }
 
-                endHook && endHook.apply(void 0, par.concat([timeout ? 'timeout' : 'successful']));
+                endHook && endHook(timeout ? 'timeout' : 'successful');
                 work = false;
               }
 
-            case 19:
+            case 18:
             case "end":
               return _context.stop();
           }
@@ -1061,7 +1089,7 @@ function _default(config, sendRequest, execute, hook) {
   );
 }
 
-},{"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/regenerator":13}],16:[function(require,module,exports){
+},{"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1102,7 +1130,7 @@ function handleFetch(promise) {
   });
 }
 
-},{}],17:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1116,6 +1144,9 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
+/**
+ * The underlying request model
+ */
 var _default =
 /*#__PURE__*/
 function () {
@@ -1125,16 +1156,19 @@ function () {
       throttle: false,
       discard: false,
       debounce: 0,
-      overtime: null
+      overtime: null // Life cycle function
+
     };
     this._hook = {
       tartHook: null,
       endHook: null,
-      errorHook: null
+      errorHook: null // Data filtering
+
     };
     this._pipes = {
-      globalReqPipes: [],
-      globalResPipes: []
+      reqPipes: [],
+      resPipes: [] // Task queue executed after the request is completed
+
     };
     this._taskList = [];
   }
@@ -1158,6 +1192,52 @@ function () {
           errorHook && errorHook(error);
         }
       }
+    }
+    /**
+     * Set the request filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+
+  }, {
+    key: "reqPipes",
+    value: function reqPipes() {
+      for (var _len = arguments.length, pipes = new Array(_len), _key = 0; _key < _len; _key++) {
+        pipes[_key] = arguments[_key];
+      }
+
+      if (pipes.find(function (pipe) {
+        return typeof pipe !== 'function';
+      })) {
+        throw new Error('Pipe must be a function');
+      } else {
+        this._pipes.reqPipes = [].concat(pipes);
+      }
+
+      return this;
+    }
+    /**
+     * Set the response filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+
+  }, {
+    key: "resPipes",
+    value: function resPipes() {
+      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        pipes[_key2] = arguments[_key2];
+      }
+
+      if (pipes.find(function (pipe) {
+        return typeof pipe !== 'function';
+      })) {
+        throw new Error('Pipe must be a function');
+      } else {
+        this._pipes.resPipes = [].concat(pipes);
+      }
+
+      return this;
     }
     /**
      * Set throttle
@@ -1298,7 +1378,7 @@ function () {
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/interopRequireDefault":8}],18:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],22:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1336,7 +1416,7 @@ function get(url, params, headers, cookie) {
   return (0, _handleFetch["default"])(promise);
 }
 /**
- * Url Push
+ * Dynamic Router
  * 
  * @param {string} url 
  * @param {*} params 
@@ -1400,7 +1480,7 @@ function form(url, params, headers, cookie) {
   return (0, _handleFetch["default"])(promise);
 }
 
-},{"../shared/constants":21,"./handle-fetch":16,"@babel/runtime/helpers/interopRequireDefault":8}],19:[function(require,module,exports){
+},{"../shared/constants":25,"./handle-fetch":20,"@babel/runtime/helpers/interopRequireDefault":9}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
@@ -1436,6 +1516,8 @@ var _handler = _interopRequireDefault(require("./handler"));
 
 var _createRequest = _interopRequireDefault(require("./create-request"));
 
+var _utils = require("../shared/utils");
+
 /**
  *  Separate request object
  */
@@ -1457,6 +1539,12 @@ function (_Handler) {
       header: {},
       params: null,
       cookie: true
+      /**
+       * Complete request header
+       * 
+       * @return {Object} 
+       */
+
     };
 
     var _assertThisInitialize = (0, _assertThisInitialized2["default"])(_this),
@@ -1480,13 +1568,25 @@ function (_Handler) {
 
 
   (0, _createClass2["default"])(SeparateHandler, [{
-    key: "setUrl",
+    key: "_getParams",
 
+    /**
+     * Complete request parameters
+     * 
+     * @param {Object} params 
+     */
+    value: function _getParams(params) {
+      var globalParams = this.constructor.global.globalParams;
+      return Object.assign({}, globalParams, params);
+    }
     /**
      * Set the request url
      * 
      * @param {string} url 
      */
+
+  }, {
+    key: "setUrl",
     value: function setUrl(url) {
       if (typeof url === 'string') {
         this._http.url = url;
@@ -1581,6 +1681,10 @@ function (_Handler) {
             url,
             method,
             cookie,
+            errorHook,
+            _this$_pipes,
+            reqPipes,
+            resPipes,
             requestType,
             requestParams,
             data,
@@ -1590,19 +1694,21 @@ function (_Handler) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                params = _args.length > 0 && _args[0] !== undefined ? _args[0] : this.params;
+                params = _args.length > 0 && _args[0] !== undefined ? _args[0] : this._http.params;
                 type = _args.length > 1 ? _args[1] : undefined;
                 _this$_http = this._http, url = _this$_http.url, method = _this$_http.method, cookie = _this$_http.cookie;
+                errorHook = this._hook.errorHook;
+                _this$_pipes = this._pipes, reqPipes = _this$_pipes.reqPipes, resPipes = _this$_pipes.resPipes;
                 requestType = type ? type : method;
-                requestParams = requestType === 'push' ? params : this.requestParams;
-                _context.next = 7;
-                return request[requestType](url, requestParams, this.requesetHeader, cookie);
-
-              case 7:
-                data = _context.sent;
-                return _context.abrupt("return", data);
+                requestParams = requestType === 'push' ? params : this._getParams(params);
+                _context.next = 9;
+                return request[requestType](url, (0, _utils.dataFiltering)(reqPipes, requestParams, errorHook), this.requesetHeader, cookie);
 
               case 9:
+                data = _context.sent;
+                return _context.abrupt("return", (0, _utils.dataFiltering)(resPipes, data, errorHook));
+
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -1623,13 +1729,6 @@ function (_Handler) {
       var globalHeader = this.constructor.global.globalHeader;
       return Object.assign({}, globalHeader, header);
     }
-  }, {
-    key: "requestParams",
-    get: function get() {
-      var params = this._http.params;
-      var globalParams = this.constructor.global.globalParams;
-      return Object.assign({}, globalParams, params);
-    }
   }]);
   return SeparateHandler;
 }(_handler["default"]); // Bind request category 
@@ -1637,7 +1736,8 @@ function (_Handler) {
 
 SeparateHandler.global = {
   globalHeader: {},
-  globalParams: {}
+  globalParams: {} // Network request information
+
 };
 
 _constants.METHOD_TYPES.map(function (requestType) {
@@ -1649,7 +1749,7 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = SeparateHandler;
 exports["default"] = _default;
 
-},{"../shared/constants":21,"./create-request":15,"./handler":17,"./request":18,"@babel/runtime/helpers/assertThisInitialized":2,"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/getPrototypeOf":6,"@babel/runtime/helpers/inherits":7,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/helpers/interopRequireWildcard":9,"@babel/runtime/helpers/possibleConstructorReturn":10,"@babel/runtime/regenerator":13}],20:[function(require,module,exports){
+},{"../shared/constants":25,"../shared/utils":26,"./create-request":19,"./handler":21,"./request":22,"@babel/runtime/helpers/assertThisInitialized":3,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1711,7 +1811,7 @@ var _default = new Proxy(createInstance, {
 
 exports["default"] = _default;
 
-},{"./core/separate-handler":19,"@babel/runtime/helpers/interopRequireDefault":8}],21:[function(require,module,exports){
+},{"./core/separate-handler":23,"@babel/runtime/helpers/interopRequireDefault":9}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1726,7 +1826,35 @@ var CONTENT_TYPE = {
 };
 exports.CONTENT_TYPE = CONTENT_TYPE;
 
-},{}]},{},[1])(1)
+},{}],26:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.dataFiltering = dataFiltering;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+/**
+ * Data processing
+ *
+ * @param {*} data 
+ */
+function dataFiltering(pipes, data, errorHook) {
+  try {
+    var newData = [data].concat((0, _toConsumableArray2["default"])(pipes)).reduce(function (prev, cur) {
+      return cur(prev);
+    });
+    return newData;
+  } catch (error) {
+    errorHook(error);
+  }
+}
+
+},{"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/toConsumableArray":15}]},{},[1])(1)
 });
 
 //# sourceMappingURL=reixs.js.map

@@ -2,6 +2,7 @@ import {METHOD_TYPES} from '../shared/constants'
 import * as request from './request'
 import Handler from './handler'
 import createRequest from './create-request'
+import {dataFiltering} from '../shared/utils'
 
 /**
  *  Separate request object
@@ -32,6 +33,7 @@ class SeparateHandler  extends Handler {
     static global = {
         globalHeader: {},
         globalParams: {} 
+
     }
 
     // Network request information
@@ -60,10 +62,9 @@ class SeparateHandler  extends Handler {
     /**
      * Complete request parameters
      * 
-     * @return {Object} 
+     * @param {Object} params 
      */
-    get requestParams() {
-        const {params} = this._http
+    _getParams(params) {
         const {globalParams} = this.constructor.global
         return {
             ...globalParams, 
@@ -144,20 +145,22 @@ class SeparateHandler  extends Handler {
      * @param {*} params 
      * @param {string} type 
      */
-    async _sendRequest(params = this.params, type) {
+    async _sendRequest(params = this._http.params, type) {
         const {url, method, cookie} = this._http
+        const {errorHook} = this._hook
+        const {reqPipes, resPipes} = this._pipes
 
         const requestType = type ? type : method
         const requestParams = requestType === 'push' 
-            ? params : this.requestParams
+            ? params : this._getParams(params)
+
         const data = await request[requestType](
             url, 
-            requestParams,
+            dataFiltering(reqPipes, requestParams, errorHook),
             this.requesetHeader,
             cookie
         )
-        
-        return data
+        return dataFiltering(resPipes, data, errorHook)
     }
 }
 

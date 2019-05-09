@@ -51,8 +51,11 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-        .end((a,b,c) => console.log(c))
-        .error(e => datadiv.innerHTML = e)
+        .end((type) => console.log(type))
+        .error(e => {
+            datadiv.innerHTML = e
+            throw e
+        })
     
     api.onchange = function(){
         cases.setUrl(`${location.href}api${api.value}`)

@@ -58,7 +58,7 @@ export default function(config, sendRequest, execute, hook) {
         wait = true
         await createWait(debounce)
         wait = false
-        startHook && startHook(...par)
+        startHook && startHook()
         const mark = Symbol()
         sym = mark
 
@@ -71,7 +71,7 @@ export default function(config, sendRequest, execute, hook) {
                 execute(data)
             }
 
-            endHook && endHook(...par, timeout ? 'timeout' : 'successful')
+            endHook && endHook(timeout ? 'timeout' : 'successful')
             work = false
         }
     }
