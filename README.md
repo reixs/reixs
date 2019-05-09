@@ -63,6 +63,18 @@ npm install --save reixs
     
     reqApi.get()
 ```
+### Request method aliases
+
+For convenience aliases have been provided for all supported request methods.
+
+##### reixs(url).request(params)
+##### reixs(url).get(params)
+##### reixs(url).post(params)
+##### reixs(url).form(params)
+##### reixs(url).push(params)
+
+###### NOTE
+When using the alias methods `url`, `method`, and `data` properties don't need to be specified in config.
 
 ## Debug
 ```bash
