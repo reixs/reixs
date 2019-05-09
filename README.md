@@ -10,7 +10,7 @@
     <a href="https://codecov.io/gh/reixs/reixs">
         <img src="https://coveralls.io/repos/github/reixs/reixs/badge.svg?branch=master" />
     </a>
-    <a href="https://npmcharts.com/compare/reixs?minimal=true">
+    <a href="https://coveralls.io/github/reixs/reixs?branch=master">
         <img src="https://img.shields.io/npm/dm/reixs.svg" alt="Downloads">
     </a>
     <a href="https://www.npmjs.com/package/reixs">
