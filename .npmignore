@@ -8,7 +8,8 @@ test/
 coverage/
 .travis.yml
 karma.conf.js
-.eslintgnore
+.babelrc
+.eslintignore
 .eslintrc.js
 .gitignore
-.gulpfile.js
+gulpfile.js

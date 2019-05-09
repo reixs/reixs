@@ -1,5 +1,3 @@
-import {METHOD_TYPES} from '../shared/constants'
-
 export default class {
     constructor(globalReqPipes, globalResPipes) {
         this.pipes = {
@@ -29,31 +27,38 @@ export default class {
 
     taskList =[]
 
-    setDiscard(ifDiscard) {
-        this.config.discard = ifDiscard
-        return this
-    }
-
-    setHeader(header) {
-        if (header.constructor === Object) {
-            this.http.header = header
+    setThrottle(ifThrottle) {
+        if (typeof time === 'boolean') {
+            this.config.throttle = ifThrottle
         } else {
-            throw new Error('Header invalid setting')
+            throw new Error('Invalid type')
         }
         return this
     }
 
-    setParams(params) {
-        this.http.params = params
+    setDiscard(ifDiscard) {
+        if (typeof time === 'boolean') {
+            this.config.discard = ifDiscard
+        } else {
+            throw new Error('Invalid type')
+        }
+        return this
+    }
+
+    setDebounce(time) {
+        if (typeof time === 'number') {
+            this.config.debounce = time
+        } else {
+            throw new Error('Invalid type')
+        }
         return this
     }
     
-    setMethod(method = null) {
-        method = method.toLowerCase()
-        if (METHOD_TYPES.includes(method)) {
-            this.http.method = method
+    setOvertime(time) {
+        if (typeof time === 'number' || time === null) {
+            this.config.overtime = time
         } else {
-            throw new Error('Invalid method')
+            throw new Error('Invalid type')
         }
         return this
     }

@@ -51,7 +51,8 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-        .end(() => console.log('请求结束'))
+        .setOvertime(1000)
+        .end((a,b,c) => console.log(c))
         .error(e => datadiv.innerHTML = e)
     
     api.onchange = function(){
