@@ -3,9 +3,10 @@ module.exports = function(config) {
     config.set({
         browsers: ['Chrome'],
         frameworks: ['browserify', 'jasmine'],
-        files: ['test/*.js'],
+        files: ['src/**/*.js', 'test/*.js'],
         preprocessors: {
-            'test/*.js': ['browserify']
+            'src/**/*.js': ['browserify', 'coverage'],
+            'test/**/*.js': ['browserify']
         },
         browserify: {
             debug: true,
@@ -18,12 +19,21 @@ module.exports = function(config) {
         // optionally, configure the reporter
         coverageReporter: {
             reporters: [
-            // generates ./coverage/lcov.info
-                {type: 'lcovonly',
-                    subdir: '.'},
+                // generates ./coverage/html
+                {
+                    type: 'html',
+                    subdir: './html'
+                },
+                // generates ./coverage/lcov.info
+                {
+                    type: 'lcovonly',
+                    subdir: '.'
+                },
                 // generates ./coverage/coverage-final.json
-                {type: 'json',
-                    subdir: '.'}
+                {
+                    type: 'json',
+                    subdir: '.'
+                }
             ]
         },
         concurrency: Infinity

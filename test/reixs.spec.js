@@ -1,4 +1,4 @@
-import reixs from '../index'
+import reixs from '../src/reixs'
 describe('version', function() {
     it('__VERSION__', function(done) {
         expect(reixs.version).toEqual('__VERSION__')
