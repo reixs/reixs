@@ -8,7 +8,7 @@
         <img src="https://travis-ci.org/reixs/reixs.svg?branch=master" alt="Build Status">
     </a>
     <a href="https://codecov.io/gh/reixs/reixs">
-        <img src="https://coveralls.io/repos/github/reixs/reixs/badge.svg?branch=master" />
+        <img src="https://coveralls.io/repos/github/reixs/reixs/badge.svg?branch=master" alt="Coverage Status"/>
     </a>
     <a href="https://coveralls.io/github/reixs/reixs?branch=master">
         <img src="https://img.shields.io/npm/dm/reixs.svg" alt="Downloads">
@@ -20,7 +20,7 @@
         <img src="https://img.shields.io/npm/l/reixs.svg" alt="License">
     </a>
     <a href="https://gitter.im/reixs/community">
-        <img src="https://img.shields.io/gitter/room/reixs/community.svg" alt="License">
+        <img src="https://img.shields.io/gitter/room/reixs/community.svg" alt="Chat">
     </a>
 </p>
 
