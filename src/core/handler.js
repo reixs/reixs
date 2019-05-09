@@ -1,4 +1,5 @@
 export default class {
+    // Request trigger rule configuration
     _config = {
         throttle: false,
         discard: false,
@@ -6,17 +7,20 @@ export default class {
         overtime: null
     }
 
+    // Life cycle function
     _hook = {
         tartHook: null,
         endHook: null,
         errorHook: null
     }
 
+    // Data filtering
     _pipes = {
         globalReqPipes: [],
         globalResPipes: []
     }
-    
+
+    // Task queue executed after the request is completed
     _taskList =[]
 
     /**

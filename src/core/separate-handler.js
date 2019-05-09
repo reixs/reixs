@@ -34,6 +34,7 @@ class SeparateHandler  extends Handler {
         globalParams: {} 
     }
 
+    // Network request information
     _http = {
         url: '',
         method: null,
@@ -42,6 +43,11 @@ class SeparateHandler  extends Handler {
         cookie: true
     }
     
+    /**
+     * Complete request header
+     * 
+     * @return {Object} 
+     */
     get requesetHeader() {
         const {header} = this._http
         const {globalHeader} = this.constructor.global
@@ -51,6 +57,11 @@ class SeparateHandler  extends Handler {
         }
     }
     
+    /**
+     * Complete request parameters
+     * 
+     * @return {Object} 
+     */
     get requestParams() {
         const {params} = this._http
         const {globalParams} = this.constructor.global
