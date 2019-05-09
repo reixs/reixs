@@ -5,6 +5,7 @@
   "main": "./dist/reixs.js",
   "scripts": {
     "report-coverage": "codecov",
+    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test": "gulp test",
     "eslint": "eslint --ext .js src",
     "dev": "gulp watch",
@@ -40,6 +41,7 @@
     "browserify": "^16.2.3",
     "browserify-versionify": "^1.0.6",
     "codecov": "^3.3.0",
+    "coveralls": "^3.0.3",
     "del": "^3.0.0",
     "eslint-plugin-html": "^5.0.3",
     "gulp": "^4.0.0",

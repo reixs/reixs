@@ -6,7 +6,7 @@ module.exports = function(config) {
         files: ['src/**/*.js', 'test/*.js'],
         preprocessors: {
             'src/**/*.js': ['browserify', 'coverage'],
-            'test/**/*.js': ['browserify']
+            'test/**/*.spec.js': ['browserify']
         },
         browserify: {
             debug: true,
