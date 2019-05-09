@@ -1,17 +1,5 @@
 import SeparateHandler from './core/separate-handler'
 
-// Multiple requests Shared
-const global = {
-    globalHeader: {},
-    globalParams: {}
-}
-
-// Processing parameters
-const globalPipes = {
-    reqPipes: [],
-    resPipes: []
-}
-
 /**
  * Create reixs 
  * 
@@ -20,7 +8,11 @@ const globalPipes = {
  * @param {*} params  
  */
 function createInstance(url, method, params) {
-    return new SeparateHandler(global, globalPipes, url, method, params)
+    return new Proxy(new SeparateHandler(url, method, params), {
+        set() {
+            throw new Error('Overwriting any attributes is not allowed')
+        }
+    })
 }
 
 /**
@@ -30,7 +22,7 @@ function createInstance(url, method, params) {
  * @param  {...any} funList 
  */
 function setPipes(name, ...funList) {
-    globalPipes[name] = [...funList]
+    SeparateHandler.globalPipes[name] = [...funList]
 }
 
 export default new Proxy(createInstance, {
@@ -46,13 +38,7 @@ export default new Proxy(createInstance, {
         }
     },
     set(target, property, value) {
-        // Must be set to Object
-        if (Reflect.has(global, property) 
-            && value.constructor === Object) {
-            global[property] = value
-        } else {
-            throw new Error('Invalid Settings')
-        }
+        SeparateHandler.global[property] = value
     }
 })
 

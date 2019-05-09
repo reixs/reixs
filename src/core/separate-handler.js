@@ -3,51 +3,45 @@ import request from './request'
 import Handler from './handler'
 import createRequest from './create-request'
 
-export default class extends Handler {
-    constructor(...args) {
-        const [global, globalPipes, url, method = 'get', params = null] = args
-        const {globalHeader, globalParams} = global
+class SeparateHandler  extends Handler {
+    constructor(url, method = 'get', params = null) {
+        super()
+        const {_config, _sendRequest, _execute, _hook} = this
 
-        super(globalReqPipes, globalResPipes)
-
-        const {globalReqPipes, globalResPipes} = globalPipes
-        const {config, sendRequest, execute, hook} = this
-
-        this.http = {
-            ...this.http,
+        // Initialize the http
+        this._http = {
+            ...this._http,
             url,
-            globalHeader,
-            globalParams,
             params
         }
-
         this.setMethod(method)
-    
-        this.request = createRequest(
-            config, 
-            sendRequest, 
-            execute.bind(this), 
-            hook
-        )
 
-        // Bind request category
-        METHOD_TYPES.map(requestType=>{
-            this[requestType] = params => this.request(params, requestType) 
-        })
+        // Create request function
+        this.request = createRequest(
+            _config, 
+            _sendRequest.bind(this), 
+            _execute.bind(this), 
+            _hook
+        )
     }
 
-    http = {
+    // Multiple requests Shared
+    static global = {
+        globalHeader: {},
+        globalParams: {} 
+    }
+
+    _http = {
         url: '',
         method: null,
-        globalHeader: {},
-        globalParams: null,
         header: {},
         params: null,
         cookie: true
     }
-
+    
     get requesetHeader() {
-        const {globalHeader, header} = this.http
+        const {header} = this._http
+        const {globalHeader} = this.constructor.global
         return {
             ...globalHeader, 
             ...header
@@ -55,57 +49,89 @@ export default class extends Handler {
     }
     
     get requestParams() {
-        const {globalParams, params} = this.http
+        const {params} = this._http
+        const {globalParams} = this.constructor.global
         return {
             ...globalParams, 
             ...params
         }
     }
 
+    /**
+     * Set the request url
+     * 
+     * @param {string} url 
+     */
     setUrl(url) {
         if (typeof url === 'string') {
-            this.http.url = url
+            this._http.url = url
         } else {
             throw new Error('Invalid type')
         }
         return this
     }
     
+    /**
+     * Set the request header
+     * 
+     * @param {Object} header 
+     */
     setHeader(header) {
         if (header.constructor === Object) {
-            this.http.header = header
+            this._http.header = header
         } else {
             throw new Error('Header invalid setting')
         }
         return this
     }
 
+    /**
+     * Set request parameters
+     * 
+     * @param {*} params 
+     */
     setParams(params) {
-        this.http.params = params
+        this._http.params = params
         return this
     }
     
+    /**
+     * Set whether to carry cookies
+     * 
+     * @param {boolean} ifCookie 
+     */
     setCookie(ifCookie) {
         if (typeof ifCookie === 'boolean') {
-            this.http.cookie = ifCookie
+            this._http.cookie = ifCookie
         } else {
             throw new Error('Invalid type')
         }
         return this
     }
 
+    /**
+     * Set the request method
+     * 
+     * @param {string} method 
+     */
     setMethod(method = null) {
         method = method.toLowerCase()
         if (METHOD_TYPES.includes(method)) {
-            this.http.method = method
+            this._http.method = method
         } else {
             throw new Error('Invalid method')
         }
         return this
     }
-
-    sendRequest = async (params = this.params, type) =>{
-        const {url, method, cookie} = this.http
+    
+    /**
+     * Send the request to the server
+     * 
+     * @param {*} params 
+     * @param {string} type 
+     */
+    async _sendRequest(params = this.params, type) {
+        const {url, method, cookie} = this._http
 
         const requestType = type ? type : method
         const requestParams = requestType === 'push' 
@@ -121,3 +147,13 @@ export default class extends Handler {
     }
 }
 
+
+// Bind request category 
+METHOD_TYPES.map(requestType=>{
+    SeparateHandler.prototype[requestType] = function(params) {
+        this.request(params, requestType)
+    }
+})
+ 
+
+export default SeparateHandler

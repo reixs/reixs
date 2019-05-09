@@ -4,7 +4,7 @@
  * 
  * @param {Object} response 
  */
-export function checkStatus(response) {
+function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
@@ -22,7 +22,7 @@ export function checkStatus(response) {
  * 
  * @param {Object} promise 
  */
-export function handleFetch(promise) {
+export default function handleFetch(promise) {
     return promise
         .then(response => checkStatus(response))
         .catch(error => {

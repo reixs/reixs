@@ -1,5 +1,5 @@
 import {CONTENT_TYPE} from '../shared/constants'
-import {handleFetch} from '../shared/utli'
+import handleFetch from './handle-fetch'
 
 export default {
     get(url, params, headers, cookie) {

@@ -24,6 +24,7 @@
 <script>
     // npm version
     console.log(`version:${reixs.version}`)
+    reixs.globalParams = {a:12}
 
     const datadiv = document.querySelector('.datadiv')
     const test = document.querySelector('.test')
@@ -51,7 +52,6 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-        .setOvertime(1000)
         .end((a,b,c) => console.log(c))
         .error(e => datadiv.innerHTML = e)
     
@@ -63,7 +63,9 @@
         cases.setMethod(type.value)
     }
 
-    test.onclick = cases.get
+    test.onclick = function(){
+        cases.get()
+    }
 
 </script>   
 </html>
