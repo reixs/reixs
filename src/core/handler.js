@@ -1,3 +1,7 @@
+
+/**
+ * The underlying request model
+ */
 export default class {
     // Request trigger rule configuration
     _config = {
