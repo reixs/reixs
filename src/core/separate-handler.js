@@ -1,8 +1,11 @@
 import {METHOD_TYPES} from '../shared/constants'
-import request from './request'
+import * as request from './request'
 import Handler from './handler'
 import createRequest from './create-request'
 
+/**
+ *  Separate request object
+ */
 class SeparateHandler  extends Handler {
     constructor(url, method = 'get', params = null) {
         super()

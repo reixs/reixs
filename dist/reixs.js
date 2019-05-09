@@ -3,7 +3,7 @@
 
 module.exports = require('./src/reixs')["default"];
 
-},{"./src/reixs":19}],2:[function(require,module,exports){
+},{"./src/reixs":20}],2:[function(require,module,exports){
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -105,7 +105,7 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-},{"./setPrototypeOf":10}],8:[function(require,module,exports){
+},{"./setPrototypeOf":11}],8:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     "default": obj
@@ -114,6 +114,33 @@ function _interopRequireDefault(obj) {
 
 module.exports = _interopRequireDefault;
 },{}],9:[function(require,module,exports){
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  } else {
+    var newObj = {};
+
+    if (obj != null) {
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
+
+          if (desc.get || desc.set) {
+            Object.defineProperty(newObj, key, desc);
+          } else {
+            newObj[key] = obj[key];
+          }
+        }
+      }
+    }
+
+    newObj["default"] = obj;
+    return newObj;
+  }
+}
+
+module.exports = _interopRequireWildcard;
+},{}],10:[function(require,module,exports){
 var _typeof = require("../helpers/typeof");
 
 var assertThisInitialized = require("./assertThisInitialized");
@@ -127,7 +154,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 module.exports = _possibleConstructorReturn;
-},{"../helpers/typeof":11,"./assertThisInitialized":2}],10:[function(require,module,exports){
+},{"../helpers/typeof":12,"./assertThisInitialized":2}],11:[function(require,module,exports){
 function _setPrototypeOf(o, p) {
   module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
@@ -138,7 +165,7 @@ function _setPrototypeOf(o, p) {
 }
 
 module.exports = _setPrototypeOf;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -156,10 +183,10 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":13}],13:[function(require,module,exports){
+},{"regenerator-runtime":14}],14:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -887,7 +914,7 @@ try {
   Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1034,7 +1061,7 @@ function _default(config, sendRequest, execute, hook) {
   );
 }
 
-},{"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/regenerator":12}],15:[function(require,module,exports){
+},{"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/regenerator":13}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1075,7 +1102,7 @@ function handleFetch(promise) {
   });
 }
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1271,7 +1298,7 @@ function () {
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/interopRequireDefault":8}],17:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/interopRequireDefault":8}],18:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1279,64 +1306,104 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.get = get;
+exports.push = push;
+exports.post = post;
+exports.form = form;
 
 var _constants = require("../shared/constants");
 
 var _handleFetch = _interopRequireDefault(require("./handle-fetch"));
 
-var _default = {
-  get: function get(url, params, headers, cookie) {
-    url = new URL(url);
-    Object.keys(params).forEach(function (key) {
-      return url.searchParams.append(key, params[key]);
-    });
-    var promise = fetch(url, {
-      method: 'GET',
-      headers: Object.assign({}, headers),
-      credentials: cookie ? 'include' : 'omit'
-    });
-    return (0, _handleFetch["default"])(promise);
-  },
-  push: function push(url, params, headers, cookie) {
-    url = new URL(url);
-    url.pathname += "/".concat(params);
-    var promise = fetch(url, {
-      method: 'GET',
-      headers: Object.assign({}, headers),
-      credentials: cookie ? 'include' : 'omit'
-    });
-    return (0, _handleFetch["default"])(promise);
-  },
-  post: function post(url, params, headers, cookie) {
-    url = new URL(url);
-    var promise = fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(params),
-      headers: Object.assign({
-        'Content-type': _constants.CONTENT_TYPE['JSON']
-      }, headers),
-      credentials: cookie ? 'include' : 'omit'
-    });
-    return (0, _handleFetch["default"])(promise);
-  },
-  form: function form(url, params, headers, cookie) {
-    url = new URL(url);
-    var promise = fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(params),
-      headers: Object.assign({
-        'Content-type': _constants.CONTENT_TYPE['FORM']
-      }, headers),
-      credentials: cookie ? 'include' : 'omit'
-    });
-    return (0, _handleFetch["default"])(promise);
-  }
-};
-exports["default"] = _default;
+/**
+ * Query String Parameters
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+function get(url, params, headers, cookie) {
+  url = new URL(url);
+  Object.keys(params).forEach(function (key) {
+    return url.searchParams.append(key, params[key]);
+  });
+  var promise = fetch(url, {
+    method: 'GET',
+    headers: Object.assign({}, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+/**
+ * Url Push
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
 
-},{"../shared/constants":20,"./handle-fetch":15,"@babel/runtime/helpers/interopRequireDefault":8}],18:[function(require,module,exports){
+
+function push(url, params, headers, cookie) {
+  url = new URL(url);
+  url.pathname += "/".concat(params);
+  var promise = fetch(url, {
+    method: 'GET',
+    headers: Object.assign({}, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+/**
+ * Request Payload
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+
+
+function post(url, params, headers, cookie) {
+  url = new URL(url);
+  var promise = fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(params),
+    headers: Object.assign({
+      'Content-type': _constants.CONTENT_TYPE['JSON']
+    }, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+/**
+ * Form Data
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+
+
+function form(url, params, headers, cookie) {
+  url = new URL(url);
+  var promise = fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(params),
+    headers: Object.assign({
+      'Content-type': _constants.CONTENT_TYPE['FORM']
+    }, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+
+},{"../shared/constants":21,"./handle-fetch":16,"@babel/runtime/helpers/interopRequireDefault":8}],19:[function(require,module,exports){
 "use strict";
+
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
@@ -1363,12 +1430,15 @@ var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits
 
 var _constants = require("../shared/constants");
 
-var _request = _interopRequireDefault(require("./request"));
+var request = _interopRequireWildcard(require("./request"));
 
 var _handler = _interopRequireDefault(require("./handler"));
 
 var _createRequest = _interopRequireDefault(require("./create-request"));
 
+/**
+ *  Separate request object
+ */
 var SeparateHandler =
 /*#__PURE__*/
 function (_Handler) {
@@ -1526,7 +1596,7 @@ function (_Handler) {
                 requestType = type ? type : method;
                 requestParams = requestType === 'push' ? params : this.requestParams;
                 _context.next = 7;
-                return _request["default"][requestType](url, requestParams, this.requesetHeader, cookie);
+                return request[requestType](url, requestParams, this.requesetHeader, cookie);
 
               case 7:
                 data = _context.sent;
@@ -1579,7 +1649,7 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = SeparateHandler;
 exports["default"] = _default;
 
-},{"../shared/constants":20,"./create-request":14,"./handler":16,"./request":17,"@babel/runtime/helpers/assertThisInitialized":2,"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/getPrototypeOf":6,"@babel/runtime/helpers/inherits":7,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/helpers/possibleConstructorReturn":9,"@babel/runtime/regenerator":12}],19:[function(require,module,exports){
+},{"../shared/constants":21,"./create-request":15,"./handler":17,"./request":18,"@babel/runtime/helpers/assertThisInitialized":2,"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/getPrototypeOf":6,"@babel/runtime/helpers/inherits":7,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/helpers/interopRequireWildcard":9,"@babel/runtime/helpers/possibleConstructorReturn":10,"@babel/runtime/regenerator":13}],20:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1641,7 +1711,7 @@ var _default = new Proxy(createInstance, {
 
 exports["default"] = _default;
 
-},{"./core/separate-handler":18,"@babel/runtime/helpers/interopRequireDefault":8}],20:[function(require,module,exports){
+},{"./core/separate-handler":19,"@babel/runtime/helpers/interopRequireDefault":8}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
