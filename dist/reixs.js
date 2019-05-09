@@ -902,6 +902,41 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 /**
+ * Create delay promise
+ * 
+ * @param {number} time 
+ */
+function createWait(time) {
+  return time === 0 ? Promise.resolve() : new Promise(function (resolve) {
+    setTimeout(function () {
+      return resolve();
+    }, time);
+  });
+}
+/**
+ * Detect timeout
+ * 
+ * @param {Promise} promise 
+ * @param {null|number} time 
+ */
+
+
+function requestTimer(promise, time) {
+  var request = promise.then(function (data) {
+    return {
+      timeout: false,
+      data: data
+    };
+  });
+  var timer = createWait(time).then(function () {
+    return {
+      timeout: true,
+      data: null
+    };
+  });
+  return time === null ? request : Promise.race([request, timer]);
+}
+/**
  * The method to create the request
  * 
  * @param {Object} config 
@@ -909,9 +944,12 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
  * @param {Array} execute 
  * @param {Object} hook 
  */
+
+
 function _default(config, sendRequest, execute, hook) {
   var sym;
   var work = false;
+  var wait = false;
   return (
     /*#__PURE__*/
     (0, _asyncToGenerator2["default"])(
@@ -919,19 +957,32 @@ function _default(config, sendRequest, execute, hook) {
     _regenerator["default"].mark(function _callee() {
       var throttle,
           discard,
+          debounce,
+          overtime,
           startHook,
           endHook,
+          _len,
+          par,
+          _key,
           mark,
+          _ref2,
+          timeout,
           data,
           _args = arguments;
+
       return _regenerator["default"].wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              throttle = config.throttle, discard = config.discard;
+              throttle = config.throttle, discard = config.discard, debounce = config.debounce, overtime = config.overtime;
               startHook = hook.startHook, endHook = hook.endHook;
+              /**
+               *  If throttle is set, the function must be idle to send the request.
+               *  If debounce is set. The request will not be triggered repeatedly 
+               *  for a specified period of time.
+               */
 
-              if (!(work && throttle)) {
+              if (!(work && throttle || wait)) {
                 _context.next = 4;
                 break;
               }
@@ -940,23 +991,40 @@ function _default(config, sendRequest, execute, hook) {
 
             case 4:
               work = true;
-              startHook && startHook.apply(void 0, _args);
+              wait = true;
+              _context.next = 8;
+              return createWait(debounce);
+
+            case 8:
+              wait = false;
+
+              for (_len = _args.length, par = new Array(_len), _key = 0; _key < _len; _key++) {
+                par[_key] = _args[_key];
+              }
+
+              startHook && startHook.apply(void 0, par);
               mark = Symbol();
               sym = mark;
-              _context.next = 10;
-              return sendRequest.apply(void 0, _args);
+              _context.next = 15;
+              return requestTimer(sendRequest.apply(void 0, par), overtime);
 
-            case 10:
-              data = _context.sent;
+            case 15:
+              _ref2 = _context.sent;
+              timeout = _ref2.timeout;
+              data = _ref2.data;
 
+              // If discard is set, the duplicate request is discarded
               if (sym === mark || !discard) {
-                // execution task list
-                execute(data);
-                endHook && endHook.apply(void 0, _args);
+                // If the timeout occurs, the task is not processed
+                if (!timeout) {
+                  execute(data);
+                }
+
+                endHook && endHook.apply(void 0, par.concat([timeout ? 'timeout' : 'successful']));
                 work = false;
               }
 
-            case 12:
+            case 19:
             case "end":
               return _context.stop();
           }
@@ -979,8 +1047,6 @@ exports["default"] = void 0;
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-var _constants = require("../shared/constants");
 
 var _default =
 /*#__PURE__*/
@@ -1016,32 +1082,12 @@ function () {
       return this;
     }
   }, {
-    key: "setHeader",
-    value: function setHeader(header) {
-      if (header.constructor === Object) {
-        this.http.header = header;
+    key: "setOvertime",
+    value: function setOvertime(time) {
+      if (typeof time === 'number' || time === null) {
+        this.config.overtime = time;
       } else {
-        throw new Error('Header invalid setting');
-      }
-
-      return this;
-    }
-  }, {
-    key: "setParams",
-    value: function setParams(params) {
-      this.http.params = params;
-      return this;
-    }
-  }, {
-    key: "setMethod",
-    value: function setMethod() {
-      var method = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      method = method.toLowerCase();
-
-      if (_constants.METHOD_TYPES.includes(method)) {
-        this.http.method = method;
-      } else {
-        throw new Error('Invalid method');
+        throw new Error('Invalid type');
       }
 
       return this;
@@ -1091,7 +1137,7 @@ function () {
 
 exports["default"] = _default;
 
-},{"../shared/constants":19,"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/interopRequireDefault":8}],16:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/interopRequireDefault":8}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1419,7 +1465,7 @@ var _default = new Proxy(createInstance, {
     switch (property) {
       // Replaced by browserify-versionify transform
       case 'version':
-        return '0.1.0';
+        return '0.1.1';
       // Set request and response pipe
 
       case 'reqPipes':
