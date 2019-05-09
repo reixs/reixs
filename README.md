@@ -19,6 +19,9 @@
     <a href="https://www.npmjs.com/package/reixs">
         <img src="https://img.shields.io/npm/l/reixs.svg" alt="License">
     </a>
+    <a href="https://gitter.im/reixs/community">
+        <img src="https://img.shields.io/gitter/room/reixs/community.svg" alt="License">
+    </a>
 </p>
 
 
