@@ -6,7 +6,6 @@ import createRequest from './create-request'
 class SeparateHandler  extends Handler {
     constructor(url, method = 'get', params = null) {
         super()
-        const {_config, _sendRequest, _execute, _hook} = this
 
         // Initialize the http
         this._http = {
@@ -17,12 +16,7 @@ class SeparateHandler  extends Handler {
         this.setMethod(method)
 
         // Create request function
-        this.request = createRequest(
-            _config, 
-            _sendRequest.bind(this), 
-            _execute.bind(this), 
-            _hook
-        )
+        this._initRequest()
     }
 
     // Multiple requests Shared
@@ -55,6 +49,19 @@ class SeparateHandler  extends Handler {
             ...globalParams, 
             ...params
         }
+    }
+
+    /**
+     * Create request function
+     */
+    _initRequest() {
+        const {_config, _sendRequest, _execute, _hook} = this
+        this.request = createRequest(
+            _config, 
+            _sendRequest.bind(this), 
+            _execute.bind(this), 
+            _hook
+        )
     }
 
     /**

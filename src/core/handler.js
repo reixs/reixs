@@ -1,8 +1,8 @@
 export default class {
     _config = {
         throttle: false,
-        discard: false,
         debounce: 0,
+        audit: false,
         overtime: null
     }
 
@@ -39,25 +39,11 @@ export default class {
     /**
      * Set throttle
      * 
-     * @param {boolean} ifThrottle 
+     * @param {number|boolean} settings 
      */
-    setThrottle(ifThrottle) {
-        if (typeof time === 'boolean') {
-            this._config.throttle = ifThrottle
-        } else {
-            throw new Error('Invalid type')
-        }
-        return this
-    }
-
-    /**
-     * Set discard
-     * 
-     * @param {boolean} ifDiscard 
-     */
-    setDiscard(ifDiscard) {
-        if (typeof time === 'boolean') {
-            this._config.discard = ifDiscard
+    throttle(settings) {
+        if (typeof time === 'number' || typeof time === 'boolean') {
+            this._config.throttle = settings
         } else {
             throw new Error('Invalid type')
         }
@@ -67,11 +53,25 @@ export default class {
     /**
      * Set debounce
      * 
-     * @param {number} time 
+     * @param {number|boolean} settings 
      */
-    setDebounce(time) {
-        if (typeof time === 'number') {
-            this._config.debounce = time
+    debounce(settings) {
+        if (typeof settings === 'number' || typeof settings === 'boolean') {
+            this._config.debounce = settings
+        } else {
+            throw new Error('Invalid type')
+        }
+        return this
+    }
+    
+    /**
+     * Set audit
+     * 
+     * @param {number|boolean} settings 
+     */
+    audit(settings) {
+        if (typeof settings === 'number' || typeof settings === 'boolean') {
+            this._config.audit = settings
         } else {
             throw new Error('Invalid type')
         }
@@ -81,9 +81,9 @@ export default class {
     /**
      * Set overtime
      * 
-     * @param {nummber|null} time 
+     * @param {number|null} time 
      */
-    setOvertime(time) {
+    overtime(time) {
         if (typeof time === 'number' || time === null) {
             this._config.overtime = time
         } else {

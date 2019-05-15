@@ -24,7 +24,6 @@
 <script>
     // npm version
     console.log(`version:${reixs.version}`)
-    reixs.globalParams = {a:12}
 
     const datadiv = document.querySelector('.datadiv')
     const test = document.querySelector('.test')
@@ -44,7 +43,6 @@
         .error(e => {throw e})
     reApi.get()
 
-
     let cases = reixs()
         .start(() => {
             datadiv.innerHTML = 'loading...'
@@ -52,7 +50,8 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-        .end((a,b,c) => console.log(c))
+        .audit(true)
+        .end(() => console.log('End of the request'))
         .error(e => datadiv.innerHTML = e)
     
     api.onchange = function(){
