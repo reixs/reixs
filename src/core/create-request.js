@@ -1,3 +1,5 @@
+import MarkMap from './mark-map'
+
 /**
  * Create delay promise
  * 
@@ -38,42 +40,23 @@ function requestTimer(promise, time) {
  * @param {Object} hook 
  */
 export default function(config, sendRequest, execute, hook) {
-    let sym
-    let work = false
-    let wait = false
+    const markMap = new MarkMap()
     return async function(...par) {
-        const {throttle, discard, debounce, overtime} = config
         const {startHook, endHook} = hook
-
-        /**
-         *  If throttle is set, the function must be idle to send the request.
-         *  If debounce is set. The request will not be triggered repeatedly 
-         *  for a specified period of time.
-         */
-        if ((work && throttle) || wait) { 
-            return 
-        } 
-
-        work = true
-        wait = true
-        await createWait(debounce)
-        wait = false
-        startHook && startHook()
-        const mark = Symbol()
-        sym = mark
-
+        const {audit, overtime} = config
+        startHook && startHook(...par)
+        let mark
+        if (audit) {
+            mark = markMap.get(audit)
+        }
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
-
-        // If discard is set, the duplicate request is discarded
-        if (sym === mark || !discard) {
+        // If audit is set, the duplicate request is discarded
+        if (!audit || markMap.test(mark)) {
             // If the timeout occurs, the task is not processed
             if (!timeout) {
                 execute(data)
             }
-
-            endHook && endHook(timeout ? 'timeout' : 'successful')
-            work = false
+            endHook && endHook()
         }
     }
 }
-
