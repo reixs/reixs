@@ -50,17 +50,9 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-<<<<<<< HEAD
-        .end((type) => console.log(type))
-        .error(e => {
-            datadiv.innerHTML = e
-            throw e
-        })
-=======
         .audit(true)
         .end(() => console.log('End of the request'))
         .error(e => datadiv.innerHTML = e)
->>>>>>> develop
     
     api.onchange = function(){
         cases.setUrl(`${location.href}api${api.value}`)

@@ -6,12 +6,10 @@ module.exports = function(config) {
         files: ['src/**/*.js', 'test/*.js'],
         preprocessors: {
             'src/**/*.js': ['browserify', 'coverage'],
-            'test/**/*.spec.js': ['browserify']
+            'test/**/*.js': ['browserify']
         },
         browserify: {
             debug: true,
-            entries: 'index.js',
-            standalone: 'reixs',
             transform: ['babelify', 'browserify-versionify']
         },
         reporters: ['progress', 'coverage'],

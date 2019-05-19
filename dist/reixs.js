@@ -3,8 +3,7 @@
 
 module.exports = require('./src/reixs')["default"];
 
-<<<<<<< HEAD
-},{"./src/reixs":24}],2:[function(require,module,exports){
+},{"./src/reixs":25}],2:[function(require,module,exports){
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
@@ -17,9 +16,6 @@ function _arrayWithoutHoles(arr) {
 
 module.exports = _arrayWithoutHoles;
 },{}],3:[function(require,module,exports){
-=======
-},{"./src/reixs":20}],2:[function(require,module,exports){
->>>>>>> develop
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -1024,11 +1020,8 @@ function _default(config, sendRequest, execute, hook) {
     _regenerator["default"].mark(function _callee() {
       var startHook,
           endHook,
-<<<<<<< HEAD
-=======
           audit,
           overtime,
->>>>>>> develop
           mark,
           _ref2,
           timeout,
@@ -1043,17 +1036,6 @@ function _default(config, sendRequest, execute, hook) {
               audit = config.audit, overtime = config.overtime;
               startHook && startHook.apply(void 0, _args);
 
-<<<<<<< HEAD
-            case 8:
-              wait = false;
-              startHook && startHook();
-              mark = Symbol();
-              sym = mark;
-              _context.next = 14;
-              return requestTimer(sendRequest.apply(void 0, _args), overtime);
-
-            case 14:
-=======
               if (audit) {
                 mark = markMap.get(audit);
               }
@@ -1062,7 +1044,6 @@ function _default(config, sendRequest, execute, hook) {
               return requestTimer(sendRequest.apply(void 0, _args), overtime);
 
             case 6:
->>>>>>> develop
               _ref2 = _context.sent;
               timeout = _ref2.timeout;
               data = _ref2.data;
@@ -1074,18 +1055,10 @@ function _default(config, sendRequest, execute, hook) {
                   execute(data);
                 }
 
-<<<<<<< HEAD
-                endHook && endHook(timeout ? 'timeout' : 'successful');
-                work = false;
-              }
-
-            case 18:
-=======
                 endHook && endHook();
               }
 
             case 10:
->>>>>>> develop
             case "end":
               return _context.stop();
           }
@@ -1095,11 +1068,7 @@ function _default(config, sendRequest, execute, hook) {
   );
 }
 
-<<<<<<< HEAD
-},{"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],20:[function(require,module,exports){
-=======
-},{"./mark-map":17,"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/regenerator":12}],15:[function(require,module,exports){
->>>>>>> develop
+},{"./mark-map":22,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1165,13 +1134,9 @@ function () {
     this._config = {
       throttle: false,
       debounce: 0,
-<<<<<<< HEAD
+      audit: false,
       overtime: null // Life cycle function
 
-=======
-      audit: false,
-      overtime: null
->>>>>>> develop
     };
     this._hook = {
       tartHook: null,
@@ -1400,10 +1365,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.get = get;
-exports.push = push;
-exports.post = post;
-exports.form = form;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -1505,7 +1467,7 @@ function () {
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/interopRequireDefault":8}],18:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1513,7 +1475,10 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.get = get;
+exports.push = push;
+exports.post = post;
+exports.form = form;
 
 var _constants = require("../shared/constants");
 
@@ -1549,7 +1514,6 @@ function get(url, params, headers, cookie) {
  */
 
 
-<<<<<<< HEAD
 function push(url, params, headers, cookie) {
   url = new URL(url);
   url.pathname += "/".concat(params);
@@ -1605,10 +1569,7 @@ function form(url, params, headers, cookie) {
   return (0, _handleFetch["default"])(promise);
 }
 
-},{"../shared/constants":25,"./handle-fetch":20,"@babel/runtime/helpers/interopRequireDefault":9}],23:[function(require,module,exports){
-=======
-},{"../shared/constants":21,"./handle-fetch":15,"@babel/runtime/helpers/interopRequireDefault":8}],19:[function(require,module,exports){
->>>>>>> develop
+},{"../shared/constants":26,"./handle-fetch":20,"@babel/runtime/helpers/interopRequireDefault":9}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
@@ -1688,7 +1649,6 @@ function (_Handler) {
 
 
   (0, _createClass2["default"])(SeparateHandler, [{
-<<<<<<< HEAD
     key: "_getParams",
 
     /**
@@ -1699,19 +1659,19 @@ function (_Handler) {
     value: function _getParams(params) {
       var globalParams = this.constructor.global.globalParams;
       return Object.assign({}, globalParams, params);
-=======
-    key: "_initRequest",
-
+    }
     /**
      * Create request function
      */
+
+  }, {
+    key: "_initRequest",
     value: function _initRequest() {
       var _config = this._config,
           _sendRequest = this._sendRequest,
           _execute = this._execute,
           _hook = this._hook;
       this.request = (0, _createRequest["default"])(_config, _sendRequest.bind(this), _execute.bind(this), _hook);
->>>>>>> develop
     }
     /**
      * Set the request url
@@ -1883,11 +1843,7 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = SeparateHandler;
 exports["default"] = _default;
 
-<<<<<<< HEAD
-},{"../shared/constants":25,"../shared/utils":26,"./create-request":19,"./handler":21,"./request":22,"@babel/runtime/helpers/assertThisInitialized":3,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],24:[function(require,module,exports){
-=======
-},{"../shared/constants":21,"./create-request":14,"./handler":16,"./request":18,"@babel/runtime/helpers/asyncToGenerator":3,"@babel/runtime/helpers/classCallCheck":4,"@babel/runtime/helpers/createClass":5,"@babel/runtime/helpers/getPrototypeOf":6,"@babel/runtime/helpers/inherits":7,"@babel/runtime/helpers/interopRequireDefault":8,"@babel/runtime/helpers/possibleConstructorReturn":9,"@babel/runtime/regenerator":12}],20:[function(require,module,exports){
->>>>>>> develop
+},{"../shared/constants":26,"../shared/utils":27,"./create-request":19,"./handler":21,"./request":23,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],25:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1949,11 +1905,7 @@ var _default = new Proxy(createInstance, {
 
 exports["default"] = _default;
 
-<<<<<<< HEAD
-},{"./core/separate-handler":23,"@babel/runtime/helpers/interopRequireDefault":9}],25:[function(require,module,exports){
-=======
-},{"./core/separate-handler":19,"@babel/runtime/helpers/interopRequireDefault":8}],21:[function(require,module,exports){
->>>>>>> develop
+},{"./core/separate-handler":24,"@babel/runtime/helpers/interopRequireDefault":9}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1968,7 +1920,7 @@ var CONTENT_TYPE = {
 };
 exports.CONTENT_TYPE = CONTENT_TYPE;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
