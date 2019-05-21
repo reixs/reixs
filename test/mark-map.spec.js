@@ -52,17 +52,17 @@ describe('Audit is true, The old mark failed test', function() {
 
 
 describe('Audit is time, Different validations are made according to the time interval for getting mark', function() {
-    const audit = 5000
+    const audit = 1000
     it('Not exceeding the time limit', function(done) {
         const markMap = new MarkMap()
         const mark1 = markMap.get(audit)
         let mark2
         setTimeout(function() {
             mark2 = markMap.get(audit)
-        }, 3000)
-        expect(markMap.test(mark1)).toEqual(false)
-        expect(markMap.test(mark2)).toEqual(true)
-        done()
+            expect(markMap.test(mark1)).toEqual(false)
+            expect(markMap.test(mark2)).toEqual(true)
+            done()
+        }, 500)
     })
 
     it('Beyond the time', function(done) {
@@ -71,9 +71,9 @@ describe('Audit is time, Different validations are made according to the time in
         let mark2
         setTimeout(function() {
             mark2 = markMap.get(audit)
-        }, 7000)
-        expect(markMap.test(mark1)).toEqual(true)
-        expect(markMap.test(mark2)).toEqual(true)
-        done()
+            expect(markMap.test(mark1)).toEqual(true)
+            expect(markMap.test(mark2)).toEqual(true)
+            done()
+        }, 2000)
     })
 })
