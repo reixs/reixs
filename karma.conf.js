@@ -5,8 +5,8 @@ module.exports = function(config) {
         frameworks: ['browserify', 'jasmine'],
         files: ['src/**/*.js', 'test/*.js'],
         preprocessors: {
-            'src/**/*.js': ['browserify', 'coverage'],
-            'test/**/*.js': ['browserify']
+            'src/**/*.js': ['sourcemap', 'browserify', 'coverage'],
+            'test/**/*.js': ['sourcemap', 'browserify']
         },
         browserify: {
             debug: true,
