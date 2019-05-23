@@ -1,4 +1,4 @@
-import SeparateHandler from './core/separate-handler'
+import {Separate} from './core/constructor'
 
 /**
  * Create reixs 
@@ -8,7 +8,7 @@ import SeparateHandler from './core/separate-handler'
  * @param {*} params  
  */
 function createInstance(url, method, params) {
-    return new Proxy(new SeparateHandler(url, method, params), {
+    return new Proxy(new Separate(url, method, params), {
         set() {
             throw new Error('Overwriting any attributes is not allowed')
         }
@@ -22,7 +22,7 @@ function createInstance(url, method, params) {
  * @param  {...any} funList 
  */
 function setPipes(name, ...funList) {
-    SeparateHandler.globalPipes[name] = [...funList]
+    Separate.globalPipes[name] = [...funList]
 }
 
 export default new Proxy(createInstance, {
@@ -31,14 +31,14 @@ export default new Proxy(createInstance, {
         // Replaced by browserify-versionify transform
         case 'version':
             return '__VERSION__'
-        // Set request and response pipe
+            // Set request and response pipe
         case 'reqPipes':
         case 'resPipes':
             return setPipes.bind(null, property)
         }
     },
     set(target, property, value) {
-        SeparateHandler.global[property] = value
+        Separate.global[property] = value
     }
 })
 

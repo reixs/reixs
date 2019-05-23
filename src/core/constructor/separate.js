@@ -1,8 +1,10 @@
-import {METHOD_TYPES} from '../shared/constants'
-import * as request from './request'
+import {dataFiltering} from '../../shared/utils'
+import {METHOD_TYPES} from '../../shared/constants'
+
+import createRequest from '../create-request'
+import * as request from '../request'
+
 import Handler from './handler'
-import createRequest from './create-request'
-import {dataFiltering} from '../shared/utils'
 
 /**
  *  Separate request object

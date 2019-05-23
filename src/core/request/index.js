@@ -1,4 +1,4 @@
-import {CONTENT_TYPE} from '../shared/constants'
+import {CONTENT_TYPE} from '../../shared/constants'
 import handleFetch from './handle-fetch'
 
 

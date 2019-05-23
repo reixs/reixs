@@ -3,7 +3,7 @@
 
 module.exports = require('./src/reixs')["default"];
 
-},{"./src/reixs":25}],2:[function(require,module,exports){
+},{"./src/reixs":26}],2:[function(require,module,exports){
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
@@ -958,165 +958,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = _default;
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
-var _markMap = _interopRequireDefault(require("./mark-map"));
-
-/**
- * Create delay promise
- * 
- * @param {number} time 
- */
-function createWait(time) {
-  return time === 0 ? Promise.resolve() : new Promise(function (resolve) {
-    setTimeout(function () {
-      return resolve();
-    }, time);
-  });
-}
-/**
- * Detect timeout
- * 
- * @param {Promise} promise 
- * @param {null|number} time 
- */
-
-
-function requestTimer(promise, time) {
-  var request = promise.then(function (data) {
-    return {
-      timeout: false,
-      data: data
-    };
-  });
-  var timer = createWait(time).then(function () {
-    return {
-      timeout: true,
-      data: null
-    };
-  });
-  return time === null ? request : Promise.race([request, timer]);
-}
-/**
- * The method to create the request
- * 
- * @param {Object} config 
- * @param {Function} sendRequest 
- * @param {Array} execute 
- * @param {Object} hook 
- */
-
-
-function _default(config, sendRequest, execute, hook) {
-  var markMap = new _markMap["default"]();
-  return (
-    /*#__PURE__*/
-    (0, _asyncToGenerator2["default"])(
-    /*#__PURE__*/
-    _regenerator["default"].mark(function _callee() {
-      var startHook,
-          endHook,
-          audit,
-          overtime,
-          mark,
-          _ref2,
-          timeout,
-          data,
-          _args = arguments;
-
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              startHook = hook.startHook, endHook = hook.endHook;
-              audit = config.audit, overtime = config.overtime;
-              startHook && startHook.apply(void 0, _args);
-
-              if (audit) {
-                mark = markMap.get(audit);
-              }
-
-              _context.next = 6;
-              return requestTimer(sendRequest.apply(void 0, _args), overtime);
-
-            case 6:
-              _ref2 = _context.sent;
-              timeout = _ref2.timeout;
-              data = _ref2.data;
-
-              // If audit is set, the duplicate request is discarded
-              if (!audit || markMap.test(mark)) {
-                // If the timeout occurs, the task is not processed
-                if (!timeout) {
-                  execute(data);
-                }
-
-                endHook && endHook();
-              }
-
-            case 10:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))
-  );
-}
-
-},{"./mark-map":22,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],20:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = handleFetch;
-
-/**
- * Check for success
- * 
- * @param {Object} response 
- */
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    var contentType = response.headers.get('content-type');
-
-    if (contentType && contentType.includes('application/json')) {
-      return response.json();
-    } else {
-      return response.text();
-    }
-  } else {
-    throw new Error();
-  }
-}
-/**
- * Handle fetch
- * 
- * @param {Object} promise 
- */
-
-
-function handleFetch(promise) {
-  return promise.then(function (response) {
-    return checkStatus(response);
-  })["catch"](function (error) {
-    throw error;
-  });
-}
-
-},{}],21:[function(require,module,exports){
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -1357,219 +1198,26 @@ function () {
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],22:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],20:[function(require,module,exports){
 "use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _separate = require("./separate.js");
 
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-/**
- * Create a signature object
- * 
- * @param {symbol} sym 
- * @param {number} time 
- */
-function createSign(sym, time) {
-  var sign = Object.create(null);
-  sign.sym = sym;
-  sign.time = time;
-  return sign;
-}
-/**
- * Create a mark object
- * 
- * @param {Object} sign 
- */
-
-
-function createMark(sign) {
-  var mark = Object.create(null);
-  mark.sign = sign;
-  mark.sym = sign.sym;
-  return mark;
-}
-/**
- * Verify that mark is deprecated
- */
-
-
-var _default =
-/*#__PURE__*/
-function () {
-  function _default() {
-    (0, _classCallCheck2["default"])(this, _default);
-    this._map = [];
-  }
-
-  (0, _createClass2["default"])(_default, [{
-    key: "get",
-
-    /**
-     * Get mark
-     * @param {number|boolean} audit 
-     */
-    value: function get(audit) {
-      var _map = this._map;
-
-      if (audit) {
-        var sym = Symbol();
-        var time = Date.now();
-        var sign;
-
-        if (!_map.length || time - _map[_map.length - 1].time > audit && audit !== true) {
-          sign = createSign(sym, time);
-
-          _map.push(sign);
-        } else {
-          sign = _map[_map.length - 1];
-          sign.sym = sym;
-          sign.time = time;
-        }
-
-        return createMark(sign);
-      }
-
-      return null;
+Object.keys(_separate).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _separate[key];
     }
-    /**
-     * Verify the mark
-     * @param {Object} mark 
-     */
-
-  }, {
-    key: "test",
-    value: function test(mark) {
-      if (mark && mark.sym !== mark.sign.sym) {
-        return false;
-      }
-
-      if (mark) {
-        var _map = this._map;
-
-        var index = _map.indexOf(mark.sign);
-
-        _map.splice(index, 1);
-      }
-
-      return true;
-    }
-  }]);
-  return _default;
-}();
-
-exports["default"] = _default;
-
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],23:[function(require,module,exports){
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
+  });
 });
-exports.get = get;
-exports.push = push;
-exports.post = post;
-exports.form = form;
 
-var _constants = require("../shared/constants");
-
-var _handleFetch = _interopRequireDefault(require("./handle-fetch"));
-
-/**
- * Query String Parameters
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
- */
-function get(url, params, headers, cookie) {
-  url = new URL(url);
-  Object.keys(params).forEach(function (key) {
-    return url.searchParams.append(key, params[key]);
-  });
-  var promise = fetch(url, {
-    method: 'GET',
-    headers: Object.assign({}, headers),
-    credentials: cookie ? 'include' : 'omit'
-  });
-  return (0, _handleFetch["default"])(promise);
-}
-/**
- * Dynamic Router
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
- */
-
-
-function push(url, params, headers, cookie) {
-  url = new URL(url);
-  url.pathname += "/".concat(params);
-  var promise = fetch(url, {
-    method: 'GET',
-    headers: Object.assign({}, headers),
-    credentials: cookie ? 'include' : 'omit'
-  });
-  return (0, _handleFetch["default"])(promise);
-}
-/**
- * Request Payload
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
- */
-
-
-function post(url, params, headers, cookie) {
-  url = new URL(url);
-  var promise = fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(params),
-    headers: Object.assign({
-      'Content-type': _constants.CONTENT_TYPE['JSON']
-    }, headers),
-    credentials: cookie ? 'include' : 'omit'
-  });
-  return (0, _handleFetch["default"])(promise);
-}
-/**
- * Form Data
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
- */
-
-
-function form(url, params, headers, cookie) {
-  url = new URL(url);
-  var promise = fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(params),
-    headers: Object.assign({
-      'Content-type': _constants.CONTENT_TYPE['FORM']
-    }, headers),
-    credentials: cookie ? 'include' : 'omit'
-  });
-  return (0, _handleFetch["default"])(promise);
-}
-
-},{"../shared/constants":26,"./handle-fetch":20,"@babel/runtime/helpers/interopRequireDefault":9}],24:[function(require,module,exports){
+},{"./separate.js":21}],21:[function(require,module,exports){
 "use strict";
 
 var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
@@ -1595,15 +1243,15 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
-var _constants = require("../shared/constants");
+var _utils = require("../../shared/utils");
 
-var request = _interopRequireWildcard(require("./request"));
+var _constants = require("../../shared/constants");
+
+var _createRequest = _interopRequireDefault(require("../create-request"));
+
+var request = _interopRequireWildcard(require("../request"));
 
 var _handler = _interopRequireDefault(require("./handler"));
-
-var _createRequest = _interopRequireDefault(require("./create-request"));
-
-var _utils = require("../shared/utils");
 
 /**
  *  Separate request object
@@ -1843,7 +1491,125 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = SeparateHandler;
 exports["default"] = _default;
 
-},{"../shared/constants":26,"../shared/utils":27,"./create-request":19,"./handler":21,"./request":23,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],25:[function(require,module,exports){
+},{"../../shared/constants":27,"../../shared/utils":28,"../create-request":22,"../request":25,"./handler":19,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],22:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = _default;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _markMap = _interopRequireDefault(require("./mark-map"));
+
+/**
+ * Create delay promise
+ * 
+ * @param {number} time 
+ */
+function createWait(time) {
+  return time === 0 ? Promise.resolve() : new Promise(function (resolve) {
+    setTimeout(function () {
+      return resolve();
+    }, time);
+  });
+}
+/**
+ * Detect timeout
+ * 
+ * @param {Promise} promise 
+ * @param {null|number} time 
+ */
+
+
+function requestTimer(promise, time) {
+  var request = promise.then(function (data) {
+    return {
+      timeout: false,
+      data: data
+    };
+  });
+  var timer = createWait(time).then(function () {
+    return {
+      timeout: true,
+      data: null
+    };
+  });
+  return time === null ? request : Promise.race([request, timer]);
+}
+/**
+ * The method to create the request
+ * 
+ * @param {Object} config 
+ * @param {Function} sendRequest 
+ * @param {Array} execute 
+ * @param {Object} hook 
+ */
+
+
+function _default(config, sendRequest, execute, hook) {
+  var markMap = new _markMap["default"]();
+  return (
+    /*#__PURE__*/
+    (0, _asyncToGenerator2["default"])(
+    /*#__PURE__*/
+    _regenerator["default"].mark(function _callee() {
+      var startHook,
+          endHook,
+          audit,
+          overtime,
+          mark,
+          _ref2,
+          timeout,
+          data,
+          _args = arguments;
+
+      return _regenerator["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              startHook = hook.startHook, endHook = hook.endHook;
+              audit = config.audit, overtime = config.overtime;
+              startHook && startHook.apply(void 0, _args);
+
+              if (audit) {
+                mark = markMap.get(audit);
+              }
+
+              _context.next = 6;
+              return requestTimer(sendRequest.apply(void 0, _args), overtime);
+
+            case 6:
+              _ref2 = _context.sent;
+              timeout = _ref2.timeout;
+              data = _ref2.data;
+
+              // If audit is set, the duplicate request is discarded
+              if (!audit || markMap.test(mark)) {
+                // If the timeout occurs, the task is not processed
+                if (!timeout) {
+                  execute(data);
+                }
+
+                endHook && endHook();
+              }
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))
+  );
+}
+
+},{"./mark-map":23,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1853,7 +1619,258 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _separateHandler = _interopRequireDefault(require("./core/separate-handler"));
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+/**
+ * Create a signature object
+ * 
+ * @param {symbol} sym 
+ * @param {number} time 
+ */
+function createSign(sym, time) {
+  var sign = Object.create(null);
+  sign.sym = sym;
+  sign.time = time;
+  return sign;
+}
+/**
+ * Create a mark object
+ * 
+ * @param {Object} sign 
+ */
+
+
+function createMark(sign) {
+  var mark = Object.create(null);
+  mark.sign = sign;
+  mark.sym = sign.sym;
+  return mark;
+}
+/**
+ * Verify that mark is deprecated
+ */
+
+
+var _default =
+/*#__PURE__*/
+function () {
+  function _default() {
+    (0, _classCallCheck2["default"])(this, _default);
+    this._map = [];
+  }
+
+  (0, _createClass2["default"])(_default, [{
+    key: "get",
+
+    /**
+     * Get mark
+     * @param {number|boolean} audit 
+     */
+    value: function get(audit) {
+      var _map = this._map;
+
+      if (audit) {
+        var sym = Symbol();
+        var time = Date.now();
+        var sign;
+
+        if (!_map.length || time - _map[_map.length - 1].time > audit && audit !== true) {
+          sign = createSign(sym, time);
+
+          _map.push(sign);
+        } else {
+          sign = _map[_map.length - 1];
+          sign.sym = sym;
+          sign.time = time;
+        }
+
+        return createMark(sign);
+      }
+
+      return null;
+    }
+    /**
+     * Verify the mark
+     * @param {Object} mark 
+     */
+
+  }, {
+    key: "test",
+    value: function test(mark) {
+      if (mark && mark.sym !== mark.sign.sym) {
+        return false;
+      }
+
+      if (mark) {
+        var _map = this._map;
+
+        var index = _map.indexOf(mark.sign);
+
+        _map.splice(index, 1);
+      }
+
+      return true;
+    }
+  }]);
+  return _default;
+}();
+
+exports["default"] = _default;
+
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],24:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = handleFetch;
+
+/**
+ * Check for success
+ * 
+ * @param {Object} response 
+ */
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    var contentType = response.headers.get('content-type');
+
+    if (contentType && contentType.includes('application/json')) {
+      return response.json();
+    } else {
+      return response.text();
+    }
+  } else {
+    throw new Error();
+  }
+}
+/**
+ * Handle fetch
+ * 
+ * @param {Object} promise 
+ */
+
+
+function handleFetch(promise) {
+  return promise.then(function (response) {
+    return checkStatus(response);
+  })["catch"](function (error) {
+    throw error;
+  });
+}
+
+},{}],25:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.get = get;
+exports.push = push;
+exports.post = post;
+exports.form = form;
+
+var _constants = require("../../shared/constants");
+
+var _handleFetch = _interopRequireDefault(require("./handle-fetch"));
+
+/**
+ * Query String Parameters
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+function get(url, params, headers, cookie) {
+  url = new URL(url);
+  Object.keys(params).forEach(function (key) {
+    return url.searchParams.append(key, params[key]);
+  });
+  var promise = fetch(url, {
+    method: 'GET',
+    headers: Object.assign({}, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+/**
+ * Dynamic Router
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+
+
+function push(url, params, headers, cookie) {
+  url = new URL(url);
+  url.pathname += "/".concat(params);
+  var promise = fetch(url, {
+    method: 'GET',
+    headers: Object.assign({}, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+/**
+ * Request Payload
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+
+
+function post(url, params, headers, cookie) {
+  url = new URL(url);
+  var promise = fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(params),
+    headers: Object.assign({
+      'Content-type': _constants.CONTENT_TYPE['JSON']
+    }, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+/**
+ * Form Data
+ * 
+ * @param {string} url 
+ * @param {*} params 
+ * @param {Object} headers 
+ * @param {boolean} cookie 
+ */
+
+
+function form(url, params, headers, cookie) {
+  url = new URL(url);
+  var promise = fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(params),
+    headers: Object.assign({
+      'Content-type': _constants.CONTENT_TYPE['FORM']
+    }, headers),
+    credentials: cookie ? 'include' : 'omit'
+  });
+  return (0, _handleFetch["default"])(promise);
+}
+
+},{"../../shared/constants":27,"./handle-fetch":24,"@babel/runtime/helpers/interopRequireDefault":9}],26:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _constructor = require("./core/constructor");
 
 /**
  * Create reixs 
@@ -1863,7 +1880,7 @@ var _separateHandler = _interopRequireDefault(require("./core/separate-handler")
  * @param {*} params  
  */
 function createInstance(url, method, params) {
-  return new Proxy(new _separateHandler["default"](url, method, params), {
+  return new Proxy(new _constructor.Separate(url, method, params), {
     set: function set() {
       throw new Error('Overwriting any attributes is not allowed');
     }
@@ -1882,7 +1899,7 @@ function setPipes(name) {
     funList[_key - 1] = arguments[_key];
   }
 
-  _separateHandler["default"].globalPipes[name] = [].concat(funList);
+  _constructor.Separate.globalPipes[name] = [].concat(funList);
 }
 
 var _default = new Proxy(createInstance, {
@@ -1899,13 +1916,13 @@ var _default = new Proxy(createInstance, {
     }
   },
   set: function set(target, property, value) {
-    _separateHandler["default"].global[property] = value;
+    _constructor.Separate.global[property] = value;
   }
 });
 
 exports["default"] = _default;
 
-},{"./core/separate-handler":24,"@babel/runtime/helpers/interopRequireDefault":9}],26:[function(require,module,exports){
+},{"./core/constructor":20}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1920,7 +1937,7 @@ var CONTENT_TYPE = {
 };
 exports.CONTENT_TYPE = CONTENT_TYPE;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");

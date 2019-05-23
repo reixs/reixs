@@ -3,7 +3,7 @@ module.exports = function(config) {
     config.set({
         browsers: ['Chrome'],
         frameworks: ['browserify', 'jasmine'],
-        files: ['src/**/*.js', 'test/*.js'],
+        files: ['src/**/*.js', 'test/**/*.js'],
         preprocessors: {
             'src/**/*.js': ['sourcemap', 'browserify', 'coverage'],
             'test/**/*.js': ['sourcemap', 'browserify']
