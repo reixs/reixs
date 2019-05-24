@@ -1,1 +1,3 @@
-export * from './separate.js'
+import separate from './separate.js'
+
+export const Separate = separate

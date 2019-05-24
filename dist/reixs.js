@@ -1203,7 +1203,15 @@ exports["default"] = _default;
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Separate = void 0;
+
 var _separate = _interopRequireDefault(require("./separate.js"));
+
+var Separate = _separate["default"];
+exports.Separate = Separate;
 
 },{"./separate.js":21,"@babel/runtime/helpers/interopRequireDefault":9}],21:[function(require,module,exports){
 "use strict";
