@@ -52,7 +52,10 @@ export default function(config, sendRequest, execute, hook) {
         if (audit) {
             mark = markMap.get(audit)
         }
-        await Promise.all(throttleWait.get(throttle), debounceWait.get(debounce))
+        await Promise.all([
+            throttleWait.get(throttle), 
+            debounceWait.get(debounce)
+        ])
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
         // If audit is set, the duplicate request is discarded
         if (!audit || markMap.test(mark)) {

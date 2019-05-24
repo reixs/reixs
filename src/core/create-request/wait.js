@@ -2,7 +2,7 @@
  * Create wait object
  */
 class Wait {
-    _p = null
+    _timer = null
 
     /**
      * Create internal promise
@@ -10,8 +10,8 @@ class Wait {
      */
     _createPromise(time) {
         return time ? new Promise(resolve=>{
-            setTimeout(()=>{ 
-                this._p = null
+            this._timer =  setTimeout(()=>{ 
+                this._timer = null
                 resolve() 
             }, time)
         }) : Promise.resolve()
@@ -31,11 +31,10 @@ export class ThrottleWait extends Wait {
      * @param {number} time 
      */
     get(time) {
-        if (this._p) {
+        if (this._timer) {
             return new Promise(()=>{})
         }
-        this._p = this._createPromise(time)
-        return this._p
+        return this._createPromise(time)
     }
 }
 
@@ -52,10 +51,10 @@ export class DebounceWait extends Wait {
      * @param {number} time 
      */
     get(time) {
-        if (this._p) {
-            this._p.cancel()
+        if (this._timer) {
+            clearTimeout(this._timer)
+            this._timer = null
         }
-        this._p = this._createPromise(time)
-        return this._p
+        return this._createPromise(time)
     }
 }

@@ -50,7 +50,6 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-        .audit(true)
         .end(() => console.log('End of the request'))
         .error(e => datadiv.innerHTML = e)
     

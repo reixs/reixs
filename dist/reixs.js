@@ -1584,7 +1584,7 @@ function _default(config, sendRequest, execute, hook) {
               }
 
               _context.next = 6;
-              return Promise.all(throttleWait.get(throttle), debounceWait.get(debounce));
+              return Promise.all([throttleWait.get(throttle), debounceWait.get(debounce)]);
 
             case 6:
               _context.next = 8;
@@ -1753,7 +1753,7 @@ var Wait =
 function () {
   function Wait() {
     (0, _classCallCheck2["default"])(this, Wait);
-    this._p = null;
+    this._timer = null;
   }
 
   (0, _createClass2["default"])(Wait, [{
@@ -1767,8 +1767,8 @@ function () {
       var _this = this;
 
       return time ? new Promise(function (resolve) {
-        setTimeout(function () {
-          _this._p = null;
+        _this._timer = setTimeout(function () {
+          _this._timer = null;
           resolve();
         }, time);
       }) : Promise.resolve();
@@ -1799,12 +1799,11 @@ function (_Wait) {
   (0, _createClass2["default"])(ThrottleWait, [{
     key: "get",
     value: function get(time) {
-      if (this._p) {
+      if (this._timer) {
         return new Promise(function () {});
       }
 
-      this._p = this._createPromise(time);
-      return this._p;
+      return this._createPromise(time);
     }
   }]);
   return ThrottleWait;
@@ -1834,12 +1833,12 @@ function (_Wait2) {
   (0, _createClass2["default"])(DebounceWait, [{
     key: "get",
     value: function get(time) {
-      if (this._p) {
-        this._p.cancel();
+      if (this._timer) {
+        clearTimeout(this._timer);
+        this._timer = null;
       }
 
-      this._p = this._createPromise(time);
-      return this._p;
+      return this._createPromise(time);
     }
   }]);
   return DebounceWait;
