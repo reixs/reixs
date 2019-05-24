@@ -3,7 +3,7 @@
 
 module.exports = require('./src/reixs')["default"];
 
-},{"./src/reixs":27}],2:[function(require,module,exports){
+},{"./src/reixs":28}],2:[function(require,module,exports){
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
@@ -1487,7 +1487,7 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = SeparateHandler;
 exports["default"] = _default;
 
-},{"../../shared/constants":28,"../../shared/utils":29,"../create-request":22,"../request":26,"./handler":19,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],22:[function(require,module,exports){
+},{"../../shared/constants":29,"../../shared/utils":30,"../create-request":22,"../request":27,"./handler":19,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],22:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1505,41 +1505,8 @@ var _markMap = _interopRequireDefault(require("./mark-map"));
 
 var _wait = require("./wait");
 
-/**
- * Create delay promise
- * 
- * @param {number} time 
- */
-function createWait(time) {
-  return time === 0 ? Promise.resolve() : new Promise(function (resolve) {
-    setTimeout(function () {
-      return resolve();
-    }, time);
-  });
-}
-/**
- * Detect timeout
- * 
- * @param {Promise} promise 
- * @param {null|number} time 
- */
+var _requestTimer = _interopRequireDefault(require("./request-timer"));
 
-
-function requestTimer(promise, time) {
-  var request = promise.then(function (data) {
-    return {
-      timeout: false,
-      data: data
-    };
-  });
-  var timer = createWait(time).then(function () {
-    return {
-      timeout: true,
-      data: null
-    };
-  });
-  return time === null ? request : Promise.race([request, timer]);
-}
 /**
  * The method to create the request
  * 
@@ -1548,8 +1515,6 @@ function requestTimer(promise, time) {
  * @param {Array} execute 
  * @param {Object} hook 
  */
-
-
 function _default(config, sendRequest, execute, hook) {
   var markMap = new _markMap["default"]();
   var throttleWait = new _wait.ThrottleWait();
@@ -1588,7 +1553,7 @@ function _default(config, sendRequest, execute, hook) {
 
             case 6:
               _context.next = 8;
-              return requestTimer(sendRequest.apply(void 0, _args), overtime);
+              return (0, _requestTimer["default"])(sendRequest.apply(void 0, _args), overtime);
 
             case 8:
               _ref2 = _context.sent;
@@ -1615,7 +1580,7 @@ function _default(config, sendRequest, execute, hook) {
   );
 }
 
-},{"./mark-map":23,"./wait":24,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],23:[function(require,module,exports){
+},{"./mark-map":23,"./request-timer":24,"./wait":25,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1726,6 +1691,50 @@ function () {
 exports["default"] = _default;
 
 },{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],24:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = requestTimer;
+
+/**
+ * Create delay promise
+ * 
+ * @param {number} time 
+ */
+function createWait(time) {
+  return time === 0 ? Promise.resolve() : new Promise(function (resolve) {
+    setTimeout(function () {
+      return resolve();
+    }, time);
+  });
+}
+/**
+ * Detect timeout
+ * 
+ * @param {Promise} promise 
+ * @param {null|number} time 
+ */
+
+
+function requestTimer(promise, time) {
+  var request = promise.then(function (data) {
+    return {
+      timeout: false,
+      data: data
+    };
+  });
+  var timer = createWait(time).then(function () {
+    return {
+      timeout: true,
+      data: null
+    };
+  });
+  return time === null ? request : Promise.race([request, timer]);
+}
+
+},{}],25:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1846,7 +1855,7 @@ function (_Wait2) {
 
 exports.DebounceWait = DebounceWait;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/possibleConstructorReturn":13}],25:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/possibleConstructorReturn":13}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1887,7 +1896,7 @@ function handleFetch(promise) {
   });
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1989,7 +1998,7 @@ function form(url, params, headers, cookie) {
   return (0, _handleFetch["default"])(promise);
 }
 
-},{"../../shared/constants":28,"./handle-fetch":25,"@babel/runtime/helpers/interopRequireDefault":9}],27:[function(require,module,exports){
+},{"../../shared/constants":29,"./handle-fetch":26,"@babel/runtime/helpers/interopRequireDefault":9}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2049,7 +2058,7 @@ var _default = new Proxy(createInstance, {
 
 exports["default"] = _default;
 
-},{"./core/constructor":20}],28:[function(require,module,exports){
+},{"./core/constructor":20}],29:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2064,7 +2073,7 @@ var CONTENT_TYPE = {
 };
 exports.CONTENT_TYPE = CONTENT_TYPE;
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
