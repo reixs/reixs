@@ -77,7 +77,7 @@ export default class {
      * @param {number|boolean} settings 
      */
     throttle(settings) {
-        if (typeof time === 'number' || typeof time === 'boolean') {
+        if (typeof settings === 'number' || settings === false) {
             this._config.throttle = settings
         } else {
             throw new Error('Invalid type')
@@ -91,7 +91,7 @@ export default class {
      * @param {number|boolean} settings 
      */
     debounce(settings) {
-        if (typeof settings === 'number' || typeof settings === 'boolean') {
+        if (typeof settings === 'number' || settings === false) {
             this._config.debounce = settings
         } else {
             throw new Error('Invalid type')

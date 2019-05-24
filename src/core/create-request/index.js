@@ -1,4 +1,5 @@
 import MarkMap from './mark-map'
+import {ThrottleWait, DebounceWait} from './wait'
 
 /**
  * Create delay promise
@@ -41,14 +42,17 @@ function requestTimer(promise, time) {
  */
 export default function(config, sendRequest, execute, hook) {
     const markMap = new MarkMap()
+    const throttleWait = new ThrottleWait()
+    const debounceWait = new DebounceWait()
     return async function(...par) {
         const {startHook, endHook} = hook
-        const {audit, overtime} = config
+        const {throttle, debounce, audit, overtime} = config
         startHook && startHook(...par)
         let mark
         if (audit) {
             mark = markMap.get(audit)
         }
+        await Promise.all(throttleWait.get(throttle), debounceWait.get(debounce))
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
         // If audit is set, the duplicate request is discarded
         if (!audit || markMap.test(mark)) {
