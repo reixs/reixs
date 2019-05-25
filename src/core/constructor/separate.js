@@ -28,8 +28,13 @@ class SeparateHandler  extends Handler {
     // Multiple requests Shared
     static global = {
         globalHeader: {},
-        globalParams: {} 
-
+        globalParams: {},
+        reqPipes: [],
+        resPipes: [],
+        beforeReq: null,
+        afterReq: null,
+        beforeRes: null,
+        afterRes: null
     }
 
     // Network request information
@@ -158,18 +163,63 @@ class SeparateHandler  extends Handler {
         const {url, method, cookie} = this._http
         const {errorHook} = this._hook
         const {reqPipes, resPipes} = this._pipes
-
+        const {beforeReq, afterReq, beforeRes, afterRes} = this._interceptors
+        const {
+            reqPipes: globalReqPipes, 
+            resPipes: globalResPipes,
+            beforeReq: globalBeforeReq,
+            afterReq: globalAfterReq,
+            beforeRes: globalBeforeRes,
+            afterRes: globalAfterRes
+        } = this.constructor.global
+        
         const requestType = type ? type : method
         const requestParams = requestType === 'push' 
             ? params : this._getParams(params)
 
+        if ((globalBeforeReq && globalBeforeReq(requestParams) === false) 
+        || (beforeReq && beforeReq(requestParams) === false)) {
+            return 
+        }
+
+        let finalParams
+        try {
+            finalParams = dataFiltering([...globalReqPipes, ...reqPipes], requestParams)
+        } catch (error) {
+            errorHook(error)
+        }
+        
+        if ((globalAfterReq && globalAfterReq(finalParams) === false) 
+        || (afterReq && afterReq(finalParams) === false)) {
+            return 
+        }
+
         const data = await request[requestType](
             url, 
-            dataFiltering(reqPipes, requestParams, errorHook),
+            finalParams,
             this.requesetHeader,
             cookie
         )
-        return dataFiltering(resPipes, data, errorHook)
+        
+        
+        if ((globalBeforeRes && globalBeforeRes(data) === false) 
+        || (beforeRes && beforeRes(data) === false)) {
+            return 
+        }
+
+        let finalData
+        try {
+            finalData = dataFiltering([...globalResPipes, ...resPipes], data)
+        } catch (error) {
+            errorHook(error)
+        }
+
+        if ((globalAfterRes && globalAfterRes(finalData) === false) 
+        || (afterRes && afterRes(finalData) === false)) {
+            return 
+        }
+
+        return finalData
     }
 }
 

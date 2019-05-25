@@ -987,7 +987,14 @@ function () {
     };
     this._pipes = {
       reqPipes: [],
-      resPipes: [] // Task queue executed after the request is completed
+      resPipes: [] // Different stage interceptors
+
+    };
+    this._interceptors = {
+      beforeReq: null,
+      afterReq: null,
+      beforeRes: null,
+      afterRes: null // Task queue executed after the request is completed
 
     };
     this._taskList = [];
@@ -1128,6 +1135,46 @@ function () {
       return this;
     }
     /**
+     * Set request interceptor
+     * @param {Function} interceptor 
+     */
+
+  }, {
+    key: "reqInterceptor",
+    value: function reqInterceptor(interceptor) {
+      if (typeof interceptor === 'function') {
+        if (this._pipes.reqPipes.length) {
+          this._interceptors.afterReq = interceptor;
+        } else {
+          this._interceptors.beforeReq = interceptor;
+        }
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Set response interceptor
+     * @param {Function} interceptor 
+     */
+
+  }, {
+    key: "resInterceptor",
+    value: function resInterceptor(interceptor) {
+      if (typeof interceptor === 'function') {
+        if (this._pipes.resPipes.length) {
+          this._interceptors.afterRes = interceptor;
+        } else {
+          this._interceptors.beforeRes = interceptor;
+        }
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
      * Add task
      * 
      * @param {Function} task 
@@ -1226,6 +1273,8 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
@@ -1423,9 +1472,23 @@ function (_Handler) {
             _this$_pipes,
             reqPipes,
             resPipes,
+            _this$_interceptors,
+            beforeReq,
+            afterReq,
+            beforeRes,
+            afterRes,
+            _this$constructor$glo,
+            globalReqPipes,
+            globalResPipes,
+            globalBeforeReq,
+            globalAfterReq,
+            globalBeforeRes,
+            globalAfterRes,
             requestType,
             requestParams,
+            finalParams,
             data,
+            finalData,
             _args = arguments;
 
         return _regenerator["default"].wrap(function _callee$(_context) {
@@ -1437,16 +1500,64 @@ function (_Handler) {
                 _this$_http = this._http, url = _this$_http.url, method = _this$_http.method, cookie = _this$_http.cookie;
                 errorHook = this._hook.errorHook;
                 _this$_pipes = this._pipes, reqPipes = _this$_pipes.reqPipes, resPipes = _this$_pipes.resPipes;
+                _this$_interceptors = this._interceptors, beforeReq = _this$_interceptors.beforeReq, afterReq = _this$_interceptors.afterReq, beforeRes = _this$_interceptors.beforeRes, afterRes = _this$_interceptors.afterRes;
+                _this$constructor$glo = this.constructor.global, globalReqPipes = _this$constructor$glo.reqPipes, globalResPipes = _this$constructor$glo.resPipes, globalBeforeReq = _this$constructor$glo.beforeReq, globalAfterReq = _this$constructor$glo.afterReq, globalBeforeRes = _this$constructor$glo.beforeRes, globalAfterRes = _this$constructor$glo.afterRes;
                 requestType = type ? type : method;
                 requestParams = requestType === 'push' ? params : this._getParams(params);
-                _context.next = 9;
-                return request[requestType](url, (0, _utils.dataFiltering)(reqPipes, requestParams, errorHook), this.requesetHeader, cookie);
 
-              case 9:
-                data = _context.sent;
-                return _context.abrupt("return", (0, _utils.dataFiltering)(resPipes, data, errorHook));
+                if (!(globalBeforeReq && globalBeforeReq(requestParams) === false || beforeReq && beforeReq(requestParams) === false)) {
+                  _context.next = 11;
+                  break;
+                }
+
+                return _context.abrupt("return");
 
               case 11:
+                try {
+                  finalParams = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalReqPipes), (0, _toConsumableArray2["default"])(reqPipes)), requestParams);
+                } catch (error) {
+                  errorHook(error);
+                }
+
+                if (!(globalAfterReq && globalAfterReq(finalParams) === false || afterReq && afterReq(finalParams) === false)) {
+                  _context.next = 14;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 14:
+                _context.next = 16;
+                return request[requestType](url, finalParams, this.requesetHeader, cookie);
+
+              case 16:
+                data = _context.sent;
+
+                if (!(globalBeforeRes && globalBeforeRes(data) === false || beforeRes && beforeRes(data) === false)) {
+                  _context.next = 19;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 19:
+                try {
+                  finalData = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalResPipes), (0, _toConsumableArray2["default"])(resPipes)), data);
+                } catch (error) {
+                  errorHook(error);
+                }
+
+                if (!(globalAfterRes && globalAfterRes(finalData) === false || afterRes && afterRes(finalData) === false)) {
+                  _context.next = 22;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 22:
+                return _context.abrupt("return", finalData);
+
+              case 23:
               case "end":
                 return _context.stop();
             }
@@ -1474,7 +1585,13 @@ function (_Handler) {
 
 SeparateHandler.global = {
   globalHeader: {},
-  globalParams: {} // Network request information
+  globalParams: {},
+  reqPipes: [],
+  resPipes: [],
+  beforeReq: null,
+  afterReq: null,
+  beforeRes: null,
+  afterRes: null // Network request information
 
 };
 
@@ -1487,7 +1604,7 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = SeparateHandler;
 exports["default"] = _default;
 
-},{"../../shared/constants":29,"../../shared/utils":30,"../create-request":22,"../request":27,"./handler":19,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/regenerator":17}],22:[function(require,module,exports){
+},{"../../shared/constants":29,"../../shared/utils":30,"../create-request":22,"../request":27,"./handler":19,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/helpers/toConsumableArray":15,"@babel/runtime/regenerator":17}],22:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1560,6 +1677,15 @@ function _default(config, sendRequest, execute, hook) {
               timeout = _ref2.timeout;
               data = _ref2.data;
 
+              if (!(data === undefined)) {
+                _context.next = 14;
+                break;
+              }
+
+              endHook && endHook();
+              return _context.abrupt("return");
+
+            case 14:
               // If audit is set, the duplicate request is discarded
               if (!audit || markMap.test(mark)) {
                 // If the timeout occurs, the task is not processed
@@ -1570,7 +1696,7 @@ function _default(config, sendRequest, execute, hook) {
                 endHook && endHook();
               }
 
-            case 12:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -2035,7 +2161,27 @@ function setPipes(name) {
     funList[_key - 1] = arguments[_key];
   }
 
-  _constructor.Separate.globalPipes[name] = [].concat(funList);
+  funList.forEach(function (fn) {
+    if (typeof fn !== 'function') {
+      throw new Error('Invalid type');
+    }
+  });
+  _constructor.Separate.global[name] = [].concat(funList);
+}
+/**
+ * Set Interceptor
+ * 
+ * @param {string} name 
+ * @param {Function} fun 
+ */
+
+
+function setInterceptor(name, fun) {
+  if (typeof fn === 'function') {
+    _constructor.Separate.global[name] = fun;
+  } else {
+    throw new Error('Invalid type');
+  }
 }
 
 var _default = new Proxy(createInstance, {
@@ -2049,10 +2195,26 @@ var _default = new Proxy(createInstance, {
       case 'reqPipes':
       case 'resPipes':
         return setPipes.bind(null, property);
+      // Set request and response interceptor
+
+      case 'beforeReq':
+      case 'afterReq':
+      case 'beforeRes':
+      case 'afterRes':
+        return setInterceptor.bind(null, property);
     }
   },
   set: function set(target, property, value) {
-    _constructor.Separate.global[property] = value;
+    switch (property) {
+      case 'globalHeader':
+      case 'globalParams':
+        if (value.constructor === Object) {
+          _constructor.Separate.global[property] = value;
+        } else {
+          throw new Error('Invalid type');
+        }
+
+    }
   }
 });
 
@@ -2090,15 +2252,11 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
  *
  * @param {*} data 
  */
-function dataFiltering(pipes, data, errorHook) {
-  try {
-    var newData = [data].concat((0, _toConsumableArray2["default"])(pipes)).reduce(function (prev, cur) {
-      return cur(prev);
-    });
-    return newData;
-  } catch (error) {
-    errorHook(error);
-  }
+function dataFiltering(pipes, data) {
+  var newData = [data].concat((0, _toConsumableArray2["default"])(pipes)).reduce(function (prev, cur) {
+    return cur(prev);
+  });
+  return newData;
 }
 
 },{"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/toConsumableArray":15}]},{},[1])(1)

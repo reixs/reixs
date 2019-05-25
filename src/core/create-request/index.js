@@ -27,6 +27,11 @@ export default function(config, sendRequest, execute, hook) {
             debounceWait.get(debounce)
         ])
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
+
+        if (data === undefined) {
+            endHook && endHook()
+            return 
+        }
         // If audit is set, the duplicate request is discarded
         if (!audit || markMap.test(mark)) {
             // If the timeout occurs, the task is not processed

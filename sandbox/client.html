@@ -50,7 +50,12 @@
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
-        .end(() => console.log('End of the request'))
+        .end(() => {
+            if(datadiv.innerHTML === 'loading...'){
+                datadiv.innerHTML = ''
+            }
+            console.log('End of the request')
+        })
         .error(e => datadiv.innerHTML = e)
     
     api.onchange = function(){

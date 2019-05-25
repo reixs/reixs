@@ -23,6 +23,14 @@ export default class {
         resPipes: []
     }
 
+    // Different stage interceptors
+    _interceptors = {
+        beforeReq: null, 
+        afterReq: null, 
+        beforeRes: null, 
+        afterRes: null
+    }
+
     // Task queue executed after the request is completed
     _taskList =[]
 
@@ -127,6 +135,40 @@ export default class {
         return this
     }
     
+    /**
+     * Set request interceptor
+     * @param {Function} interceptor 
+     */
+    reqInterceptor(interceptor) {
+        if (typeof interceptor === 'function') {
+            if (this._pipes.reqPipes.length) {
+                this._interceptors.afterReq = interceptor
+            } else {
+                this._interceptors.beforeReq = interceptor
+            }
+            return this
+        } else {
+            throw new Error('Invalid type')
+        }
+    }
+    
+    /**
+     * Set response interceptor
+     * @param {Function} interceptor 
+     */
+    resInterceptor(interceptor) {
+        if (typeof interceptor === 'function') {
+            if (this._pipes.resPipes.length) {
+                this._interceptors.afterRes = interceptor
+            } else {
+                this._interceptors.beforeRes = interceptor
+            }
+            return this
+        } else {
+            throw new Error('Invalid type')
+        }
+    }
+
     /**
      * Add task
      * 
