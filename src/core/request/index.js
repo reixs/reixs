@@ -4,11 +4,11 @@ import handleFetch from './handle-fetch'
 
 /**
  * Query String Parameters
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} params
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 export function get(url, params, headers, cookie) {
     url = new URL(url)
@@ -26,11 +26,11 @@ export function get(url, params, headers, cookie) {
 
 /**
  * Dynamic Router
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} params
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 export function push(url, params, headers, cookie) {
     url = new URL(url)
@@ -47,17 +47,17 @@ export function push(url, params, headers, cookie) {
 
 /**
  * Request Payload
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} data
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
-export function post(url, params, headers, cookie) {
+export function post(url, data, headers, cookie) {
     url = new URL(url)
     const promise = fetch(url, {
         method: 'POST',
-        body: JSON.stringify(params),
+        body: JSON.stringify(data),
         headers: {
             'Content-type': CONTENT_TYPE['JSON'],
             ...headers
@@ -69,17 +69,17 @@ export function post(url, params, headers, cookie) {
 
 /**
  * Form Data
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} formData
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
-export function form(url, params, headers, cookie) {
+export function form(url, formData, headers, cookie) {
     url = new URL(url)
     const promise = fetch(url, {
         method: 'POST',
-        body: JSON.stringify(params),
+        body: formData,
         headers: {
             'Content-type': CONTENT_TYPE['FORM'],
             ...headers
