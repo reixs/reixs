@@ -12,6 +12,7 @@ export default class {
 
     // Life cycle function
     _hook = {
+        prepareHook: null,
         tartHook: null,
         endHook: null,
         errorHook: null
@@ -177,6 +178,20 @@ export default class {
     task(task) {
         if (typeof task === 'function') {
             this._taskList.push(task)
+            return this
+        } else {
+            throw new Error('Invalid type')
+        }
+    }
+
+    /**
+     * Request to prepare
+     * 
+     * @param {Function} prepareHook 
+     */
+    prepare(prepareHook) {
+        if (typeof prepareHook === 'function') {
+            this._hook.prepareHook = prepareHook
             return this
         } else {
             throw new Error('Invalid type')

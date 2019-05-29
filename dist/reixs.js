@@ -980,6 +980,7 @@ function () {
 
     };
     this._hook = {
+      prepareHook: null,
       tartHook: null,
       endHook: null,
       errorHook: null // Data filtering
@@ -1186,6 +1187,22 @@ function () {
       if (typeof _task === 'function') {
         this._taskList.push(_task);
 
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Request to prepare
+     * 
+     * @param {Function} prepareHook 
+     */
+
+  }, {
+    key: "prepare",
+    value: function prepare(prepareHook) {
+      if (typeof prepareHook === 'function') {
+        this._hook.prepareHook = prepareHook;
         return this;
       } else {
         throw new Error('Invalid type');
@@ -1641,7 +1658,8 @@ function _default(config, sendRequest, execute, hook) {
     (0, _asyncToGenerator2["default"])(
     /*#__PURE__*/
     _regenerator["default"].mark(function _callee() {
-      var startHook,
+      var prepareHook,
+          startHook,
           endHook,
           throttle,
           debounce,
@@ -1657,9 +1675,9 @@ function _default(config, sendRequest, execute, hook) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              startHook = hook.startHook, endHook = hook.endHook;
+              prepareHook = hook.prepareHook, startHook = hook.startHook, endHook = hook.endHook;
               throttle = config.throttle, debounce = config.debounce, audit = config.audit, overtime = config.overtime;
-              startHook && startHook.apply(void 0, _args);
+              prepareHook && prepareHook();
 
               if (audit) {
                 mark = markMap.get(audit);
@@ -1669,23 +1687,24 @@ function _default(config, sendRequest, execute, hook) {
               return Promise.all([throttleWait.get(throttle), debounceWait.get(debounce)]);
 
             case 6:
-              _context.next = 8;
+              startHook && startHook();
+              _context.next = 9;
               return (0, _requestTimer["default"])(sendRequest.apply(void 0, _args), overtime);
 
-            case 8:
+            case 9:
               _ref2 = _context.sent;
               timeout = _ref2.timeout;
               data = _ref2.data;
 
               if (!(data === undefined)) {
-                _context.next = 14;
+                _context.next = 15;
                 break;
               }
 
               endHook && endHook();
               return _context.abrupt("return");
 
-            case 14:
+            case 15:
               // If audit is set, the duplicate request is discarded
               if (!audit || markMap.test(mark)) {
                 // If the timeout occurs, the task is not processed
@@ -1696,7 +1715,7 @@ function _default(config, sendRequest, execute, hook) {
                 endHook && endHook();
               }
 
-            case 15:
+            case 16:
             case "end":
               return _context.stop();
           }
@@ -2041,11 +2060,11 @@ var _handleFetch = _interopRequireDefault(require("./handle-fetch"));
 
 /**
  * Query String Parameters
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} params
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 function get(url, params, headers, cookie) {
   url = new URL(url);
@@ -2061,11 +2080,11 @@ function get(url, params, headers, cookie) {
 }
 /**
  * Dynamic Router
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} params
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 
 
@@ -2081,19 +2100,19 @@ function push(url, params, headers, cookie) {
 }
 /**
  * Request Payload
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} data
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 
 
-function post(url, params, headers, cookie) {
+function post(url, data, headers, cookie) {
   url = new URL(url);
   var promise = fetch(url, {
     method: 'POST',
-    body: JSON.stringify(params),
+    body: JSON.stringify(data),
     headers: Object.assign({
       'Content-type': _constants.CONTENT_TYPE['JSON']
     }, headers),
@@ -2103,19 +2122,19 @@ function post(url, params, headers, cookie) {
 }
 /**
  * Form Data
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} formData
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 
 
-function form(url, params, headers, cookie) {
+function form(url, formData, headers, cookie) {
   url = new URL(url);
   var promise = fetch(url, {
     method: 'POST',
-    body: JSON.stringify(params),
+    body: formData,
     headers: Object.assign({
       'Content-type': _constants.CONTENT_TYPE['FORM']
     }, headers),

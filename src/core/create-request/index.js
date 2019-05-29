@@ -9,15 +9,15 @@ import requestTimer from './request-timer'
  * @param {Function} sendRequest 
  * @param {Array} execute 
  * @param {Object} hook 
- */
+ */ 
 export default function(config, sendRequest, execute, hook) {
     const markMap = new MarkMap()
     const throttleWait = new ThrottleWait()
     const debounceWait = new DebounceWait()
     return async function(...par) {
-        const {startHook, endHook} = hook
+        const {prepareHook, startHook, endHook} = hook
         const {throttle, debounce, audit, overtime} = config
-        startHook && startHook(...par)
+        prepareHook && prepareHook()
         let mark
         if (audit) {
             mark = markMap.get(audit)
@@ -26,6 +26,7 @@ export default function(config, sendRequest, execute, hook) {
             throttleWait.get(throttle), 
             debounceWait.get(debounce)
         ])
+        startHook && startHook()
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
 
         if (data === undefined) {
