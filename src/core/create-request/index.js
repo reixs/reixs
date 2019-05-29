@@ -37,7 +37,7 @@ export default function(config, sendRequest, execute, hook) {
         if (!audit || markMap.test(mark)) {
             // If the timeout occurs, the task is not processed
             if (!timeout) {
-                execute(data)
+                this._execute(data) && execute(data)
             }
             endHook && endHook()
         }

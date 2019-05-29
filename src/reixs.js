@@ -1,4 +1,4 @@
-import {Separate} from './core/constructor'
+import {Separate, All} from './core/constructor'
 
 /**
  * Create reixs 
@@ -60,6 +60,8 @@ export default new Proxy(createInstance, {
         case 'beforeRes':
         case 'afterRes':
             return setInterceptor.bind(null, property)
+        case 'all':
+            return (...scheduler) => new All(...scheduler)
         }
     },
     set(target, property, value) {
