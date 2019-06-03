@@ -67,11 +67,8 @@ class Reixs  extends Scheduler {
      */
     get requesetHeader() {
         const {header} = this._http
-        const {globalHeader} = this.constructor.global
-        return {
-            ...globalHeader, 
-            ...header
-        }
+        const {globalHeader} = Reixs.global
+        return Object.assign(globalHeader, header)
     }
     
     /**
@@ -80,11 +77,8 @@ class Reixs  extends Scheduler {
      * @param {Object} params 
      */
     _getParams(params) {
-        const {globalParams} = this.constructor.global
-        return {
-            ...globalParams, 
-            ...params
-        }
+        const {globalParams} = Reixs.global
+        return Object.assign(globalParams, params)
     }
 
     /**

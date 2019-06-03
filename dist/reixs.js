@@ -1225,8 +1225,8 @@ function (_Scheduler) {
      * @param {Object} params 
      */
     value: function _getParams(params) {
-      var globalParams = this.constructor.global.globalParams;
-      return Object.assign({}, globalParams, params);
+      var globalParams = Reixs.global.globalParams;
+      return Object.assign(globalParams, params);
     }
     /**
      * Create request function
@@ -1536,8 +1536,8 @@ function (_Scheduler) {
     key: "requesetHeader",
     get: function get() {
       var header = this._http.header;
-      var globalHeader = this.constructor.global.globalHeader;
-      return Object.assign({}, globalHeader, header);
+      var globalHeader = Reixs.global.globalHeader;
+      return Object.assign(globalHeader, header);
     }
   }]);
   return Reixs;
