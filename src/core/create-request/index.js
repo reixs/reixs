@@ -44,9 +44,8 @@ export default function(config, sendRequest, execute, hook) {
             if (!timeout) {
                 if (injection) {
                     injection(data)
-                } else {
-                    execute(data)
-                }
+                } 
+                execute(data)
             }
             endHook && endHook()
         }
