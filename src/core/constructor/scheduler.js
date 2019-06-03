@@ -23,20 +23,6 @@ export default class extends noProto {
         errorHook: null
     }
 
-    // Data filtering
-    _pipes = {
-        reqPipes: [],
-        resPipes: []
-    }
-
-    // Different stage interceptors
-    _interceptors = {
-        beforeReq: null, 
-        afterReq: null, 
-        beforeRes: null, 
-        afterRes: null
-    }
-
     // Task queue executed after the request is completed
     _taskList =[]
 
@@ -55,34 +41,6 @@ export default class extends noProto {
                 errorHook && errorHook(error)
             }
         }
-    }
-    
-    /**
-     * Set the request filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-    reqPipes(...pipes) {
-        if (pipes.find(pipe =>typeof pipe !== 'function')) {
-            throw new Error('Pipe must be a function')
-        } else {
-            this._pipes.reqPipes = [...pipes]
-        }
-        return this
-    }
-
-    /**
-     * Set the response filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-    resPipes(...pipes) {
-        if (pipes.find(pipe =>typeof pipe !== 'function')) {
-            throw new Error('Pipe must be a function')
-        } else {
-            this._pipes.resPipes = [...pipes]
-        }
-        return this
     }
 
     /**
@@ -139,40 +97,6 @@ export default class extends noProto {
             throw new Error('Invalid type')
         }
         return this
-    }
-    
-    /**
-     * Set request interceptor
-     * @param {Function} interceptor 
-     */
-    reqInterceptor(interceptor) {
-        if (typeof interceptor === 'function') {
-            if (this._pipes.reqPipes.length) {
-                this._interceptors.afterReq = interceptor
-            } else {
-                this._interceptors.beforeReq = interceptor
-            }
-            return this
-        } else {
-            throw new Error('Invalid type')
-        }
-    }
-    
-    /**
-     * Set response interceptor
-     * @param {Function} interceptor 
-     */
-    resInterceptor(interceptor) {
-        if (typeof interceptor === 'function') {
-            if (this._pipes.resPipes.length) {
-                this._interceptors.afterRes = interceptor
-            } else {
-                this._interceptors.beforeRes = interceptor
-            }
-            return this
-        } else {
-            throw new Error('Invalid type')
-        }
     }
 
     /**

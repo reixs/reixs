@@ -1183,7 +1183,19 @@ function (_Scheduler) {
       method: null,
       header: {},
       params: null,
-      cookie: true
+      cookie: true // Data filtering
+
+    };
+    _this._pipes = {
+      reqPipes: [],
+      resPipes: [] // Different stage interceptors
+
+    };
+    _this._interceptors = {
+      beforeReq: null,
+      afterReq: null,
+      beforeRes: null,
+      afterRes: null
       /**
        * Complete request header
        * 
@@ -1312,6 +1324,92 @@ function (_Scheduler) {
       }
 
       return this;
+    }
+    /**
+     * Set the request filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+
+  }, {
+    key: "reqPipes",
+    value: function reqPipes() {
+      for (var _len = arguments.length, pipes = new Array(_len), _key = 0; _key < _len; _key++) {
+        pipes[_key] = arguments[_key];
+      }
+
+      if (pipes.find(function (pipe) {
+        return typeof pipe !== 'function';
+      })) {
+        throw new Error('Pipe must be a function');
+      } else {
+        this._pipes.reqPipes = [].concat(pipes);
+      }
+
+      return this;
+    }
+    /**
+     * Set the response filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+
+  }, {
+    key: "resPipes",
+    value: function resPipes() {
+      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        pipes[_key2] = arguments[_key2];
+      }
+
+      if (pipes.find(function (pipe) {
+        return typeof pipe !== 'function';
+      })) {
+        throw new Error('Pipe must be a function');
+      } else {
+        this._pipes.resPipes = [].concat(pipes);
+      }
+
+      return this;
+    }
+    /**
+     * Set request interceptor
+     * @param {Function} interceptor 
+     */
+
+  }, {
+    key: "reqInterceptor",
+    value: function reqInterceptor(interceptor) {
+      if (typeof interceptor === 'function') {
+        if (this._pipes.reqPipes.length) {
+          this._interceptors.afterReq = interceptor;
+        } else {
+          this._interceptors.beforeReq = interceptor;
+        }
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Set response interceptor
+     * @param {Function} interceptor 
+     */
+
+  }, {
+    key: "resInterceptor",
+    value: function resInterceptor(interceptor) {
+      if (typeof interceptor === 'function') {
+        if (this._pipes.resPipes.length) {
+          this._interceptors.afterRes = interceptor;
+        } else {
+          this._interceptors.beforeRes = interceptor;
+        }
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
     }
     /**
      * Send the request to the server
@@ -1524,19 +1622,7 @@ function (_noProto) {
       prepareHook: null,
       tartHook: null,
       endHook: null,
-      errorHook: null // Data filtering
-
-    };
-    _this._pipes = {
-      reqPipes: [],
-      resPipes: [] // Different stage interceptors
-
-    };
-    _this._interceptors = {
-      beforeReq: null,
-      afterReq: null,
-      beforeRes: null,
-      afterRes: null // Task queue executed after the request is completed
+      errorHook: null // Task queue executed after the request is completed
 
     };
     _this._taskList = [];
@@ -1562,52 +1648,6 @@ function (_noProto) {
           errorHook && errorHook(error);
         }
       }
-    }
-    /**
-     * Set the request filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-
-  }, {
-    key: "reqPipes",
-    value: function reqPipes() {
-      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        pipes[_key2] = arguments[_key2];
-      }
-
-      if (pipes.find(function (pipe) {
-        return typeof pipe !== 'function';
-      })) {
-        throw new Error('Pipe must be a function');
-      } else {
-        this._pipes.reqPipes = [].concat(pipes);
-      }
-
-      return this;
-    }
-    /**
-     * Set the response filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-
-  }, {
-    key: "resPipes",
-    value: function resPipes() {
-      for (var _len3 = arguments.length, pipes = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        pipes[_key3] = arguments[_key3];
-      }
-
-      if (pipes.find(function (pipe) {
-        return typeof pipe !== 'function';
-      })) {
-        throw new Error('Pipe must be a function');
-      } else {
-        this._pipes.resPipes = [].concat(pipes);
-      }
-
-      return this;
     }
     /**
      * Set throttle
@@ -1676,46 +1716,6 @@ function (_noProto) {
       }
 
       return this;
-    }
-    /**
-     * Set request interceptor
-     * @param {Function} interceptor 
-     */
-
-  }, {
-    key: "reqInterceptor",
-    value: function reqInterceptor(interceptor) {
-      if (typeof interceptor === 'function') {
-        if (this._pipes.reqPipes.length) {
-          this._interceptors.afterReq = interceptor;
-        } else {
-          this._interceptors.beforeReq = interceptor;
-        }
-
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
-    /**
-     * Set response interceptor
-     * @param {Function} interceptor 
-     */
-
-  }, {
-    key: "resInterceptor",
-    value: function resInterceptor(interceptor) {
-      if (typeof interceptor === 'function') {
-        if (this._pipes.resPipes.length) {
-          this._interceptors.afterRes = interceptor;
-        } else {
-          this._interceptors.beforeRes = interceptor;
-        }
-
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
     }
     /**
      * Add task

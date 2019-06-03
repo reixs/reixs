@@ -45,7 +45,21 @@ class Reixs  extends Scheduler {
         params: null,
         cookie: true
     }
-    
+
+    // Data filtering
+    _pipes = {
+        reqPipes: [],
+        resPipes: []
+    }
+
+    // Different stage interceptors
+    _interceptors = {
+        beforeReq: null, 
+        afterReq: null, 
+        beforeRes: null, 
+        afterRes: null
+    }
+
     /**
      * Complete request header
      * 
@@ -154,6 +168,68 @@ class Reixs  extends Scheduler {
     }
     
     /**
+     * Set the request filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+    reqPipes(...pipes) {
+        if (pipes.find(pipe =>typeof pipe !== 'function')) {
+            throw new Error('Pipe must be a function')
+        } else {
+            this._pipes.reqPipes = [...pipes]
+        }
+        return this
+    }
+
+    /**
+     * Set the response filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+    resPipes(...pipes) {
+        if (pipes.find(pipe =>typeof pipe !== 'function')) {
+            throw new Error('Pipe must be a function')
+        } else {
+            this._pipes.resPipes = [...pipes]
+        }
+        return this
+    }
+
+    /**
+     * Set request interceptor
+     * @param {Function} interceptor 
+     */
+    reqInterceptor(interceptor) {
+        if (typeof interceptor === 'function') {
+            if (this._pipes.reqPipes.length) {
+                this._interceptors.afterReq = interceptor
+            } else {
+                this._interceptors.beforeReq = interceptor
+            }
+            return this
+        } else {
+            throw new Error('Invalid type')
+        }
+    }
+    
+    /**
+     * Set response interceptor
+     * @param {Function} interceptor 
+     */
+    resInterceptor(interceptor) {
+        if (typeof interceptor === 'function') {
+            if (this._pipes.resPipes.length) {
+                this._interceptors.afterRes = interceptor
+            } else {
+                this._interceptors.beforeRes = interceptor
+            }
+            return this
+        } else {
+            throw new Error('Invalid type')
+        }
+    }
+
+    /**
      * Send the request to the server
      * 
      * @param {*} params 
@@ -223,13 +299,11 @@ class Reixs  extends Scheduler {
     }
 }
 
-
 // Bind request category 
 METHOD_TYPES.map(requestType=>{
     Reixs.prototype[requestType] = function(params) {
         this.request(params, requestType)
     }
 })
- 
 
 export default Reixs

@@ -45,7 +45,7 @@ module.exports = {
         'lines-around-comment': 2,
         'lines-between-class-members': 2,
         'max-depth': 2,
-        'max-lines': 2,
+        'max-lines': [2, {max: 500}],
         'max-nested-callbacks': [2, {max: 3}],
         'max-params': [2,{ max: 5 }],
         'max-statements-per-line': 2,
