@@ -6,7 +6,7 @@ Object.setPrototypeOf(noProto.prototype, Object.create(null))
 /**
  * The underlying request model
  */
-export default class extends noProto {
+export default class Scheduler extends noProto {
     // Request trigger rule configuration
     _config = {
         throttle: false,

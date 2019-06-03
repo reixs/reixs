@@ -1034,16 +1034,16 @@ var _scheduler = _interopRequireDefault(require("./scheduler"));
 /**
  *  Separate request object
  */
-var AllHandler =
+var ReixsAll =
 /*#__PURE__*/
 function (_Scheduler) {
-  (0, _inherits2["default"])(AllHandler, _Scheduler);
+  (0, _inherits2["default"])(ReixsAll, _Scheduler);
 
-  function AllHandler() {
+  function ReixsAll() {
     var _this;
 
-    (0, _classCallCheck2["default"])(this, AllHandler);
-    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(AllHandler).call(this));
+    (0, _classCallCheck2["default"])(this, ReixsAll);
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(ReixsAll).call(this));
     _this._schedulers = [];
 
     for (var _len = arguments.length, schedulers = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -1061,7 +1061,7 @@ function (_Scheduler) {
    */
 
 
-  (0, _createClass2["default"])(AllHandler, [{
+  (0, _createClass2["default"])(ReixsAll, [{
     key: "_initRequest",
     value: function _initRequest() {
       var _config = this._config,
@@ -1118,11 +1118,10 @@ function (_Scheduler) {
       return _sendRequest;
     }()
   }]);
-  return AllHandler;
+  return ReixsAll;
 }(_scheduler["default"]);
 
-var _default = AllHandler;
-exports["default"] = _default;
+exports["default"] = ReixsAll;
 
 },{"../create-request":24,"./scheduler":23,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/regenerator":18}],22:[function(require,module,exports){
 "use strict";
@@ -1594,23 +1593,23 @@ Object.setPrototypeOf(noProto.prototype, Object.create(null));
  * The underlying request model
  */
 
-var _default =
+var Scheduler =
 /*#__PURE__*/
 function (_noProto) {
-  (0, _inherits2["default"])(_default, _noProto);
+  (0, _inherits2["default"])(Scheduler, _noProto);
 
-  function _default() {
+  function Scheduler() {
     var _getPrototypeOf2;
 
     var _this;
 
-    (0, _classCallCheck2["default"])(this, _default);
+    (0, _classCallCheck2["default"])(this, Scheduler);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = (0, _possibleConstructorReturn2["default"])(this, (_getPrototypeOf2 = (0, _getPrototypeOf3["default"])(_default)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = (0, _possibleConstructorReturn2["default"])(this, (_getPrototypeOf2 = (0, _getPrototypeOf3["default"])(Scheduler)).call.apply(_getPrototypeOf2, [this].concat(args)));
     _this._config = {
       throttle: false,
       debounce: 0,
@@ -1629,7 +1628,7 @@ function (_noProto) {
     return _this;
   }
 
-  (0, _createClass2["default"])(_default, [{
+  (0, _createClass2["default"])(Scheduler, [{
     key: "_execute",
 
     /**
@@ -1799,10 +1798,10 @@ function (_noProto) {
       }
     }
   }]);
-  return _default;
+  return Scheduler;
 }(noProto);
 
-exports["default"] = _default;
+exports["default"] = Scheduler;
 
 },{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14}],24:[function(require,module,exports){
 "use strict";

@@ -6,7 +6,7 @@ import Scheduler from './scheduler'
 /**
  *  Separate request object
  */
-class AllHandler  extends Scheduler {
+export default class ReixsAll  extends Scheduler {
     _schedulers = []
 
     constructor(...schedulers) {
@@ -47,5 +47,3 @@ class AllHandler  extends Scheduler {
         return data
     }
 }
-
-export default AllHandler
