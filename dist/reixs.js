@@ -1579,53 +1579,29 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-
-// Scheduler is blocked from inheriting an Object
-function noProto() {}
-
-Object.setPrototypeOf(noProto.prototype, Object.create(null));
 /**
  * The underlying request model
  */
-
 var Scheduler =
 /*#__PURE__*/
-function (_noProto) {
-  (0, _inherits2["default"])(Scheduler, _noProto);
-
+function () {
   function Scheduler() {
-    var _getPrototypeOf2;
-
-    var _this;
-
     (0, _classCallCheck2["default"])(this, Scheduler);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = (0, _possibleConstructorReturn2["default"])(this, (_getPrototypeOf2 = (0, _getPrototypeOf3["default"])(Scheduler)).call.apply(_getPrototypeOf2, [this].concat(args)));
-    _this._config = {
+    this._config = {
       throttle: false,
       debounce: 0,
       audit: false,
       overtime: null // Life cycle function
 
     };
-    _this._hook = {
+    this._hook = {
       prepareHook: null,
       tartHook: null,
       endHook: null,
       errorHook: null // Task queue executed after the request is completed
 
     };
-    _this._taskList = [];
-    return _this;
+    this._taskList = [];
   }
 
   (0, _createClass2["default"])(Scheduler, [{
@@ -1799,11 +1775,14 @@ function (_noProto) {
     }
   }]);
   return Scheduler;
-}(noProto);
+}(); // Scheduler is blocked from inheriting an Object
 
-exports["default"] = Scheduler;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14}],24:[function(require,module,exports){
+Object.setPrototypeOf(Scheduler.prototype, Object.create(null));
+var _default = Scheduler;
+exports["default"] = _default;
+
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");

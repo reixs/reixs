@@ -1,12 +1,7 @@
-
-// Scheduler is blocked from inheriting an Object
-function noProto() {}
-Object.setPrototypeOf(noProto.prototype, Object.create(null))
-
 /**
  * The underlying request model
  */
-export default class Scheduler extends noProto {
+class Scheduler {
     // Request trigger rule configuration
     _config = {
         throttle: false,
@@ -170,3 +165,7 @@ export default class Scheduler extends noProto {
     }
 }
 
+// Scheduler is blocked from inheriting an Object
+Object.setPrototypeOf(Scheduler.prototype, Object.create(null))
+
+export default Scheduler
