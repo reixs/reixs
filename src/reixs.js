@@ -1,4 +1,4 @@
-import {Reixs, ReixsAll} from './core/constructor'
+import {Reixs, ReixsAll, ReixsRace} from './core/constructor'
 
 /**
  * Set pipe 
@@ -41,7 +41,7 @@ function reixs(url, method, params) {
 
 // reixs.all
 reixs.all = (...scheduler) => new ReixsAll(...scheduler)
-
+reixs.race = (...scheduler) => new ReixsRace(...scheduler)
 
 // Replaced by browserify-versionify transform
 reixs.version = '__VERSION__'

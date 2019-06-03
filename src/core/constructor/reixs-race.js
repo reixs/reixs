@@ -4,9 +4,9 @@ import createRequest from '../create-request'
 import Scheduler from './scheduler'
 
 /**
- *  Concurrent request
+ *  Multiple request race
  */
-export default class ReixsAll  extends Scheduler {
+export default class ReixsRace  extends Scheduler {
     _schedulers = []
 
     constructor(...schedulers) {
@@ -29,12 +29,12 @@ export default class ReixsAll  extends Scheduler {
     }
 
     /**
-     * Concurrent all scheduler
+     * The scheduler for the race
      * 
      */
     async _sendRequest() {
         const {_schedulers} = this
-        const data = await Promise.all(_schedulers.map(scheduler=>{
+        const data = await Promise.race(_schedulers.map(scheduler=>{
             return new Promise( resolve => {
                 scheduler.request.call({
                     ...scheduler, 
