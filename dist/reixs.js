@@ -1482,41 +1482,65 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+// Scheduler is blocked from inheriting an Object
+function noProto() {}
+
+Object.setPrototypeOf(noProto.prototype, Object.create(null));
 /**
  * The underlying request model
  */
+
 var _default =
 /*#__PURE__*/
-function () {
+function (_noProto) {
+  (0, _inherits2["default"])(_default, _noProto);
+
   function _default() {
+    var _getPrototypeOf2;
+
+    var _this;
+
     (0, _classCallCheck2["default"])(this, _default);
-    this._config = {
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2["default"])(this, (_getPrototypeOf2 = (0, _getPrototypeOf3["default"])(_default)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this._config = {
       throttle: false,
       debounce: 0,
       audit: false,
       overtime: null // Life cycle function
 
     };
-    this._hook = {
+    _this._hook = {
       prepareHook: null,
       tartHook: null,
       endHook: null,
       errorHook: null // Data filtering
 
     };
-    this._pipes = {
+    _this._pipes = {
       reqPipes: [],
       resPipes: [] // Different stage interceptors
 
     };
-    this._interceptors = {
+    _this._interceptors = {
       beforeReq: null,
       afterReq: null,
       beforeRes: null,
       afterRes: null // Task queue executed after the request is completed
 
     };
-    this._taskList = [];
+    _this._taskList = [];
+    return _this;
   }
 
   (0, _createClass2["default"])(_default, [{
@@ -1548,8 +1572,8 @@ function () {
   }, {
     key: "reqPipes",
     value: function reqPipes() {
-      for (var _len = arguments.length, pipes = new Array(_len), _key = 0; _key < _len; _key++) {
-        pipes[_key] = arguments[_key];
+      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        pipes[_key2] = arguments[_key2];
       }
 
       if (pipes.find(function (pipe) {
@@ -1571,8 +1595,8 @@ function () {
   }, {
     key: "resPipes",
     value: function resPipes() {
-      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        pipes[_key2] = arguments[_key2];
+      for (var _len3 = arguments.length, pipes = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        pipes[_key3] = arguments[_key3];
       }
 
       if (pipes.find(function (pipe) {
@@ -1776,11 +1800,11 @@ function () {
     }
   }]);
   return _default;
-}();
+}(noProto);
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],24:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
