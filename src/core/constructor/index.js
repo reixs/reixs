@@ -1,5 +1,5 @@
-import separate from './separate.js'
-import all from './all.js'
+import reixs from './reixs'
+import reixsAll from './reixs-all'
 
-export const Separate = separate
-export const All = all
+export const Reixs = reixs
+export const ReixsAll = reixsAll

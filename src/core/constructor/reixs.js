@@ -4,12 +4,12 @@ import {METHOD_TYPES} from '../../shared/constants'
 import createRequest from '../create-request'
 import * as request from '../request'
 
-import Handler from './handler'
+import Scheduler from './scheduler'
 
 /**
  *  Separate request object
  */
-class SeparateHandler  extends Handler {
+class Reixs  extends Scheduler {
     constructor(url, method = 'get', params = null) {
         super()
 
@@ -226,10 +226,10 @@ class SeparateHandler  extends Handler {
 
 // Bind request category 
 METHOD_TYPES.map(requestType=>{
-    SeparateHandler.prototype[requestType] = function(params) {
+    Reixs.prototype[requestType] = function(params) {
         this.request(params, requestType)
     }
 })
  
 
-export default SeparateHandler
+export default Reixs

@@ -17,6 +17,10 @@ export default function(config, sendRequest, execute, hook) {
     return async function(...par) {
         const {prepareHook, startHook, endHook} = hook
         const {throttle, debounce, audit, overtime} = config
+
+        // External rewrite method
+        const {injection} = this
+
         prepareHook && prepareHook()
         let mark
         if (audit) {
@@ -33,11 +37,16 @@ export default function(config, sendRequest, execute, hook) {
             endHook && endHook()
             return 
         }
+
         // If audit is set, the duplicate request is discarded
         if (!audit || markMap.test(mark)) {
             // If the timeout occurs, the task is not processed
             if (!timeout) {
-                this._execute(data) && execute(data)
+                if (injection) {
+                    injection(data)
+                } else {
+                    execute(data)
+                }
             }
             endHook && endHook()
         }

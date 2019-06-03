@@ -992,6 +992,25 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.ReixsAll = exports.Reixs = void 0;
+
+var _reixs = _interopRequireDefault(require("./reixs"));
+
+var _reixsAll = _interopRequireDefault(require("./reixs-all"));
+
+var Reixs = _reixs["default"];
+exports.Reixs = Reixs;
+var ReixsAll = _reixsAll["default"];
+exports.ReixsAll = ReixsAll;
+
+},{"./reixs":22,"./reixs-all":21,"@babel/runtime/helpers/interopRequireDefault":10}],21:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
@@ -1010,15 +1029,15 @@ var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits
 
 var _createRequest = _interopRequireDefault(require("../create-request"));
 
-var _handler = _interopRequireDefault(require("./handler"));
+var _scheduler = _interopRequireDefault(require("./scheduler"));
 
 /**
  *  Separate request object
  */
 var AllHandler =
 /*#__PURE__*/
-function (_Handler) {
-  (0, _inherits2["default"])(AllHandler, _Handler);
+function (_Scheduler) {
+  (0, _inherits2["default"])(AllHandler, _Scheduler);
 
   function AllHandler() {
     var _this;
@@ -1073,7 +1092,7 @@ function (_Handler) {
                 return Promise.all(_schedulers.map(function (scheduler) {
                   return new Promise(function (resolve) {
                     scheduler.request.call(Object.assign({}, scheduler, {
-                      _execute: function _execute(data) {
+                      injection: function injection(data) {
                         resolve(data);
                       }
                     }));
@@ -1100,12 +1119,356 @@ function (_Handler) {
     }()
   }]);
   return AllHandler;
-}(_handler["default"]);
+}(_scheduler["default"]);
 
 var _default = AllHandler;
 exports["default"] = _default;
 
-},{"../create-request":24,"./handler":21,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/regenerator":18}],21:[function(require,module,exports){
+},{"../create-request":24,"./scheduler":23,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/regenerator":18}],22:[function(require,module,exports){
+"use strict";
+
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _utils = require("../../shared/utils");
+
+var _constants = require("../../shared/constants");
+
+var _createRequest = _interopRequireDefault(require("../create-request"));
+
+var request = _interopRequireWildcard(require("../request"));
+
+var _scheduler = _interopRequireDefault(require("./scheduler"));
+
+/**
+ *  Separate request object
+ */
+var Reixs =
+/*#__PURE__*/
+function (_Scheduler) {
+  (0, _inherits2["default"])(Reixs, _Scheduler);
+
+  function Reixs(url) {
+    var _this;
+
+    var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'get';
+    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    (0, _classCallCheck2["default"])(this, Reixs);
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(Reixs).call(this)); // Initialize the http
+
+    _this._http = {
+      url: '',
+      method: null,
+      header: {},
+      params: null,
+      cookie: true
+      /**
+       * Complete request header
+       * 
+       * @return {Object} 
+       */
+
+    };
+    _this._http = Object.assign({}, _this._http, {
+      url: url,
+      params: params
+    });
+
+    _this.setMethod(method); // Create request function
+
+
+    _this._initRequest();
+
+    return _this;
+  } // Multiple requests Shared
+
+
+  (0, _createClass2["default"])(Reixs, [{
+    key: "_getParams",
+
+    /**
+     * Complete request parameters
+     * 
+     * @param {Object} params 
+     */
+    value: function _getParams(params) {
+      var globalParams = this.constructor.global.globalParams;
+      return Object.assign({}, globalParams, params);
+    }
+    /**
+     * Create request function
+     */
+
+  }, {
+    key: "_initRequest",
+    value: function _initRequest() {
+      var _config = this._config,
+          _sendRequest = this._sendRequest,
+          _execute = this._execute,
+          _hook = this._hook;
+      this.request = (0, _createRequest["default"])(_config, _sendRequest.bind(this), _execute.bind(this), _hook);
+    }
+    /**
+     * Set the request url
+     * 
+     * @param {string} url 
+     */
+
+  }, {
+    key: "setUrl",
+    value: function setUrl(url) {
+      if (typeof url === 'string') {
+        this._http.url = url;
+      } else {
+        throw new Error('Invalid type');
+      }
+
+      return this;
+    }
+    /**
+     * Set the request header
+     * 
+     * @param {Object} header 
+     */
+
+  }, {
+    key: "setHeader",
+    value: function setHeader(header) {
+      if (header.constructor === Object) {
+        this._http.header = header;
+      } else {
+        throw new Error('Header invalid setting');
+      }
+
+      return this;
+    }
+    /**
+     * Set request parameters
+     * 
+     * @param {*} params 
+     */
+
+  }, {
+    key: "setParams",
+    value: function setParams(params) {
+      this._http.params = params;
+      return this;
+    }
+    /**
+     * Set whether to carry cookies
+     * 
+     * @param {boolean} ifCookie 
+     */
+
+  }, {
+    key: "setCookie",
+    value: function setCookie(ifCookie) {
+      if (typeof ifCookie === 'boolean') {
+        this._http.cookie = ifCookie;
+      } else {
+        throw new Error('Invalid type');
+      }
+
+      return this;
+    }
+    /**
+     * Set the request method
+     * 
+     * @param {string} method 
+     */
+
+  }, {
+    key: "setMethod",
+    value: function setMethod() {
+      var method = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      method = method.toLowerCase();
+
+      if (_constants.METHOD_TYPES.includes(method)) {
+        this._http.method = method;
+      } else {
+        throw new Error('Invalid method');
+      }
+
+      return this;
+    }
+    /**
+     * Send the request to the server
+     * 
+     * @param {*} params 
+     * @param {string} type 
+     */
+
+  }, {
+    key: "_sendRequest",
+    value: function () {
+      var _sendRequest2 = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee() {
+        var params,
+            type,
+            _this$_http,
+            url,
+            method,
+            cookie,
+            errorHook,
+            _this$_pipes,
+            reqPipes,
+            resPipes,
+            _this$_interceptors,
+            beforeReq,
+            afterReq,
+            beforeRes,
+            afterRes,
+            _this$constructor$glo,
+            globalReqPipes,
+            globalResPipes,
+            globalBeforeReq,
+            globalAfterReq,
+            globalBeforeRes,
+            globalAfterRes,
+            requestType,
+            requestParams,
+            finalParams,
+            data,
+            finalData,
+            _args = arguments;
+
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                params = _args.length > 0 && _args[0] !== undefined ? _args[0] : this._http.params;
+                type = _args.length > 1 ? _args[1] : undefined;
+                _this$_http = this._http, url = _this$_http.url, method = _this$_http.method, cookie = _this$_http.cookie;
+                errorHook = this._hook.errorHook;
+                _this$_pipes = this._pipes, reqPipes = _this$_pipes.reqPipes, resPipes = _this$_pipes.resPipes;
+                _this$_interceptors = this._interceptors, beforeReq = _this$_interceptors.beforeReq, afterReq = _this$_interceptors.afterReq, beforeRes = _this$_interceptors.beforeRes, afterRes = _this$_interceptors.afterRes;
+                _this$constructor$glo = this.constructor.global, globalReqPipes = _this$constructor$glo.reqPipes, globalResPipes = _this$constructor$glo.resPipes, globalBeforeReq = _this$constructor$glo.beforeReq, globalAfterReq = _this$constructor$glo.afterReq, globalBeforeRes = _this$constructor$glo.beforeRes, globalAfterRes = _this$constructor$glo.afterRes;
+                requestType = type ? type : method;
+                requestParams = requestType === 'push' ? params : this._getParams(params);
+
+                if (!(globalBeforeReq && globalBeforeReq(requestParams) === false || beforeReq && beforeReq(requestParams) === false)) {
+                  _context.next = 11;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 11:
+                try {
+                  finalParams = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalReqPipes), (0, _toConsumableArray2["default"])(reqPipes)), requestParams);
+                } catch (error) {
+                  errorHook(error);
+                }
+
+                if (!(globalAfterReq && globalAfterReq(finalParams) === false || afterReq && afterReq(finalParams) === false)) {
+                  _context.next = 14;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 14:
+                _context.next = 16;
+                return request[requestType](url, finalParams, this.requesetHeader, cookie);
+
+              case 16:
+                data = _context.sent;
+
+                if (!(globalBeforeRes && globalBeforeRes(data) === false || beforeRes && beforeRes(data) === false)) {
+                  _context.next = 19;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 19:
+                try {
+                  finalData = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalResPipes), (0, _toConsumableArray2["default"])(resPipes)), data);
+                } catch (error) {
+                  errorHook(error);
+                }
+
+                if (!(globalAfterRes && globalAfterRes(finalData) === false || afterRes && afterRes(finalData) === false)) {
+                  _context.next = 22;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 22:
+                return _context.abrupt("return", finalData);
+
+              case 23:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function _sendRequest() {
+        return _sendRequest2.apply(this, arguments);
+      }
+
+      return _sendRequest;
+    }()
+  }, {
+    key: "requesetHeader",
+    get: function get() {
+      var header = this._http.header;
+      var globalHeader = this.constructor.global.globalHeader;
+      return Object.assign({}, globalHeader, header);
+    }
+  }]);
+  return Reixs;
+}(_scheduler["default"]); // Bind request category 
+
+
+Reixs.global = {
+  globalHeader: {},
+  globalParams: {},
+  reqPipes: [],
+  resPipes: [],
+  beforeReq: null,
+  afterReq: null,
+  beforeRes: null,
+  afterRes: null // Network request information
+
+};
+
+_constants.METHOD_TYPES.map(function (requestType) {
+  Reixs.prototype[requestType] = function (params) {
+    this.request(params, requestType);
+  };
+});
+
+var _default = Reixs;
+exports["default"] = _default;
+
+},{"../../shared/constants":31,"../../shared/utils":32,"../create-request":24,"../request":29,"./scheduler":23,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/interopRequireWildcard":11,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/helpers/toConsumableArray":16,"@babel/runtime/regenerator":18}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1417,370 +1780,7 @@ function () {
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],22:[function(require,module,exports){
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.All = exports.Separate = void 0;
-
-var _separate = _interopRequireDefault(require("./separate.js"));
-
-var _all = _interopRequireDefault(require("./all.js"));
-
-var Separate = _separate["default"];
-exports.Separate = Separate;
-var All = _all["default"];
-exports.All = All;
-
-},{"./all.js":20,"./separate.js":23,"@babel/runtime/helpers/interopRequireDefault":10}],23:[function(require,module,exports){
-"use strict";
-
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-
-var _utils = require("../../shared/utils");
-
-var _constants = require("../../shared/constants");
-
-var _createRequest = _interopRequireDefault(require("../create-request"));
-
-var request = _interopRequireWildcard(require("../request"));
-
-var _handler = _interopRequireDefault(require("./handler"));
-
-/**
- *  Separate request object
- */
-var SeparateHandler =
-/*#__PURE__*/
-function (_Handler) {
-  (0, _inherits2["default"])(SeparateHandler, _Handler);
-
-  function SeparateHandler(url) {
-    var _this;
-
-    var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'get';
-    var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-    (0, _classCallCheck2["default"])(this, SeparateHandler);
-    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(SeparateHandler).call(this)); // Initialize the http
-
-    _this._http = {
-      url: '',
-      method: null,
-      header: {},
-      params: null,
-      cookie: true
-      /**
-       * Complete request header
-       * 
-       * @return {Object} 
-       */
-
-    };
-    _this._http = Object.assign({}, _this._http, {
-      url: url,
-      params: params
-    });
-
-    _this.setMethod(method); // Create request function
-
-
-    _this._initRequest();
-
-    return _this;
-  } // Multiple requests Shared
-
-
-  (0, _createClass2["default"])(SeparateHandler, [{
-    key: "_getParams",
-
-    /**
-     * Complete request parameters
-     * 
-     * @param {Object} params 
-     */
-    value: function _getParams(params) {
-      var globalParams = this.constructor.global.globalParams;
-      return Object.assign({}, globalParams, params);
-    }
-    /**
-     * Create request function
-     */
-
-  }, {
-    key: "_initRequest",
-    value: function _initRequest() {
-      var _config = this._config,
-          _sendRequest = this._sendRequest,
-          _execute = this._execute,
-          _hook = this._hook;
-      this.request = (0, _createRequest["default"])(_config, _sendRequest.bind(this), _execute.bind(this), _hook);
-    }
-    /**
-     * Set the request url
-     * 
-     * @param {string} url 
-     */
-
-  }, {
-    key: "setUrl",
-    value: function setUrl(url) {
-      if (typeof url === 'string') {
-        this._http.url = url;
-      } else {
-        throw new Error('Invalid type');
-      }
-
-      return this;
-    }
-    /**
-     * Set the request header
-     * 
-     * @param {Object} header 
-     */
-
-  }, {
-    key: "setHeader",
-    value: function setHeader(header) {
-      if (header.constructor === Object) {
-        this._http.header = header;
-      } else {
-        throw new Error('Header invalid setting');
-      }
-
-      return this;
-    }
-    /**
-     * Set request parameters
-     * 
-     * @param {*} params 
-     */
-
-  }, {
-    key: "setParams",
-    value: function setParams(params) {
-      this._http.params = params;
-      return this;
-    }
-    /**
-     * Set whether to carry cookies
-     * 
-     * @param {boolean} ifCookie 
-     */
-
-  }, {
-    key: "setCookie",
-    value: function setCookie(ifCookie) {
-      if (typeof ifCookie === 'boolean') {
-        this._http.cookie = ifCookie;
-      } else {
-        throw new Error('Invalid type');
-      }
-
-      return this;
-    }
-    /**
-     * Set the request method
-     * 
-     * @param {string} method 
-     */
-
-  }, {
-    key: "setMethod",
-    value: function setMethod() {
-      var method = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      method = method.toLowerCase();
-
-      if (_constants.METHOD_TYPES.includes(method)) {
-        this._http.method = method;
-      } else {
-        throw new Error('Invalid method');
-      }
-
-      return this;
-    }
-    /**
-     * Send the request to the server
-     * 
-     * @param {*} params 
-     * @param {string} type 
-     */
-
-  }, {
-    key: "_sendRequest",
-    value: function () {
-      var _sendRequest2 = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee() {
-        var params,
-            type,
-            _this$_http,
-            url,
-            method,
-            cookie,
-            errorHook,
-            _this$_pipes,
-            reqPipes,
-            resPipes,
-            _this$_interceptors,
-            beforeReq,
-            afterReq,
-            beforeRes,
-            afterRes,
-            _this$constructor$glo,
-            globalReqPipes,
-            globalResPipes,
-            globalBeforeReq,
-            globalAfterReq,
-            globalBeforeRes,
-            globalAfterRes,
-            requestType,
-            requestParams,
-            finalParams,
-            data,
-            finalData,
-            _args = arguments;
-
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                params = _args.length > 0 && _args[0] !== undefined ? _args[0] : this._http.params;
-                type = _args.length > 1 ? _args[1] : undefined;
-                _this$_http = this._http, url = _this$_http.url, method = _this$_http.method, cookie = _this$_http.cookie;
-                errorHook = this._hook.errorHook;
-                _this$_pipes = this._pipes, reqPipes = _this$_pipes.reqPipes, resPipes = _this$_pipes.resPipes;
-                _this$_interceptors = this._interceptors, beforeReq = _this$_interceptors.beforeReq, afterReq = _this$_interceptors.afterReq, beforeRes = _this$_interceptors.beforeRes, afterRes = _this$_interceptors.afterRes;
-                _this$constructor$glo = this.constructor.global, globalReqPipes = _this$constructor$glo.reqPipes, globalResPipes = _this$constructor$glo.resPipes, globalBeforeReq = _this$constructor$glo.beforeReq, globalAfterReq = _this$constructor$glo.afterReq, globalBeforeRes = _this$constructor$glo.beforeRes, globalAfterRes = _this$constructor$glo.afterRes;
-                requestType = type ? type : method;
-                requestParams = requestType === 'push' ? params : this._getParams(params);
-
-                if (!(globalBeforeReq && globalBeforeReq(requestParams) === false || beforeReq && beforeReq(requestParams) === false)) {
-                  _context.next = 11;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 11:
-                try {
-                  finalParams = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalReqPipes), (0, _toConsumableArray2["default"])(reqPipes)), requestParams);
-                } catch (error) {
-                  errorHook(error);
-                }
-
-                if (!(globalAfterReq && globalAfterReq(finalParams) === false || afterReq && afterReq(finalParams) === false)) {
-                  _context.next = 14;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 14:
-                _context.next = 16;
-                return request[requestType](url, finalParams, this.requesetHeader, cookie);
-
-              case 16:
-                data = _context.sent;
-
-                if (!(globalBeforeRes && globalBeforeRes(data) === false || beforeRes && beforeRes(data) === false)) {
-                  _context.next = 19;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 19:
-                try {
-                  finalData = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalResPipes), (0, _toConsumableArray2["default"])(resPipes)), data);
-                } catch (error) {
-                  errorHook(error);
-                }
-
-                if (!(globalAfterRes && globalAfterRes(finalData) === false || afterRes && afterRes(finalData) === false)) {
-                  _context.next = 22;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 22:
-                return _context.abrupt("return", finalData);
-
-              case 23:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function _sendRequest() {
-        return _sendRequest2.apply(this, arguments);
-      }
-
-      return _sendRequest;
-    }()
-  }, {
-    key: "requesetHeader",
-    get: function get() {
-      var header = this._http.header;
-      var globalHeader = this.constructor.global.globalHeader;
-      return Object.assign({}, globalHeader, header);
-    }
-  }]);
-  return SeparateHandler;
-}(_handler["default"]); // Bind request category 
-
-
-SeparateHandler.global = {
-  globalHeader: {},
-  globalParams: {},
-  reqPipes: [],
-  resPipes: [],
-  beforeReq: null,
-  afterReq: null,
-  beforeRes: null,
-  afterRes: null // Network request information
-
-};
-
-_constants.METHOD_TYPES.map(function (requestType) {
-  SeparateHandler.prototype[requestType] = function (params) {
-    this.request(params, requestType);
-  };
-});
-
-var _default = SeparateHandler;
-exports["default"] = _default;
-
-},{"../../shared/constants":31,"../../shared/utils":32,"../create-request":24,"../request":29,"./handler":21,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/interopRequireWildcard":11,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/helpers/toConsumableArray":16,"@babel/runtime/regenerator":18}],24:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1824,6 +1824,7 @@ function _default(config, sendRequest, execute, hook) {
           debounce,
           audit,
           overtime,
+          injection,
           mark,
           _ref2,
           timeout,
@@ -1835,46 +1836,52 @@ function _default(config, sendRequest, execute, hook) {
           switch (_context.prev = _context.next) {
             case 0:
               prepareHook = hook.prepareHook, startHook = hook.startHook, endHook = hook.endHook;
-              throttle = config.throttle, debounce = config.debounce, audit = config.audit, overtime = config.overtime;
+              throttle = config.throttle, debounce = config.debounce, audit = config.audit, overtime = config.overtime; // External rewrite method
+
+              injection = this.injection;
               prepareHook && prepareHook();
 
               if (audit) {
                 mark = markMap.get(audit);
               }
 
-              _context.next = 6;
+              _context.next = 7;
               return Promise.all([throttleWait.get(throttle), debounceWait.get(debounce)]);
 
-            case 6:
+            case 7:
               startHook && startHook();
-              _context.next = 9;
+              _context.next = 10;
               return (0, _requestTimer["default"])(sendRequest.apply(void 0, _args), overtime);
 
-            case 9:
+            case 10:
               _ref2 = _context.sent;
               timeout = _ref2.timeout;
               data = _ref2.data;
 
               if (!(data === undefined)) {
-                _context.next = 15;
+                _context.next = 16;
                 break;
               }
 
               endHook && endHook();
               return _context.abrupt("return");
 
-            case 15:
+            case 16:
               // If audit is set, the duplicate request is discarded
               if (!audit || markMap.test(mark)) {
                 // If the timeout occurs, the task is not processed
                 if (!timeout) {
-                  this._execute(data) && execute(data);
+                  if (injection) {
+                    injection(data);
+                  } else {
+                    execute(data);
+                  }
                 }
 
                 endHook && endHook();
               }
 
-            case 16:
+            case 17:
             case "end":
               return _context.stop();
           }
@@ -2317,27 +2324,11 @@ var _construct2 = _interopRequireDefault(require("@babel/runtime/helpers/constru
 var _constructor = require("./core/constructor");
 
 /**
- * Create reixs 
- * 
- * @param {string} url 
- * @param {string} method
- * @param {*} params  
- */
-function createInstance(url, method, params) {
-  return new Proxy(new _constructor.Separate(url, method, params), {
-    set: function set() {
-      throw new Error('Overwriting any attributes is not allowed');
-    }
-  });
-}
-/**
  * Set pipe 
  * 
  * @param {string} name 
  * @param  {...any} funList 
  */
-
-
 function setPipes(name) {
   for (var _len = arguments.length, funList = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     funList[_key - 1] = arguments[_key];
@@ -2348,7 +2339,7 @@ function setPipes(name) {
       throw new Error('Invalid type');
     }
   });
-  _constructor.Separate.global[name] = [].concat(funList);
+  _constructor.Reixs.global[name] = [].concat(funList);
 }
 /**
  * Set Interceptor
@@ -2360,58 +2351,58 @@ function setPipes(name) {
 
 function setInterceptor(name, fun) {
   if (typeof fn === 'function') {
-    _constructor.Separate.global[name] = fun;
+    _constructor.Reixs.global[name] = fun;
   } else {
     throw new Error('Invalid type');
   }
 }
+/**
+ * 
+ * @param {string} url 
+ * @param {string} method 
+ * @param {*} params 
+ */
 
-var _default = new Proxy(createInstance, {
-  get: function get(target, property) {
-    switch (property) {
-      // Replaced by browserify-versionify transform
-      case 'version':
-        return '0.1.1';
-      // Set request and response pipe
 
-      case 'reqPipes':
-      case 'resPipes':
-        return setPipes.bind(null, property);
-      // Set request and response interceptor
+function reixs(url, method, params) {
+  return new _constructor.Reixs(url, method, params);
+} // reixs.all
 
-      case 'beforeReq':
-      case 'afterReq':
-      case 'beforeRes':
-      case 'afterRes':
-        return setInterceptor.bind(null, property);
 
-      case 'all':
-        return function () {
-          for (var _len2 = arguments.length, scheduler = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            scheduler[_key2] = arguments[_key2];
-          }
+reixs.all = function () {
+  for (var _len2 = arguments.length, scheduler = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    scheduler[_key2] = arguments[_key2];
+  }
 
-          return (0, _construct2["default"])(_constructor.All, scheduler);
-        };
-    }
-  },
-  set: function set(target, property, value) {
-    switch (property) {
-      case 'globalHeader':
-      case 'globalParams':
-        if (value.constructor === Object) {
-          _constructor.Separate.global[property] = value;
-        } else {
-          throw new Error('Invalid type');
-        }
+  return (0, _construct2["default"])(_constructor.ReixsAll, scheduler);
+}; // Replaced by browserify-versionify transform
 
-    }
+
+reixs.version = '0.1.1'; // Set request and response pipe
+
+reixs.reqPipes = setPipes.bind(null, 'reqPipes');
+reixs.resPipes = setPipes.bind(null, 'resPipes'); // Set request and response interceptor
+
+reixs.beforeReq = setInterceptor.bind(null, 'beforeReq');
+reixs.afterReq = setInterceptor.bind(null, 'afterReq');
+reixs.beforeRes = setInterceptor.bind(null, 'beforeRes');
+reixs.afterRes = setInterceptor.bind(null, 'afterRes'); // Set global header
+
+Reflect.defineProperty(reixs, 'globalHeader', {
+  set: function set(value) {
+    _constructor.Reixs.global.globalHeader = value;
+  }
+}); // Set global params
+
+Reflect.defineProperty(reixs, 'globalParams', {
+  set: function set(value) {
+    _constructor.Reixs.global.globalParams = value;
   }
 });
-
+var _default = reixs;
 exports["default"] = _default;
 
-},{"./core/constructor":22,"@babel/runtime/helpers/construct":6,"@babel/runtime/helpers/interopRequireDefault":10}],31:[function(require,module,exports){
+},{"./core/constructor":20,"@babel/runtime/helpers/construct":6,"@babel/runtime/helpers/interopRequireDefault":10}],31:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

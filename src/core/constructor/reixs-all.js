@@ -1,12 +1,12 @@
 
 import createRequest from '../create-request'
 
-import Handler from './handler'
+import Scheduler from './scheduler'
 
 /**
  *  Separate request object
  */
-class AllHandler  extends Handler {
+class AllHandler  extends Scheduler {
     _schedulers = []
 
     constructor(...schedulers) {
@@ -38,7 +38,7 @@ class AllHandler  extends Handler {
             return new Promise( resolve => {
                 scheduler.request.call({
                     ...scheduler, 
-                    _execute(data) {
+                    injection(data) {
                         resolve(data)
                     }
                 })
