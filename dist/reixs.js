@@ -1930,35 +1930,8 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 /**
- * Create a signature object
- * 
- * @param {symbol} sym 
- * @param {number} time 
- */
-function createSign(sym, time) {
-  var sign = Object.create(null);
-  sign.sym = sym;
-  sign.time = time;
-  return sign;
-}
-/**
- * Create a mark object
- * 
- * @param {Object} sign 
- */
-
-
-function createMark(sign) {
-  var mark = Object.create(null);
-  mark.sign = sign;
-  mark.sym = sign.sym;
-  return mark;
-}
-/**
  * Verify that mark is deprecated
  */
-
-
 var _default =
 /*#__PURE__*/
 function () {
@@ -1983,7 +1956,10 @@ function () {
         var sign;
 
         if (!_map.length || time - _map[_map.length - 1].time > audit && audit !== true) {
-          sign = createSign(sym, time);
+          sign = {
+            sym: sym,
+            time: time
+          };
 
           _map.push(sign);
         } else {
@@ -1992,7 +1968,10 @@ function () {
           sign.time = time;
         }
 
-        return createMark(sign);
+        return {
+          sign: sign,
+          sym: sign.sym
+        };
       }
 
       return null;
