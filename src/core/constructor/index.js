@@ -1,3 +1,7 @@
-import separate from './separate.js'
+import reixs from './reixs'
+import reixsAll from './reixs-all'
+import reixsRace from './reixs-race'
 
-export const Separate = separate
+export const Reixs = reixs
+export const ReixsAll = reixsAll
+export const ReixsRace = reixsRace

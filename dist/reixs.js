@@ -3,7 +3,7 @@
 
 module.exports = require('./src/reixs')["default"];
 
-},{"./src/reixs":28}],2:[function(require,module,exports){
+},{"./src/reixs":31}],2:[function(require,module,exports){
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
@@ -72,6 +72,40 @@ function _classCallCheck(instance, Constructor) {
 
 module.exports = _classCallCheck;
 },{}],6:[function(require,module,exports){
+var setPrototypeOf = require("./setPrototypeOf");
+
+function isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _construct(Parent, args, Class) {
+  if (isNativeReflectConstruct()) {
+    module.exports = _construct = Reflect.construct;
+  } else {
+    module.exports = _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) setPrototypeOf(instance, Class.prototype);
+      return instance;
+    };
+  }
+
+  return _construct.apply(null, arguments);
+}
+
+module.exports = _construct;
+},{"./setPrototypeOf":15}],7:[function(require,module,exports){
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -89,7 +123,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -98,7 +132,7 @@ function _getPrototypeOf(o) {
 }
 
 module.exports = _getPrototypeOf;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var setPrototypeOf = require("./setPrototypeOf");
 
 function _inherits(subClass, superClass) {
@@ -117,7 +151,7 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-},{"./setPrototypeOf":14}],9:[function(require,module,exports){
+},{"./setPrototypeOf":15}],10:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     "default": obj
@@ -125,7 +159,7 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 function _interopRequireWildcard(obj) {
   if (obj && obj.__esModule) {
     return obj;
@@ -152,19 +186,19 @@ function _interopRequireWildcard(obj) {
 }
 
 module.exports = _interopRequireWildcard;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 function _iterableToArray(iter) {
   if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
 }
 
 module.exports = _iterableToArray;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance");
 }
 
 module.exports = _nonIterableSpread;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var _typeof = require("../helpers/typeof");
 
 var assertThisInitialized = require("./assertThisInitialized");
@@ -178,7 +212,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 module.exports = _possibleConstructorReturn;
-},{"../helpers/typeof":16,"./assertThisInitialized":3}],14:[function(require,module,exports){
+},{"../helpers/typeof":17,"./assertThisInitialized":3}],15:[function(require,module,exports){
 function _setPrototypeOf(o, p) {
   module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
@@ -189,7 +223,7 @@ function _setPrototypeOf(o, p) {
 }
 
 module.exports = _setPrototypeOf;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var arrayWithoutHoles = require("./arrayWithoutHoles");
 
 var iterableToArray = require("./iterableToArray");
@@ -201,7 +235,7 @@ function _toConsumableArray(arr) {
 }
 
 module.exports = _toConsumableArray;
-},{"./arrayWithoutHoles":2,"./iterableToArray":11,"./nonIterableSpread":12}],16:[function(require,module,exports){
+},{"./arrayWithoutHoles":2,"./iterableToArray":12,"./nonIterableSpread":13}],17:[function(require,module,exports){
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -219,10 +253,10 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":18}],18:[function(require,module,exports){
+},{"regenerator-runtime":19}],19:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -950,7 +984,30 @@ try {
   Function("r", "regeneratorRuntime = r")(runtime);
 }
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ReixsRace = exports.ReixsAll = exports.Reixs = void 0;
+
+var _reixs = _interopRequireDefault(require("./reixs"));
+
+var _reixsAll = _interopRequireDefault(require("./reixs-all"));
+
+var _reixsRace = _interopRequireDefault(require("./reixs-race"));
+
+var Reixs = _reixs["default"];
+exports.Reixs = Reixs;
+var ReixsAll = _reixsAll["default"];
+exports.ReixsAll = ReixsAll;
+var ReixsRace = _reixsRace["default"];
+exports.ReixsRace = ReixsRace;
+
+},{"./reixs":23,"./reixs-all":21,"./reixs-race":22,"@babel/runtime/helpers/interopRequireDefault":10}],21:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -960,292 +1017,117 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _createRequest = _interopRequireDefault(require("../create-request"));
+
+var _scheduler = _interopRequireDefault(require("./scheduler"));
+
 /**
- * The underlying request model
+ *  Concurrent request
  */
-var _default =
+var ReixsAll =
 /*#__PURE__*/
-function () {
-  function _default() {
-    (0, _classCallCheck2["default"])(this, _default);
-    this._config = {
-      throttle: false,
-      debounce: 0,
-      audit: false,
-      overtime: null // Life cycle function
+function (_Scheduler) {
+  (0, _inherits2["default"])(ReixsAll, _Scheduler);
 
-    };
-    this._hook = {
-      tartHook: null,
-      endHook: null,
-      errorHook: null // Data filtering
+  function ReixsAll() {
+    var _this;
 
-    };
-    this._pipes = {
-      reqPipes: [],
-      resPipes: [] // Different stage interceptors
+    (0, _classCallCheck2["default"])(this, ReixsAll);
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(ReixsAll).call(this));
+    _this._schedulers = [];
 
-    };
-    this._interceptors = {
-      beforeReq: null,
-      afterReq: null,
-      beforeRes: null,
-      afterRes: null // Task queue executed after the request is completed
+    for (var _len = arguments.length, schedulers = new Array(_len), _key = 0; _key < _len; _key++) {
+      schedulers[_key] = arguments[_key];
+    }
 
-    };
-    this._taskList = [];
+    _this._schedulers = schedulers;
+
+    _this._initRequest();
+
+    return _this;
   }
+  /**
+   * Create request function
+   */
 
-  (0, _createClass2["default"])(_default, [{
-    key: "_execute",
 
-    /**
-     * Circular call task
-     * @param {*} data 
-     */
-    value: function _execute(data) {
-      var errorHook = this._hook.errorHook;
-
-      if (data !== undefined) {
-        try {
-          this._taskList.forEach(function (task) {
-            task(data);
-          });
-        } catch (error) {
-          errorHook && errorHook(error);
-        }
-      }
+  (0, _createClass2["default"])(ReixsAll, [{
+    key: "_initRequest",
+    value: function _initRequest() {
+      var _config = this._config,
+          _sendRequest = this._sendRequest,
+          _execute = this._execute,
+          _hook = this._hook;
+      this.request = (0, _createRequest["default"])(_config, _sendRequest.bind(this), _execute.bind(this), _hook);
     }
     /**
-     * Set the request filter pipeline
+     * Concurrent all scheduler
      * 
-     * @param  {...any} pipes 
      */
 
   }, {
-    key: "reqPipes",
-    value: function reqPipes() {
-      for (var _len = arguments.length, pipes = new Array(_len), _key = 0; _key < _len; _key++) {
-        pipes[_key] = arguments[_key];
+    key: "_sendRequest",
+    value: function () {
+      var _sendRequest2 = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee() {
+        var _schedulers, data;
+
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _schedulers = this._schedulers;
+                _context.next = 3;
+                return Promise.all(_schedulers.map(function (scheduler) {
+                  return new Promise(function (resolve) {
+                    scheduler.request.call(Object.assign({}, scheduler, {
+                      injection: function injection(data) {
+                        resolve(data);
+                      }
+                    }));
+                  });
+                }));
+
+              case 3:
+                data = _context.sent;
+                return _context.abrupt("return", data);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function _sendRequest() {
+        return _sendRequest2.apply(this, arguments);
       }
 
-      if (pipes.find(function (pipe) {
-        return typeof pipe !== 'function';
-      })) {
-        throw new Error('Pipe must be a function');
-      } else {
-        this._pipes.reqPipes = [].concat(pipes);
-      }
-
-      return this;
-    }
-    /**
-     * Set the response filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-
-  }, {
-    key: "resPipes",
-    value: function resPipes() {
-      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        pipes[_key2] = arguments[_key2];
-      }
-
-      if (pipes.find(function (pipe) {
-        return typeof pipe !== 'function';
-      })) {
-        throw new Error('Pipe must be a function');
-      } else {
-        this._pipes.resPipes = [].concat(pipes);
-      }
-
-      return this;
-    }
-    /**
-     * Set throttle
-     * 
-     * @param {number|boolean} settings 
-     */
-
-  }, {
-    key: "throttle",
-    value: function throttle(settings) {
-      if (typeof settings === 'number' || settings === false) {
-        this._config.throttle = settings;
-      } else {
-        throw new Error('Invalid type');
-      }
-
-      return this;
-    }
-    /**
-     * Set debounce
-     * 
-     * @param {number|boolean} settings 
-     */
-
-  }, {
-    key: "debounce",
-    value: function debounce(settings) {
-      if (typeof settings === 'number' || settings === false) {
-        this._config.debounce = settings;
-      } else {
-        throw new Error('Invalid type');
-      }
-
-      return this;
-    }
-    /**
-     * Set audit
-     * 
-     * @param {number|boolean} settings 
-     */
-
-  }, {
-    key: "audit",
-    value: function audit(settings) {
-      if (typeof settings === 'number' || typeof settings === 'boolean') {
-        this._config.audit = settings;
-      } else {
-        throw new Error('Invalid type');
-      }
-
-      return this;
-    }
-    /**
-     * Set overtime
-     * 
-     * @param {number|null} time 
-     */
-
-  }, {
-    key: "overtime",
-    value: function overtime(time) {
-      if (typeof time === 'number' || time === null) {
-        this._config.overtime = time;
-      } else {
-        throw new Error('Invalid type');
-      }
-
-      return this;
-    }
-    /**
-     * Set request interceptor
-     * @param {Function} interceptor 
-     */
-
-  }, {
-    key: "reqInterceptor",
-    value: function reqInterceptor(interceptor) {
-      if (typeof interceptor === 'function') {
-        if (this._pipes.reqPipes.length) {
-          this._interceptors.afterReq = interceptor;
-        } else {
-          this._interceptors.beforeReq = interceptor;
-        }
-
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
-    /**
-     * Set response interceptor
-     * @param {Function} interceptor 
-     */
-
-  }, {
-    key: "resInterceptor",
-    value: function resInterceptor(interceptor) {
-      if (typeof interceptor === 'function') {
-        if (this._pipes.resPipes.length) {
-          this._interceptors.afterRes = interceptor;
-        } else {
-          this._interceptors.beforeRes = interceptor;
-        }
-
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
-    /**
-     * Add task
-     * 
-     * @param {Function} task 
-     */
-
-  }, {
-    key: "task",
-    value: function task(_task) {
-      if (typeof _task === 'function') {
-        this._taskList.push(_task);
-
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
-    /**
-     * Request to start
-     * 
-     * @param {Function} startHook 
-     */
-
-  }, {
-    key: "start",
-    value: function start(startHook) {
-      if (typeof startHook === 'function') {
-        this._hook.startHook = startHook;
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
-    /**
-     * Request to end
-     * 
-     * @param {Function} endHook 
-     */
-
-  }, {
-    key: "end",
-    value: function end(endHook) {
-      if (typeof endHook === 'function') {
-        this._hook.endHook = endHook;
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
-    /**
-     * Request to error
-     * 
-     * @param {Function} errorHook 
-     */
-
-  }, {
-    key: "error",
-    value: function error(errorHook) {
-      if (typeof errorHook === 'function') {
-        this._hook.errorHook = errorHook;
-        return this;
-      } else {
-        throw new Error('Invalid type');
-      }
-    }
+      return _sendRequest;
+    }()
   }]);
-  return _default;
-}();
+  return ReixsAll;
+}(_scheduler["default"]);
 
-exports["default"] = _default;
+exports["default"] = ReixsAll;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],20:[function(require,module,exports){
+},{"../create-request":25,"./scheduler":24,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/regenerator":18}],22:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1253,14 +1135,119 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Separate = void 0;
+exports["default"] = void 0;
 
-var _separate = _interopRequireDefault(require("./separate.js"));
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var Separate = _separate["default"];
-exports.Separate = Separate;
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-},{"./separate.js":21,"@babel/runtime/helpers/interopRequireDefault":9}],21:[function(require,module,exports){
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _createRequest = _interopRequireDefault(require("../create-request"));
+
+var _scheduler = _interopRequireDefault(require("./scheduler"));
+
+/**
+ *  Multiple request race
+ */
+var ReixsRace =
+/*#__PURE__*/
+function (_Scheduler) {
+  (0, _inherits2["default"])(ReixsRace, _Scheduler);
+
+  function ReixsRace() {
+    var _this;
+
+    (0, _classCallCheck2["default"])(this, ReixsRace);
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(ReixsRace).call(this));
+    _this._schedulers = [];
+
+    for (var _len = arguments.length, schedulers = new Array(_len), _key = 0; _key < _len; _key++) {
+      schedulers[_key] = arguments[_key];
+    }
+
+    _this._schedulers = schedulers;
+
+    _this._initRequest();
+
+    return _this;
+  }
+  /**
+   * Create request function
+   */
+
+
+  (0, _createClass2["default"])(ReixsRace, [{
+    key: "_initRequest",
+    value: function _initRequest() {
+      var _config = this._config,
+          _sendRequest = this._sendRequest,
+          _execute = this._execute,
+          _hook = this._hook;
+      this.request = (0, _createRequest["default"])(_config, _sendRequest.bind(this), _execute.bind(this), _hook);
+    }
+    /**
+     * The scheduler for the race
+     * 
+     */
+
+  }, {
+    key: "_sendRequest",
+    value: function () {
+      var _sendRequest2 = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee() {
+        var _schedulers, data;
+
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _schedulers = this._schedulers;
+                _context.next = 3;
+                return Promise.race(_schedulers.map(function (scheduler) {
+                  return new Promise(function (resolve) {
+                    scheduler.request.call(Object.assign({}, scheduler, {
+                      injection: function injection(data) {
+                        resolve(data);
+                      }
+                    }));
+                  });
+                }));
+
+              case 3:
+                data = _context.sent;
+                return _context.abrupt("return", data);
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function _sendRequest() {
+        return _sendRequest2.apply(this, arguments);
+      }
+
+      return _sendRequest;
+    }()
+  }]);
+  return ReixsRace;
+}(_scheduler["default"]);
+
+exports["default"] = ReixsRace;
+
+},{"../create-request":25,"./scheduler":24,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/regenerator":18}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
@@ -1296,30 +1283,42 @@ var _createRequest = _interopRequireDefault(require("../create-request"));
 
 var request = _interopRequireWildcard(require("../request"));
 
-var _handler = _interopRequireDefault(require("./handler"));
+var _scheduler = _interopRequireDefault(require("./scheduler"));
 
 /**
  *  Separate request object
  */
-var SeparateHandler =
+var Reixs =
 /*#__PURE__*/
-function (_Handler) {
-  (0, _inherits2["default"])(SeparateHandler, _Handler);
+function (_Scheduler) {
+  (0, _inherits2["default"])(Reixs, _Scheduler);
 
-  function SeparateHandler(url) {
+  function Reixs(url) {
     var _this;
 
     var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'get';
     var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-    (0, _classCallCheck2["default"])(this, SeparateHandler);
-    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(SeparateHandler).call(this)); // Initialize the http
+    (0, _classCallCheck2["default"])(this, Reixs);
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(Reixs).call(this)); // Initialize the http
 
     _this._http = {
       url: '',
       method: null,
       header: {},
       params: null,
-      cookie: true
+      cookie: true // Data filtering
+
+    };
+    _this._pipes = {
+      reqPipes: [],
+      resPipes: [] // Different stage interceptors
+
+    };
+    _this._interceptors = {
+      beforeReq: null,
+      afterReq: null,
+      beforeRes: null,
+      afterRes: null
       /**
        * Complete request header
        * 
@@ -1341,7 +1340,7 @@ function (_Handler) {
   } // Multiple requests Shared
 
 
-  (0, _createClass2["default"])(SeparateHandler, [{
+  (0, _createClass2["default"])(Reixs, [{
     key: "_getParams",
 
     /**
@@ -1350,8 +1349,8 @@ function (_Handler) {
      * @param {Object} params 
      */
     value: function _getParams(params) {
-      var globalParams = this.constructor.global.globalParams;
-      return Object.assign({}, globalParams, params);
+      var globalParams = Reixs.global.globalParams;
+      return Object.assign(globalParams, params);
     }
     /**
      * Create request function
@@ -1448,6 +1447,92 @@ function (_Handler) {
       }
 
       return this;
+    }
+    /**
+     * Set the request filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+
+  }, {
+    key: "reqPipes",
+    value: function reqPipes() {
+      for (var _len = arguments.length, pipes = new Array(_len), _key = 0; _key < _len; _key++) {
+        pipes[_key] = arguments[_key];
+      }
+
+      if (pipes.find(function (pipe) {
+        return typeof pipe !== 'function';
+      })) {
+        throw new Error('Pipe must be a function');
+      } else {
+        this._pipes.reqPipes = [].concat(pipes);
+      }
+
+      return this;
+    }
+    /**
+     * Set the response filter pipeline
+     * 
+     * @param  {...any} pipes 
+     */
+
+  }, {
+    key: "resPipes",
+    value: function resPipes() {
+      for (var _len2 = arguments.length, pipes = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        pipes[_key2] = arguments[_key2];
+      }
+
+      if (pipes.find(function (pipe) {
+        return typeof pipe !== 'function';
+      })) {
+        throw new Error('Pipe must be a function');
+      } else {
+        this._pipes.resPipes = [].concat(pipes);
+      }
+
+      return this;
+    }
+    /**
+     * Set request interceptor
+     * @param {Function} interceptor 
+     */
+
+  }, {
+    key: "reqInterceptor",
+    value: function reqInterceptor(interceptor) {
+      if (typeof interceptor === 'function') {
+        if (this._pipes.reqPipes.length) {
+          this._interceptors.afterReq = interceptor;
+        } else {
+          this._interceptors.beforeReq = interceptor;
+        }
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Set response interceptor
+     * @param {Function} interceptor 
+     */
+
+  }, {
+    key: "resInterceptor",
+    value: function resInterceptor(interceptor) {
+      if (typeof interceptor === 'function') {
+        if (this._pipes.resPipes.length) {
+          this._interceptors.afterRes = interceptor;
+        } else {
+          this._interceptors.beforeRes = interceptor;
+        }
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
     }
     /**
      * Send the request to the server
@@ -1575,15 +1660,15 @@ function (_Handler) {
     key: "requesetHeader",
     get: function get() {
       var header = this._http.header;
-      var globalHeader = this.constructor.global.globalHeader;
-      return Object.assign({}, globalHeader, header);
+      var globalHeader = Reixs.global.globalHeader;
+      return Object.assign(globalHeader, header);
     }
   }]);
-  return SeparateHandler;
-}(_handler["default"]); // Bind request category 
+  return Reixs;
+}(_scheduler["default"]); // Bind request category 
 
 
-SeparateHandler.global = {
+Reixs.global = {
   globalHeader: {},
   globalParams: {},
   reqPipes: [],
@@ -1596,15 +1681,232 @@ SeparateHandler.global = {
 };
 
 _constants.METHOD_TYPES.map(function (requestType) {
-  SeparateHandler.prototype[requestType] = function (params) {
+  Reixs.prototype[requestType] = function (params) {
     this.request(params, requestType);
   };
 });
 
-var _default = SeparateHandler;
+var _default = Reixs;
 exports["default"] = _default;
 
-},{"../../shared/constants":29,"../../shared/utils":30,"../create-request":22,"../request":27,"./handler":19,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/interopRequireWildcard":10,"@babel/runtime/helpers/possibleConstructorReturn":13,"@babel/runtime/helpers/toConsumableArray":15,"@babel/runtime/regenerator":17}],22:[function(require,module,exports){
+},{"../../shared/constants":32,"../../shared/utils":33,"../create-request":25,"../request":30,"./scheduler":24,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/interopRequireWildcard":11,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/helpers/toConsumableArray":16,"@babel/runtime/regenerator":18}],24:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+/**
+ * The underlying request model
+ */
+var Scheduler =
+/*#__PURE__*/
+function () {
+  function Scheduler() {
+    (0, _classCallCheck2["default"])(this, Scheduler);
+    this._config = {
+      throttle: false,
+      debounce: 0,
+      audit: false,
+      overtime: null // Life cycle function
+
+    };
+    this._hook = {
+      prepareHook: null,
+      tartHook: null,
+      endHook: null,
+      errorHook: null // Task queue executed after the request is completed
+
+    };
+    this._taskList = [];
+  }
+
+  (0, _createClass2["default"])(Scheduler, [{
+    key: "_execute",
+
+    /**
+     * Circular call task
+     * @param {*} data 
+     */
+    value: function _execute(data) {
+      var errorHook = this._hook.errorHook;
+
+      if (data !== undefined) {
+        try {
+          this._taskList.forEach(function (task) {
+            task(data);
+          });
+        } catch (error) {
+          errorHook && errorHook(error);
+        }
+      }
+    }
+    /**
+     * Set throttle
+     * 
+     * @param {number|boolean} settings 
+     */
+
+  }, {
+    key: "throttle",
+    value: function throttle(settings) {
+      if (typeof settings === 'number' || settings === false) {
+        this._config.throttle = settings;
+      } else {
+        throw new Error('Invalid type');
+      }
+
+      return this;
+    }
+    /**
+     * Set debounce
+     * 
+     * @param {number|boolean} settings 
+     */
+
+  }, {
+    key: "debounce",
+    value: function debounce(settings) {
+      if (typeof settings === 'number' || settings === false) {
+        this._config.debounce = settings;
+      } else {
+        throw new Error('Invalid type');
+      }
+
+      return this;
+    }
+    /**
+     * Set audit
+     * 
+     * @param {number|boolean} settings 
+     */
+
+  }, {
+    key: "audit",
+    value: function audit(settings) {
+      if (typeof settings === 'number' || typeof settings === 'boolean') {
+        this._config.audit = settings;
+      } else {
+        throw new Error('Invalid type');
+      }
+
+      return this;
+    }
+    /**
+     * Set overtime
+     * 
+     * @param {number|null} time 
+     */
+
+  }, {
+    key: "overtime",
+    value: function overtime(time) {
+      if (typeof time === 'number' || time === null) {
+        this._config.overtime = time;
+      } else {
+        throw new Error('Invalid type');
+      }
+
+      return this;
+    }
+    /**
+     * Add task
+     * 
+     * @param {Function} task 
+     */
+
+  }, {
+    key: "task",
+    value: function task(_task) {
+      if (typeof _task === 'function') {
+        this._taskList.push(_task);
+
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Request to prepare
+     * 
+     * @param {Function} prepareHook 
+     */
+
+  }, {
+    key: "prepare",
+    value: function prepare(prepareHook) {
+      if (typeof prepareHook === 'function') {
+        this._hook.prepareHook = prepareHook;
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Request to start
+     * 
+     * @param {Function} startHook 
+     */
+
+  }, {
+    key: "start",
+    value: function start(startHook) {
+      if (typeof startHook === 'function') {
+        this._hook.startHook = startHook;
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Request to end
+     * 
+     * @param {Function} endHook 
+     */
+
+  }, {
+    key: "end",
+    value: function end(endHook) {
+      if (typeof endHook === 'function') {
+        this._hook.endHook = endHook;
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+    /**
+     * Request to error
+     * 
+     * @param {Function} errorHook 
+     */
+
+  }, {
+    key: "error",
+    value: function error(errorHook) {
+      if (typeof errorHook === 'function') {
+        this._hook.errorHook = errorHook;
+        return this;
+      } else {
+        throw new Error('Invalid type');
+      }
+    }
+  }]);
+  return Scheduler;
+}(); // Scheduler is blocked from inheriting an Object
+
+
+Object.setPrototypeOf(Scheduler.prototype, Object.create(null));
+var _default = Scheduler;
+exports["default"] = _default;
+
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],25:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1641,12 +1943,14 @@ function _default(config, sendRequest, execute, hook) {
     (0, _asyncToGenerator2["default"])(
     /*#__PURE__*/
     _regenerator["default"].mark(function _callee() {
-      var startHook,
+      var prepareHook,
+          startHook,
           endHook,
           throttle,
           debounce,
           audit,
           overtime,
+          injection,
           mark,
           _ref2,
           timeout,
@@ -1657,56 +1961,63 @@ function _default(config, sendRequest, execute, hook) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              startHook = hook.startHook, endHook = hook.endHook;
-              throttle = config.throttle, debounce = config.debounce, audit = config.audit, overtime = config.overtime;
-              startHook && startHook.apply(void 0, _args);
+              prepareHook = hook.prepareHook, startHook = hook.startHook, endHook = hook.endHook;
+              throttle = config.throttle, debounce = config.debounce, audit = config.audit, overtime = config.overtime; // External rewrite method
+
+              injection = this.injection;
+              prepareHook && prepareHook();
 
               if (audit) {
                 mark = markMap.get(audit);
               }
 
-              _context.next = 6;
+              _context.next = 7;
               return Promise.all([throttleWait.get(throttle), debounceWait.get(debounce)]);
 
-            case 6:
-              _context.next = 8;
+            case 7:
+              startHook && startHook();
+              _context.next = 10;
               return (0, _requestTimer["default"])(sendRequest.apply(void 0, _args), overtime);
 
-            case 8:
+            case 10:
               _ref2 = _context.sent;
               timeout = _ref2.timeout;
               data = _ref2.data;
 
               if (!(data === undefined)) {
-                _context.next = 14;
+                _context.next = 16;
                 break;
               }
 
               endHook && endHook();
               return _context.abrupt("return");
 
-            case 14:
+            case 16:
               // If audit is set, the duplicate request is discarded
               if (!audit || markMap.test(mark)) {
                 // If the timeout occurs, the task is not processed
                 if (!timeout) {
+                  if (injection) {
+                    injection(data);
+                  }
+
                   execute(data);
                 }
 
                 endHook && endHook();
               }
 
-            case 15:
+            case 17:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, this);
     }))
   );
 }
 
-},{"./mark-map":23,"./request-timer":24,"./wait":25,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/regenerator":17}],23:[function(require,module,exports){
+},{"./mark-map":26,"./request-timer":27,"./wait":28,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/regenerator":18}],26:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1721,35 +2032,8 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 /**
- * Create a signature object
- * 
- * @param {symbol} sym 
- * @param {number} time 
- */
-function createSign(sym, time) {
-  var sign = Object.create(null);
-  sign.sym = sym;
-  sign.time = time;
-  return sign;
-}
-/**
- * Create a mark object
- * 
- * @param {Object} sign 
- */
-
-
-function createMark(sign) {
-  var mark = Object.create(null);
-  mark.sign = sign;
-  mark.sym = sign.sym;
-  return mark;
-}
-/**
  * Verify that mark is deprecated
  */
-
-
 var _default =
 /*#__PURE__*/
 function () {
@@ -1774,7 +2058,10 @@ function () {
         var sign;
 
         if (!_map.length || time - _map[_map.length - 1].time > audit && audit !== true) {
-          sign = createSign(sym, time);
+          sign = {
+            sym: sym,
+            time: time
+          };
 
           _map.push(sign);
         } else {
@@ -1783,7 +2070,10 @@ function () {
           sign.time = time;
         }
 
-        return createMark(sign);
+        return {
+          sign: sign,
+          sym: sign.sym
+        };
       }
 
       return null;
@@ -1816,7 +2106,7 @@ function () {
 
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/interopRequireDefault":9}],24:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1860,7 +2150,7 @@ function requestTimer(promise, time) {
   return time === null ? request : Promise.race([request, timer]);
 }
 
-},{}],25:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1981,7 +2271,7 @@ function (_Wait2) {
 
 exports.DebounceWait = DebounceWait;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":6,"@babel/runtime/helpers/getPrototypeOf":7,"@babel/runtime/helpers/inherits":8,"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/possibleConstructorReturn":13}],26:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/possibleConstructorReturn":14}],29:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2022,7 +2312,7 @@ function handleFetch(promise) {
   });
 }
 
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2041,11 +2331,11 @@ var _handleFetch = _interopRequireDefault(require("./handle-fetch"));
 
 /**
  * Query String Parameters
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} params
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 function get(url, params, headers, cookie) {
   url = new URL(url);
@@ -2061,11 +2351,11 @@ function get(url, params, headers, cookie) {
 }
 /**
  * Dynamic Router
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} params
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 
 
@@ -2081,19 +2371,19 @@ function push(url, params, headers, cookie) {
 }
 /**
  * Request Payload
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} data
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 
 
-function post(url, params, headers, cookie) {
+function post(url, data, headers, cookie) {
   url = new URL(url);
   var promise = fetch(url, {
     method: 'POST',
-    body: JSON.stringify(params),
+    body: JSON.stringify(data),
     headers: Object.assign({
       'Content-type': _constants.CONTENT_TYPE['JSON']
     }, headers),
@@ -2103,19 +2393,19 @@ function post(url, params, headers, cookie) {
 }
 /**
  * Form Data
- * 
- * @param {string} url 
- * @param {*} params 
- * @param {Object} headers 
- * @param {boolean} cookie 
+ *
+ * @param {string} url
+ * @param {*} formData
+ * @param {Object} headers
+ * @param {boolean} cookie
  */
 
 
-function form(url, params, headers, cookie) {
+function form(url, formData, headers, cookie) {
   url = new URL(url);
   var promise = fetch(url, {
     method: 'POST',
-    body: JSON.stringify(params),
+    body: formData,
     headers: Object.assign({
       'Content-type': _constants.CONTENT_TYPE['FORM']
     }, headers),
@@ -2124,38 +2414,26 @@ function form(url, params, headers, cookie) {
   return (0, _handleFetch["default"])(promise);
 }
 
-},{"../../shared/constants":29,"./handle-fetch":26,"@babel/runtime/helpers/interopRequireDefault":9}],28:[function(require,module,exports){
+},{"../../shared/constants":32,"./handle-fetch":29,"@babel/runtime/helpers/interopRequireDefault":10}],31:[function(require,module,exports){
 "use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
+var _construct2 = _interopRequireDefault(require("@babel/runtime/helpers/construct"));
+
 var _constructor = require("./core/constructor");
 
-/**
- * Create reixs 
- * 
- * @param {string} url 
- * @param {string} method
- * @param {*} params  
- */
-function createInstance(url, method, params) {
-  return new Proxy(new _constructor.Separate(url, method, params), {
-    set: function set() {
-      throw new Error('Overwriting any attributes is not allowed');
-    }
-  });
-}
 /**
  * Set pipe 
  * 
  * @param {string} name 
  * @param  {...any} funList 
  */
-
-
 function setPipes(name) {
   for (var _len = arguments.length, funList = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     funList[_key - 1] = arguments[_key];
@@ -2166,7 +2444,7 @@ function setPipes(name) {
       throw new Error('Invalid type');
     }
   });
-  _constructor.Separate.global[name] = [].concat(funList);
+  _constructor.Reixs.global[name] = [].concat(funList);
 }
 /**
  * Set Interceptor
@@ -2178,49 +2456,66 @@ function setPipes(name) {
 
 function setInterceptor(name, fun) {
   if (typeof fn === 'function') {
-    _constructor.Separate.global[name] = fun;
+    _constructor.Reixs.global[name] = fun;
   } else {
     throw new Error('Invalid type');
   }
 }
+/**
+ * 
+ * @param {string} url 
+ * @param {string} method 
+ * @param {*} params 
+ */
 
-var _default = new Proxy(createInstance, {
-  get: function get(target, property) {
-    switch (property) {
-      // Replaced by browserify-versionify transform
-      case 'version':
-        return '0.1.1';
-      // Set request and response pipe
 
-      case 'reqPipes':
-      case 'resPipes':
-        return setPipes.bind(null, property);
-      // Set request and response interceptor
+function reixs(url, method, params) {
+  return new _constructor.Reixs(url, method, params);
+} // reixs.all
 
-      case 'beforeReq':
-      case 'afterReq':
-      case 'beforeRes':
-      case 'afterRes':
-        return setInterceptor.bind(null, property);
-    }
-  },
-  set: function set(target, property, value) {
-    switch (property) {
-      case 'globalHeader':
-      case 'globalParams':
-        if (value.constructor === Object) {
-          _constructor.Separate.global[property] = value;
-        } else {
-          throw new Error('Invalid type');
-        }
 
-    }
+reixs.all = function () {
+  for (var _len2 = arguments.length, scheduler = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    scheduler[_key2] = arguments[_key2];
+  }
+
+  return (0, _construct2["default"])(_constructor.ReixsAll, scheduler);
+};
+
+reixs.race = function () {
+  for (var _len3 = arguments.length, scheduler = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+    scheduler[_key3] = arguments[_key3];
+  }
+
+  return (0, _construct2["default"])(_constructor.ReixsRace, scheduler);
+}; // Replaced by browserify-versionify transform
+
+
+reixs.version = '0.1.1'; // Set request and response pipe
+
+reixs.reqPipes = setPipes.bind(null, 'reqPipes');
+reixs.resPipes = setPipes.bind(null, 'resPipes'); // Set request and response interceptor
+
+reixs.beforeReq = setInterceptor.bind(null, 'beforeReq');
+reixs.afterReq = setInterceptor.bind(null, 'afterReq');
+reixs.beforeRes = setInterceptor.bind(null, 'beforeRes');
+reixs.afterRes = setInterceptor.bind(null, 'afterRes'); // Set global header
+
+Reflect.defineProperty(reixs, 'globalHeader', {
+  set: function set(value) {
+    _constructor.Reixs.global.globalHeader = value;
+  }
+}); // Set global params
+
+Reflect.defineProperty(reixs, 'globalParams', {
+  set: function set(value) {
+    _constructor.Reixs.global.globalParams = value;
   }
 });
-
+var _default = reixs;
 exports["default"] = _default;
 
-},{"./core/constructor":20}],29:[function(require,module,exports){
+},{"./core/constructor":20,"@babel/runtime/helpers/construct":6,"@babel/runtime/helpers/interopRequireDefault":10}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2235,7 +2530,7 @@ var CONTENT_TYPE = {
 };
 exports.CONTENT_TYPE = CONTENT_TYPE;
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2259,7 +2554,7 @@ function dataFiltering(pipes, data) {
   return newData;
 }
 
-},{"@babel/runtime/helpers/interopRequireDefault":9,"@babel/runtime/helpers/toConsumableArray":15}]},{},[1])(1)
+},{"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/toConsumableArray":16}]},{},[1])(1)
 });
 
 //# sourceMappingURL=reixs.js.map

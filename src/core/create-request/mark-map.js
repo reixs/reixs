@@ -1,30 +1,3 @@
-
-
-/**
- * Create a signature object
- * 
- * @param {symbol} sym 
- * @param {number} time 
- */
-function createSign(sym, time) {
-    const sign = Object.create(null)
-    sign.sym = sym
-    sign.time = time
-    return sign
-}
-
-/**
- * Create a mark object
- * 
- * @param {Object} sign 
- */
-function createMark(sign) {
-    const mark = Object.create(null)
-    mark.sign = sign
-    mark.sym = sign.sym
-    return mark
-}
-
 /**
  * Verify that mark is deprecated
  */
@@ -45,7 +18,10 @@ export default class {
                 || (time - _map[_map.length - 1].time > audit 
                     && audit !== true)
             ) {
-                sign = createSign(sym, time)
+                sign = {
+                    sym, 
+                    time
+                }
                 _map.push(sign)
             } else {
                 sign = _map[_map.length - 1]
@@ -53,7 +29,10 @@ export default class {
                 sign.time = time
             }
 
-            return createMark(sign)
+            return {
+                sign,
+                sym: sign.sym
+            }
         }
         return null
     }

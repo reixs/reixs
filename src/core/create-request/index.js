@@ -9,15 +9,19 @@ import requestTimer from './request-timer'
  * @param {Function} sendRequest 
  * @param {Array} execute 
  * @param {Object} hook 
- */
+ */ 
 export default function(config, sendRequest, execute, hook) {
     const markMap = new MarkMap()
     const throttleWait = new ThrottleWait()
     const debounceWait = new DebounceWait()
     return async function(...par) {
-        const {startHook, endHook} = hook
+        const {prepareHook, startHook, endHook} = hook
         const {throttle, debounce, audit, overtime} = config
-        startHook && startHook(...par)
+
+        // External rewrite method
+        const {injection} = this
+
+        prepareHook && prepareHook()
         let mark
         if (audit) {
             mark = markMap.get(audit)
@@ -26,16 +30,21 @@ export default function(config, sendRequest, execute, hook) {
             throttleWait.get(throttle), 
             debounceWait.get(debounce)
         ])
+        startHook && startHook()
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
 
         if (data === undefined) {
             endHook && endHook()
             return 
         }
+
         // If audit is set, the duplicate request is discarded
         if (!audit || markMap.test(mark)) {
             // If the timeout occurs, the task is not processed
             if (!timeout) {
+                if (injection) {
+                    injection(data)
+                } 
                 execute(data)
             }
             endHook && endHook()

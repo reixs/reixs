@@ -1,7 +1,7 @@
 /**
  * The underlying request model
  */
-export default class {
+class Scheduler {
     // Request trigger rule configuration
     _config = {
         throttle: false,
@@ -12,23 +12,10 @@ export default class {
 
     // Life cycle function
     _hook = {
+        prepareHook: null,
         tartHook: null,
         endHook: null,
         errorHook: null
-    }
-
-    // Data filtering
-    _pipes = {
-        reqPipes: [],
-        resPipes: []
-    }
-
-    // Different stage interceptors
-    _interceptors = {
-        beforeReq: null, 
-        afterReq: null, 
-        beforeRes: null, 
-        afterRes: null
     }
 
     // Task queue executed after the request is completed
@@ -49,34 +36,6 @@ export default class {
                 errorHook && errorHook(error)
             }
         }
-    }
-    
-    /**
-     * Set the request filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-    reqPipes(...pipes) {
-        if (pipes.find(pipe =>typeof pipe !== 'function')) {
-            throw new Error('Pipe must be a function')
-        } else {
-            this._pipes.reqPipes = [...pipes]
-        }
-        return this
-    }
-
-    /**
-     * Set the response filter pipeline
-     * 
-     * @param  {...any} pipes 
-     */
-    resPipes(...pipes) {
-        if (pipes.find(pipe =>typeof pipe !== 'function')) {
-            throw new Error('Pipe must be a function')
-        } else {
-            this._pipes.resPipes = [...pipes]
-        }
-        return this
     }
 
     /**
@@ -134,40 +93,6 @@ export default class {
         }
         return this
     }
-    
-    /**
-     * Set request interceptor
-     * @param {Function} interceptor 
-     */
-    reqInterceptor(interceptor) {
-        if (typeof interceptor === 'function') {
-            if (this._pipes.reqPipes.length) {
-                this._interceptors.afterReq = interceptor
-            } else {
-                this._interceptors.beforeReq = interceptor
-            }
-            return this
-        } else {
-            throw new Error('Invalid type')
-        }
-    }
-    
-    /**
-     * Set response interceptor
-     * @param {Function} interceptor 
-     */
-    resInterceptor(interceptor) {
-        if (typeof interceptor === 'function') {
-            if (this._pipes.resPipes.length) {
-                this._interceptors.afterRes = interceptor
-            } else {
-                this._interceptors.beforeRes = interceptor
-            }
-            return this
-        } else {
-            throw new Error('Invalid type')
-        }
-    }
 
     /**
      * Add task
@@ -177,6 +102,20 @@ export default class {
     task(task) {
         if (typeof task === 'function') {
             this._taskList.push(task)
+            return this
+        } else {
+            throw new Error('Invalid type')
+        }
+    }
+
+    /**
+     * Request to prepare
+     * 
+     * @param {Function} prepareHook 
+     */
+    prepare(prepareHook) {
+        if (typeof prepareHook === 'function') {
+            this._hook.prepareHook = prepareHook
             return this
         } else {
             throw new Error('Invalid type')
@@ -226,3 +165,7 @@ export default class {
     }
 }
 
+// Scheduler is blocked from inheriting an Object
+Object.setPrototypeOf(Scheduler.prototype, Object.create(null))
+
+export default Scheduler
