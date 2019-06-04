@@ -27,14 +27,6 @@ img{
     outline:none;
     cursor:pointer;
 }
-.test{
-    line-height: 18px;
-    font-size: 14px;
-    padding:4px;
-    border-radius: 10px;
-    outline:none;
-    cursor:pointer;
-}
 .datadiv{
     width:80vw;
     margin:10px 10vw;
