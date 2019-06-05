@@ -1,19 +1,23 @@
 import {CONTENT_TYPE} from '../../shared/constants'
 import handleFetch from './handle-fetch'
-
+import {isPlainObject} from '../../shared/utils'
 
 /**
  * Query String Parameters
  *
  * @param {string} url
- * @param {*} params
+ * @param {*} data
  * @param {Object} headers
  * @param {boolean} cookie
  */
-export function get(url, params, headers, cookie) {
+export function get(url, data, headers, cookie) {
     url = new URL(url)
-    Object.keys(params)
-        .forEach(key => url.searchParams.append(key, params[key]))
+    if (isPlainObject(data)) {
+        Object.keys(data)
+            .forEach(key => url.searchParams.append(key, data[key]))
+    } else {
+        url.search = data.toString()
+    }
     const promise = fetch(url, {
         method: 'GET',
         headers: {
@@ -28,13 +32,13 @@ export function get(url, params, headers, cookie) {
  * Dynamic Router
  *
  * @param {string} url
- * @param {*} params
+ * @param {*} data
  * @param {Object} headers
  * @param {boolean} cookie
  */
-export function push(url, params, headers, cookie) {
+export function push(url, data, headers, cookie) {
     url = new URL(url)
-    url.pathname += `/${params}`
+    url.pathname += `/${data.toString()}`
     const promise = fetch(url, {
         method: 'GET',
         headers: {
@@ -55,9 +59,12 @@ export function push(url, params, headers, cookie) {
  */
 export function post(url, data, headers, cookie) {
     url = new URL(url)
+    if (isPlainObject(data)) {
+        data = JSON.stringify(data)
+    }
     const promise = fetch(url, {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: data.toString(),
         headers: {
             'Content-type': CONTENT_TYPE['JSON'],
             ...headers
@@ -71,15 +78,23 @@ export function post(url, data, headers, cookie) {
  * Form Data
  *
  * @param {string} url
- * @param {*} formData
+ * @param {*} data
  * @param {Object} headers
  * @param {boolean} cookie
  */
-export function form(url, formData, headers, cookie) {
+export function form(url, data, headers, cookie) {
     url = new URL(url)
+    let fromData = ''
+    if (isPlainObject(data)) {
+        Object.keys(data).forEach(key => {
+            fromData += `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}&`
+        })
+    } else {
+        fromData = data.toString()
+    }
     const promise = fetch(url, {
         method: 'POST',
-        body: formData,
+        body: fromData,
         headers: {
             'Content-type': CONTENT_TYPE['FORM'],
             ...headers

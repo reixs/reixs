@@ -1265,6 +1265,8 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -1349,6 +1351,7 @@ function (_Scheduler) {
      * @param {Object} params 
      */
     value: function _getParams(params) {
+      if ((0, _typeof2["default"])(params) !== 'object') return params;
       var globalParams = Reixs.global.globalParams;
       return Object.assign(globalParams, params);
     }
@@ -1391,10 +1394,10 @@ function (_Scheduler) {
   }, {
     key: "setHeader",
     value: function setHeader(header) {
-      if (header.constructor === Object) {
+      if ((0, _utils.isPlainObject)(header)) {
         this._http.header = header;
       } else {
-        throw new Error('Header invalid setting');
+        throw new Error('The argument passed in must be a literal object');
       }
 
       return this;
@@ -1408,7 +1411,12 @@ function (_Scheduler) {
   }, {
     key: "setParams",
     value: function setParams(params) {
-      this._http.params = params;
+      if ((0, _typeof2["default"])(params) !== 'object' || (0, _utils.isPlainObject)(params) || Array.isArray(params)) {
+        this._http.params = params;
+      } else {
+        throw new Error('When the parameter type is object, The argument passed in must be a literal object');
+      }
+
       return this;
     }
     /**
@@ -1588,7 +1596,7 @@ function (_Scheduler) {
                 _this$_interceptors = this._interceptors, beforeReq = _this$_interceptors.beforeReq, afterReq = _this$_interceptors.afterReq, beforeRes = _this$_interceptors.beforeRes, afterRes = _this$_interceptors.afterRes;
                 _this$constructor$glo = this.constructor.global, globalReqPipes = _this$constructor$glo.reqPipes, globalResPipes = _this$constructor$glo.resPipes, globalBeforeReq = _this$constructor$glo.beforeReq, globalAfterReq = _this$constructor$glo.afterReq, globalBeforeRes = _this$constructor$glo.beforeRes, globalAfterRes = _this$constructor$glo.afterRes;
                 requestType = type ? type : method;
-                requestParams = requestType === 'push' ? params : this._getParams(params);
+                requestParams = this._getParams(params); // Front request interceptor
 
                 if (!(globalBeforeReq && globalBeforeReq(requestParams) === false || beforeReq && beforeReq(requestParams) === false)) {
                   _context.next = 11;
@@ -1602,7 +1610,8 @@ function (_Scheduler) {
                   finalParams = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalReqPipes), (0, _toConsumableArray2["default"])(reqPipes)), requestParams);
                 } catch (error) {
                   errorHook(error);
-                }
+                } // Rear request interceptor
+
 
                 if (!(globalAfterReq && globalAfterReq(finalParams) === false || afterReq && afterReq(finalParams) === false)) {
                   _context.next = 14;
@@ -1630,7 +1639,8 @@ function (_Scheduler) {
                   finalData = (0, _utils.dataFiltering)([].concat((0, _toConsumableArray2["default"])(globalResPipes), (0, _toConsumableArray2["default"])(resPipes)), data);
                 } catch (error) {
                   errorHook(error);
-                }
+                } // Rear response interceptor
+
 
                 if (!(globalAfterRes && globalAfterRes(finalData) === false || afterRes && afterRes(finalData) === false)) {
                   _context.next = 22;
@@ -1689,7 +1699,7 @@ _constants.METHOD_TYPES.map(function (requestType) {
 var _default = Reixs;
 exports["default"] = _default;
 
-},{"../../shared/constants":32,"../../shared/utils":33,"../create-request":25,"../request":30,"./scheduler":24,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/interopRequireWildcard":11,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/helpers/toConsumableArray":16,"@babel/runtime/regenerator":18}],24:[function(require,module,exports){
+},{"../../shared/constants":32,"../../shared/utils":33,"../create-request":25,"../request":30,"./scheduler":24,"@babel/runtime/helpers/asyncToGenerator":4,"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/getPrototypeOf":8,"@babel/runtime/helpers/inherits":9,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/interopRequireWildcard":11,"@babel/runtime/helpers/possibleConstructorReturn":14,"@babel/runtime/helpers/toConsumableArray":16,"@babel/runtime/helpers/typeof":17,"@babel/runtime/regenerator":18}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2329,19 +2339,27 @@ var _constants = require("../../shared/constants");
 
 var _handleFetch = _interopRequireDefault(require("./handle-fetch"));
 
+var _utils = require("../../shared/utils");
+
 /**
  * Query String Parameters
  *
  * @param {string} url
- * @param {*} params
+ * @param {*} data
  * @param {Object} headers
  * @param {boolean} cookie
  */
-function get(url, params, headers, cookie) {
+function get(url, data, headers, cookie) {
   url = new URL(url);
-  Object.keys(params).forEach(function (key) {
-    return url.searchParams.append(key, params[key]);
-  });
+
+  if ((0, _utils.isPlainObject)(data)) {
+    Object.keys(data).forEach(function (key) {
+      return url.searchParams.append(key, data[key]);
+    });
+  } else {
+    url.search = data.toString();
+  }
+
   var promise = fetch(url, {
     method: 'GET',
     headers: Object.assign({}, headers),
@@ -2353,15 +2371,15 @@ function get(url, params, headers, cookie) {
  * Dynamic Router
  *
  * @param {string} url
- * @param {*} params
+ * @param {*} data
  * @param {Object} headers
  * @param {boolean} cookie
  */
 
 
-function push(url, params, headers, cookie) {
+function push(url, data, headers, cookie) {
   url = new URL(url);
-  url.pathname += "/".concat(params);
+  url.pathname += "/".concat(data.toString());
   var promise = fetch(url, {
     method: 'GET',
     headers: Object.assign({}, headers),
@@ -2381,9 +2399,14 @@ function push(url, params, headers, cookie) {
 
 function post(url, data, headers, cookie) {
   url = new URL(url);
+
+  if ((0, _utils.isPlainObject)(data)) {
+    data = JSON.stringify(data);
+  }
+
   var promise = fetch(url, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: data.toString(),
     headers: Object.assign({
       'Content-type': _constants.CONTENT_TYPE['JSON']
     }, headers),
@@ -2395,17 +2418,27 @@ function post(url, data, headers, cookie) {
  * Form Data
  *
  * @param {string} url
- * @param {*} formData
+ * @param {*} data
  * @param {Object} headers
  * @param {boolean} cookie
  */
 
 
-function form(url, formData, headers, cookie) {
+function form(url, data, headers, cookie) {
   url = new URL(url);
+  var fromData = '';
+
+  if ((0, _utils.isPlainObject)(data)) {
+    Object.keys(data).forEach(function (key) {
+      fromData += "".concat(encodeURIComponent(key), "=").concat(encodeURIComponent(data[key]), "&");
+    });
+  } else {
+    fromData = data.toString();
+  }
+
   var promise = fetch(url, {
     method: 'POST',
-    body: formData,
+    body: fromData,
     headers: Object.assign({
       'Content-type': _constants.CONTENT_TYPE['FORM']
     }, headers),
@@ -2414,7 +2447,7 @@ function form(url, formData, headers, cookie) {
   return (0, _handleFetch["default"])(promise);
 }
 
-},{"../../shared/constants":32,"./handle-fetch":29,"@babel/runtime/helpers/interopRequireDefault":10}],31:[function(require,module,exports){
+},{"../../shared/constants":32,"../../shared/utils":33,"./handle-fetch":29,"@babel/runtime/helpers/interopRequireDefault":10}],31:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -2427,6 +2460,8 @@ exports["default"] = void 0;
 var _construct2 = _interopRequireDefault(require("@babel/runtime/helpers/construct"));
 
 var _constructor = require("./core/constructor");
+
+var _utils = require("./shared/utils");
 
 /**
  * Set pipe 
@@ -2462,6 +2497,7 @@ function setInterceptor(name, fun) {
   }
 }
 /**
+ * reixs method
  * 
  * @param {string} url 
  * @param {string} method 
@@ -2480,7 +2516,8 @@ reixs.all = function () {
   }
 
   return (0, _construct2["default"])(_constructor.ReixsAll, scheduler);
-};
+}; // reixs.race
+
 
 reixs.race = function () {
   for (var _len3 = arguments.length, scheduler = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
@@ -2503,19 +2540,27 @@ reixs.afterRes = setInterceptor.bind(null, 'afterRes'); // Set global header
 
 Reflect.defineProperty(reixs, 'globalHeader', {
   set: function set(value) {
-    _constructor.Reixs.global.globalHeader = value;
+    if ((0, _utils.isPlainObject)(value)) {
+      _constructor.Reixs.global.globalHeader = value;
+    } else {
+      throw new Error('The argument passed in must be a literal object');
+    }
   }
 }); // Set global params
 
 Reflect.defineProperty(reixs, 'globalParams', {
   set: function set(value) {
-    _constructor.Reixs.global.globalParams = value;
+    if ((0, _utils.isPlainObject)(value)) {
+      _constructor.Reixs.global.globalParams = value;
+    } else {
+      throw new Error('The argument passed in must be a literal object');
+    }
   }
 });
 var _default = reixs;
 exports["default"] = _default;
 
-},{"./core/constructor":20,"@babel/runtime/helpers/construct":6,"@babel/runtime/helpers/interopRequireDefault":10}],32:[function(require,module,exports){
+},{"./core/constructor":20,"./shared/utils":33,"@babel/runtime/helpers/construct":6,"@babel/runtime/helpers/interopRequireDefault":10}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2539,12 +2584,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.dataFiltering = dataFiltering;
+exports.isPlainObject = isPlainObject;
+
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 /**
  * Data processing
- *
+ * 
+ * @param {Array} pipes 
  * @param {*} data 
  */
 function dataFiltering(pipes, data) {
@@ -2553,8 +2602,25 @@ function dataFiltering(pipes, data) {
   });
   return newData;
 }
+/**
+ * Determines whether it is a literal object
+ * 
+ * @param {Object} obj 
+ */
 
-},{"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/toConsumableArray":16}]},{},[1])(1)
+
+function isPlainObject(obj) {
+  if ((0, _typeof2["default"])(obj) !== 'object' || obj === null) return false;
+  var proto = obj;
+
+  while (Object.getPrototypeOf(proto) !== null) {
+    proto = Object.getPrototypeOf(proto);
+  }
+
+  return Object.getPrototypeOf(obj) === proto;
+}
+
+},{"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/toConsumableArray":16,"@babel/runtime/helpers/typeof":17}]},{},[1])(1)
 });
 
 //# sourceMappingURL=reixs.js.map

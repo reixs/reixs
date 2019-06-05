@@ -77,6 +77,7 @@ class Reixs  extends Scheduler {
      * @param {Object} params 
      */
     _getParams(params) {
+        if (typeof params !== 'object') return params
         const {globalParams} = Reixs.global
         return Object.assign(globalParams, params)
     }
@@ -128,11 +129,11 @@ class Reixs  extends Scheduler {
      * @param {*} params 
      */
     setParams(params) {
-        if (isPlainObject(params)) {
+        if (typeof params !== 'object' || isPlainObject(params) || Array.isArray(params)) {
             this._http.params = params
         } else {
-            throw new Error('The argument passed in must be a literal object')
-        }
+            throw new Error('When the parameter type is object, The argument passed in must be a literal object')
+        }   
         return this
     }
     
@@ -248,8 +249,7 @@ class Reixs  extends Scheduler {
         } = this.constructor.global
         
         const requestType = type ? type : method
-        const requestParams = requestType === 'push' 
-            ? params : this._getParams(params)
+        const requestParams = this._getParams(params)
 
         // Front request interceptor
         if ((globalBeforeReq && globalBeforeReq(requestParams) === false) 
