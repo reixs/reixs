@@ -19,7 +19,7 @@ class Scheduler {
     }
 
     // Task queue executed after the request is completed
-    _taskList =[]
+    _taskList = new Map()
 
     /**
      * Circular call task
@@ -29,7 +29,7 @@ class Scheduler {
         const {errorHook} = this._hook
         if (data !== undefined) {
             try {
-                this._taskList.forEach(task =>{
+                [...this._taskList.keys()].forEach(task =>{
                     task(data)
                 })
             } catch (error) {
@@ -101,13 +101,31 @@ class Scheduler {
      */
     task(task) {
         if (typeof task === 'function') {
-            this._taskList.push(task)
+            this._taskList.set(task)
             return this
         } else {
             throw new Error('Invalid type')
         }
     }
 
+    /**
+     * Remove assigned task
+     * 
+     * @param {Function} task 
+     */
+    removeTask(task) {
+        if (!this._taskList.delete(task)) {
+            throw new Error('Remove task failed')
+        }
+    }
+
+    /**
+     * Remove all task
+     */
+    removeAllTask() {
+        this._taskList.clear()
+    }
+    
     /**
      * Request to prepare
      * 

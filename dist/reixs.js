@@ -1709,6 +1709,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -1735,7 +1737,7 @@ function () {
       errorHook: null // Task queue executed after the request is completed
 
     };
-    this._taskList = [];
+    this._taskList = new Map();
   }
 
   (0, _createClass2["default"])(Scheduler, [{
@@ -1750,7 +1752,7 @@ function () {
 
       if (data !== undefined) {
         try {
-          this._taskList.forEach(function (task) {
+          (0, _toConsumableArray2["default"])(this._taskList.keys()).forEach(function (task) {
             task(data);
           });
         } catch (error) {
@@ -1836,12 +1838,34 @@ function () {
     key: "task",
     value: function task(_task) {
       if (typeof _task === 'function') {
-        this._taskList.push(_task);
+        this._taskList.set(_task);
 
         return this;
       } else {
         throw new Error('Invalid type');
       }
+    }
+    /**
+     * Remove assigned task
+     * 
+     * @param {Function} task 
+     */
+
+  }, {
+    key: "removeTask",
+    value: function removeTask(task) {
+      if (!this._taskList["delete"](task)) {
+        throw new Error('Remove task failed');
+      }
+    }
+    /**
+     * Remove all task
+     */
+
+  }, {
+    key: "removeAllTask",
+    value: function removeAllTask() {
+      this._taskList.clear();
     }
     /**
      * Request to prepare
@@ -1916,7 +1940,7 @@ Object.setPrototypeOf(Scheduler.prototype, Object.create(null));
 var _default = Scheduler;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10}],25:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":5,"@babel/runtime/helpers/createClass":7,"@babel/runtime/helpers/interopRequireDefault":10,"@babel/runtime/helpers/toConsumableArray":16}],25:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
