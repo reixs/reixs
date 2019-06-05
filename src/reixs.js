@@ -1,5 +1,7 @@
 import {Reixs, ReixsAll, ReixsRace} from './core/constructor'
 
+import {isPlainObject} from './shared/utils'
+
 /**
  * Set pipe 
  * 
@@ -30,6 +32,7 @@ function setInterceptor(name, fun) {
 }
 
 /**
+ * reixs method
  * 
  * @param {string} url 
  * @param {string} method 
@@ -41,6 +44,7 @@ function reixs(url, method, params) {
 
 // reixs.all
 reixs.all = (...scheduler) => new ReixsAll(...scheduler)
+// reixs.race
 reixs.race = (...scheduler) => new ReixsRace(...scheduler)
 
 // Replaced by browserify-versionify transform
@@ -59,14 +63,22 @@ reixs.afterRes = setInterceptor.bind(null, 'afterRes')
 // Set global header
 Reflect.defineProperty(reixs, 'globalHeader', {
     set(value) {
-        Reixs.global.globalHeader = value
+        if (isPlainObject(value)) {
+            Reixs.global.globalHeader = value
+        } else {
+            throw new Error('The argument passed in must be a literal object')
+        }
     }
 })
 
 // Set global params
 Reflect.defineProperty(reixs, 'globalParams', {
     set(value) {
-        Reixs.global.globalParams = value
+        if (isPlainObject(value)) {
+            Reixs.global.globalParams = value
+        } else {
+            throw new Error('The argument passed in must be a literal object')
+        }
     }
 })
 

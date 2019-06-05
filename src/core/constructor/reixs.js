@@ -1,4 +1,4 @@
-import {dataFiltering} from '../../shared/utils'
+import {dataFiltering, isPlainObject} from '../../shared/utils'
 import {METHOD_TYPES} from '../../shared/constants'
 
 import createRequest from '../create-request'
@@ -114,10 +114,10 @@ class Reixs  extends Scheduler {
      * @param {Object} header 
      */
     setHeader(header) {
-        if (header.constructor === Object) {
+        if (isPlainObject(header)) {
             this._http.header = header
         } else {
-            throw new Error('Header invalid setting')
+            throw new Error('The argument passed in must be a literal object')
         }
         return this
     }
@@ -128,7 +128,11 @@ class Reixs  extends Scheduler {
      * @param {*} params 
      */
     setParams(params) {
-        this._http.params = params
+        if (isPlainObject(params)) {
+            this._http.params = params
+        } else {
+            throw new Error('The argument passed in must be a literal object')
+        }
         return this
     }
     
@@ -247,11 +251,13 @@ class Reixs  extends Scheduler {
         const requestParams = requestType === 'push' 
             ? params : this._getParams(params)
 
+        // Front request interceptor
         if ((globalBeforeReq && globalBeforeReq(requestParams) === false) 
         || (beforeReq && beforeReq(requestParams) === false)) {
             return 
         }
 
+        // The request filtering
         let finalParams
         try {
             finalParams = dataFiltering([...globalReqPipes, ...reqPipes], requestParams)
@@ -259,6 +265,7 @@ class Reixs  extends Scheduler {
             errorHook(error)
         }
         
+        // Rear request interceptor
         if ((globalAfterReq && globalAfterReq(finalParams) === false) 
         || (afterReq && afterReq(finalParams) === false)) {
             return 
@@ -271,12 +278,13 @@ class Reixs  extends Scheduler {
             cookie
         )
         
-        
+        // Front response interceptor
         if ((globalBeforeRes && globalBeforeRes(data) === false) 
         || (beforeRes && beforeRes(data) === false)) {
             return 
         }
 
+        // The response filtering
         let finalData
         try {
             finalData = dataFiltering([...globalResPipes, ...resPipes], data)
@@ -284,6 +292,7 @@ class Reixs  extends Scheduler {
             errorHook(error)
         }
 
+        // Rear response interceptor
         if ((globalAfterRes && globalAfterRes(finalData) === false) 
         || (afterRes && afterRes(finalData) === false)) {
             return 
