@@ -32,9 +32,10 @@ export class ThrottleWait extends Wait {
      */
     get(time) {
         if (this._timer) {
-            return new Promise(()=>{})
+            return new Promise(() => {})
         }
-        return this._createPromise(time)
+        this._createPromise(time)
+        return new Promise(resolve => resolve())
     }
 }
 
