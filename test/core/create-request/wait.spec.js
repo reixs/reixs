@@ -1,4 +1,4 @@
-import {ThrottleWait, DebounceWait} from '../../../src/core/create-request/Wait'
+import {ThrottleWait, DebounceWait} from '../../../src/core/create-request/wait'
 
 describe('500 milliseconds Throttle', function () {
     const ms = 500
