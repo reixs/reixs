@@ -1,16 +1,23 @@
 
+const istanbul = require('browserify-istanbul')
 module.exports = function(config) {
     config.set({
         browsers: ['Chrome'],
         frameworks: ['browserify', 'jasmine'],
-        files: ['src/**/*.js', 'test/**/*.js'],
+        files: ['test/**/*.js'],
         preprocessors: {
-            'src/**/*.js': ['sourcemap', 'browserify', 'coverage'],
             'test/**/*.js': ['sourcemap', 'browserify']
         },
         browserify: {
             debug: true,
-            transform: ['babelify', 'browserify-versionify']
+            transform: ['babelify', 'browserify-versionify',
+                istanbul({
+                    instrumenterConfig: {
+                        embedSource: true
+                    },
+                    ignore: ['**/node_modules/**', 'test/**/*.js']
+                })
+            ]
         },
         reporters: ['progress', 'coverage'],
 

@@ -40,6 +40,7 @@
     "babelify": "^10.0.0",
     "browser-sync": "^2.26.3",
     "browserify": "^16.2.3",
+    "browserify-istanbul": "^2.0.0",
     "browserify-versionify": "^1.0.6",
     "codecov": "^3.3.0",
     "coveralls": "^3.0.3",
