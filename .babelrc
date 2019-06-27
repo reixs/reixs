@@ -4,6 +4,9 @@
       ["@babel/plugin-proposal-object-rest-spread",{ "loose": true, "useBuiltIns": true }],
       "@babel/plugin-transform-runtime",
       ["@babel/plugin-proposal-decorators", { "legacy": true }],
-      ["@babel/plugin-proposal-class-properties", { "loose" : true }]
+      ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+
+      // Map source code when test
+      "babel-plugin-istanbul"
   ],
 }
