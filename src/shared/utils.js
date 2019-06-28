@@ -5,7 +5,7 @@
  * @param {*} data 
  */
 export function dataFiltering(pipes, data) {
-    const newData = [data, ...pipes].reduce((prev, cur)=>cur(prev))
+    const newData = pipes.reduce((prev, cur) => cur(prev), data)
     return newData
 }
   
