@@ -1,5 +1,6 @@
 import {Reixs, ReixsAll, ReixsRace} from './core/constructor'
 
+import kindOf from 'kind-of'
 import isPlainObject from 'is-plain-object'
 
 /**
@@ -10,7 +11,7 @@ import isPlainObject from 'is-plain-object'
  */
 function setPipes(name, ...funList) {
     funList.forEach(fn=>{
-        if (typeof fn !== 'function') {
+        if (kindOf(fn) !== 'function') {
             throw new Error('Invalid type')
         }
     })
@@ -24,7 +25,7 @@ function setPipes(name, ...funList) {
  * @param {Function} fun 
  */
 function setInterceptor(name, fun) {
-    if (typeof fn === 'function') {
+    if (kindOf(fun) === 'function') {
         Reixs.global[name] = fun
     } else {
         throw new Error('Invalid type')

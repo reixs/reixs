@@ -1,3 +1,5 @@
+import kindOf from 'kind-of'
+
 /**
  * The underlying request model
  */
@@ -44,7 +46,7 @@ class Scheduler {
      * @param {number|boolean} settings 
      */
     throttle(settings) {
-        if (typeof settings === 'number' || settings === false) {
+        if (kindOf(settings) === 'number' || settings === false) {
             this._config.throttle = settings
         } else {
             throw new Error('Invalid type')
@@ -58,7 +60,7 @@ class Scheduler {
      * @param {number|boolean} settings 
      */
     debounce(settings) {
-        if (typeof settings === 'number' || settings === false) {
+        if (kindOf(settings) === 'number' || settings === false) {
             this._config.debounce = settings
         } else {
             throw new Error('Invalid type')
@@ -72,7 +74,7 @@ class Scheduler {
      * @param {number|boolean} settings 
      */
     audit(settings) {
-        if (typeof settings === 'number' || typeof settings === 'boolean') {
+        if (kindOf(settings) === 'number' || kindOf(settings) === 'boolean') {
             this._config.audit = settings
         } else {
             throw new Error('Invalid type')
@@ -86,7 +88,7 @@ class Scheduler {
      * @param {number|null} time 
      */
     overtime(time) {
-        if (typeof time === 'number' || time === null) {
+        if (kindOf(time) === 'number' || time === null) {
             this._config.overtime = time
         } else {
             throw new Error('Invalid type')
@@ -100,7 +102,7 @@ class Scheduler {
      * @param {Function} task 
      */
     task(task) {
-        if (typeof task === 'function') {
+        if (kindOf(task) === 'function') {
             this._taskList.set(task)
             return this
         } else {
@@ -132,7 +134,7 @@ class Scheduler {
      * @param {Function} prepareHook 
      */
     prepare(prepareHook) {
-        if (typeof prepareHook === 'function') {
+        if (kindOf(prepareHook) === 'function') {
             this._hook.prepareHook = prepareHook
             return this
         } else {
@@ -146,7 +148,7 @@ class Scheduler {
      * @param {Function} startHook 
      */
     start(startHook) {
-        if (typeof startHook === 'function') {
+        if (kindOf(startHook) === 'function') {
             this._hook.startHook = startHook
             return this
         } else {
@@ -160,7 +162,7 @@ class Scheduler {
      * @param {Function} endHook 
      */
     end(endHook) {
-        if (typeof endHook === 'function') {
+        if (kindOf(endHook) === 'function') {
             this._hook.endHook = endHook
             return this
         } else {
@@ -174,7 +176,7 @@ class Scheduler {
      * @param {Function} errorHook 
      */
     error(errorHook) {
-        if (typeof errorHook === 'function') {
+        if (kindOf(errorHook) === 'function') {
             this._hook.errorHook = errorHook
             return this
         } else {

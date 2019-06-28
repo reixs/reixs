@@ -1,6 +1,7 @@
 import {CONTENT_TYPE} from '../../shared/constants'
 import handleFetch from './handle-fetch'
 import isPlainObject from 'is-plain-object'
+import {toString} from '../../shared/utils'
 
 /**
  * Query String Parameters
@@ -16,7 +17,7 @@ export function get(url, data, headers, cookie) {
         Object.keys(data)
             .forEach(key => url.searchParams.append(key, data[key]))
     } else {
-        url.search = data.toString()
+        url.search = toString(data)
     }
     const promise = fetch(url, {
         method: 'GET',
@@ -38,7 +39,7 @@ export function get(url, data, headers, cookie) {
  */
 export function push(url, data, headers, cookie) {
     url = new URL(url)
-    url.pathname += `/${data.toString()}`
+    url.pathname += `/${toString(data)}`
     const promise = fetch(url, {
         method: 'GET',
         headers: {
@@ -64,7 +65,7 @@ export function post(url, data, headers, cookie) {
     }
     const promise = fetch(url, {
         method: 'POST',
-        body: data.toString(),
+        body: toString(data),
         headers: {
             'Content-type': CONTENT_TYPE['JSON'],
             ...headers
@@ -90,7 +91,7 @@ export function form(url, data, headers, cookie) {
             fromData += `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}&`
         })
     } else {
-        fromData = data.toString()
+        fromData = toString(data)
     }
     const promise = fetch(url, {
         method: 'POST',

@@ -1,5 +1,7 @@
 import isPlainObject from 'is-plain-object'
 import cloneDeep from 'clone-deep'
+import kindOf from 'kind-of'
+
 import {dataFiltering} from '../../shared/utils'
 import {METHOD_TYPES} from '../../shared/constants'
 
@@ -79,7 +81,9 @@ class Reixs  extends Scheduler {
      * @param {Object} params 
      */
     _getParams(params) {
-        if (typeof params !== 'object') return params
+        if (kindOf(params) !== 'object') {
+            return params
+        }
         const {globalParams} = Reixs.global
         return Object.assign(globalParams, params)
     }
@@ -103,7 +107,7 @@ class Reixs  extends Scheduler {
      * @param {string} url 
      */
     setUrl(url) {
-        if (typeof url === 'string') {
+        if (kindOf(url) === 'string') {
             this._http.url = url
         } else {
             throw new Error('Invalid type')
@@ -138,16 +142,14 @@ class Reixs  extends Scheduler {
      * @param {*} params 
      */
     setParams(params, ifDeep = false) {
-        if (typeof params !== 'object' || isPlainObject(params) || Array.isArray(params)) {
-            if (typeof ifDeep === 'boolean') {
-                if (ifDeep) {
-                    this._http.params = cloneDeep(params)
-                } else {
-                    this._http.params = params
-                }
-            } else {
-                throw new Error('IfDeep must be Boolean')
-            }
+        if (kindOf(ifDeep) !== 'boolean') throw new Error('IfDeep must be Boolean')
+        if ((isPlainObject(params) || kindOf(params) === 'array') && ifDeep) {
+            this._http.params = cloneDeep(params)
+        } else if (isPlainObject(params) || kindOf(params) === 'array'
+            || kindOf(params) === 'string' || kindOf(params) === 'number'
+            || kindOf(params) === 'boolean' || kindOf(params) === 'null'
+            || kindOf(params) === 'undefined') {
+            this._http.params = params
         } else {
             throw new Error('When the parameter type is object, The argument passed in must be a literal object')
         }   
@@ -160,7 +162,7 @@ class Reixs  extends Scheduler {
      * @param {boolean} ifCookie 
      */
     setCookie(ifCookie) {
-        if (typeof ifCookie === 'boolean') {
+        if (kindOf(ifCookie) === 'boolean') {
             this._http.cookie = ifCookie
         } else {
             throw new Error('Invalid type')
@@ -189,7 +191,7 @@ class Reixs  extends Scheduler {
      * @param  {...any} pipes 
      */
     reqPipes(...pipes) {
-        if (pipes.find(pipe =>typeof pipe !== 'function')) {
+        if (pipes.find(pipe => kindOf(pipe) !== 'function')) {
             throw new Error('Pipe must be a function')
         } else {
             this._pipes.reqPipes = [...pipes]
@@ -203,7 +205,7 @@ class Reixs  extends Scheduler {
      * @param  {...any} pipes 
      */
     resPipes(...pipes) {
-        if (pipes.find(pipe =>typeof pipe !== 'function')) {
+        if (pipes.find(pipe => kindOf(pipe) !== 'function')) {
             throw new Error('Pipe must be a function')
         } else {
             this._pipes.resPipes = [...pipes]
@@ -216,7 +218,7 @@ class Reixs  extends Scheduler {
      * @param {Function} interceptor 
      */
     reqInterceptor(interceptor) {
-        if (typeof interceptor === 'function') {
+        if (kindOf(interceptor) === 'function') {
             if (this._pipes.reqPipes.length) {
                 this._interceptors.afterReq = interceptor
             } else {
@@ -233,7 +235,7 @@ class Reixs  extends Scheduler {
      * @param {Function} interceptor 
      */
     resInterceptor(interceptor) {
-        if (typeof interceptor === 'function') {
+        if (kindOf(interceptor) === 'function') {
             if (this._pipes.resPipes.length) {
                 this._interceptors.afterRes = interceptor
             } else {
