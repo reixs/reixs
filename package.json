@@ -70,6 +70,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.4.4",
+    "clone-deep": "^4.0.1",
     "is-plain-object": "^3.0.0"
   }
 }

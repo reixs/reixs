@@ -1,4 +1,5 @@
 import isPlainObject from 'is-plain-object'
+import cloneDeep from 'clone-deep'
 import {dataFiltering} from '../../shared/utils'
 import {METHOD_TYPES} from '../../shared/constants'
 
@@ -117,7 +118,7 @@ class Reixs  extends Scheduler {
      */
     setHeader(header) {
         if (isPlainObject(header)) {
-            this._http.header = header
+            this._http.header = cloneDeep(header)
         } else {
             throw new Error('The argument passed in must be a literal object')
         }
@@ -125,13 +126,28 @@ class Reixs  extends Scheduler {
     }
 
     /**
+     * Get default parameters
+     */
+    defaultParams() {
+        return cloneDeep(this._http.params)
+    }
+    
+    /**
      * Set request parameters
      * 
      * @param {*} params 
      */
-    setParams(params) {
+    setParams(params, ifDeep = false) {
         if (typeof params !== 'object' || isPlainObject(params) || Array.isArray(params)) {
-            this._http.params = params
+            if (typeof ifDeep === 'boolean') {
+                if (ifDeep) {
+                    this._http.params = cloneDeep(params)
+                } else {
+                    this._http.params = params
+                }
+            } else {
+                throw new Error('IfDeep must be Boolean')
+            }
         } else {
             throw new Error('When the parameter type is object, The argument passed in must be a literal object')
         }   
