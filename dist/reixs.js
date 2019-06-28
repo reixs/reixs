@@ -4403,7 +4403,7 @@ exports["default"] = ReixsRace;
 
 var cov_6cbswsomc = function () {
   var path = "/Users/didi/Documents/fengchu/reixs/src/core/constructor/reixs.js";
-  var hash = "641c6ae73304f7edf63abf7d0552df4f09f38eb2";
+  var hash = "f2da3a20205d45112e9ec711ca274607233a0ef1";
   var global = new Function("return this")();
   var gcv = "__coverage__";
   var coverageData = {
@@ -5360,7 +5360,7 @@ var cov_6cbswsomc = function () {
         loc: {
           start: {
             line: 70,
-            column: 25
+            column: 21
           },
           end: {
             line: 74,
@@ -6919,7 +6919,7 @@ var cov_6cbswsomc = function () {
       "28": [0, 0, 0, 0]
     },
     _coverageSchema: "43e27e138ebf9cfc5966b082cf9a028302ed4184",
-    hash: "641c6ae73304f7edf63abf7d0552df4f09f38eb2"
+    hash: "f2da3a20205d45112e9ec711ca274607233a0ef1"
   };
   var coverage = global[gcv] || (global[gcv] = {});
 
@@ -7033,13 +7033,27 @@ function (_Scheduler) {
 
 
   (0, _createClass2["default"])(Reixs, [{
-    key: "_getParams",
+    key: "requesetHeader",
+    value: function requesetHeader() {
+      cov_6cbswsomc.f[1]++;
 
+      var _ref = (cov_6cbswsomc.s[8]++, this._http),
+          header = _ref.header;
+
+      var _ref2 = (cov_6cbswsomc.s[9]++, Reixs.global),
+          globalHeader = _ref2.globalHeader;
+
+      cov_6cbswsomc.s[10]++;
+      return Object.assign(globalHeader, header);
+    }
     /**
      * Complete request parameters
      * 
      * @param {Object} params 
      */
+
+  }, {
+    key: "_getParams",
     value: function _getParams(params) {
       cov_6cbswsomc.f[2]++;
       cov_6cbswsomc.s[11]++;
@@ -7052,8 +7066,8 @@ function (_Scheduler) {
         cov_6cbswsomc.b[2][1]++;
       }
 
-      var _ref = (cov_6cbswsomc.s[13]++, Reixs.global),
-          globalParams = _ref.globalParams;
+      var _ref3 = (cov_6cbswsomc.s[13]++, Reixs.global),
+          globalParams = _ref3.globalParams;
 
       cov_6cbswsomc.s[14]++;
       return Object.assign(globalParams, params);
@@ -7067,11 +7081,11 @@ function (_Scheduler) {
     value: function _initRequest() {
       cov_6cbswsomc.f[3]++;
 
-      var _ref2 = (cov_6cbswsomc.s[15]++, this),
-          _config = _ref2._config,
-          _sendRequest = _ref2._sendRequest,
-          _execute = _ref2._execute,
-          _hook = _ref2._hook;
+      var _ref4 = (cov_6cbswsomc.s[15]++, this),
+          _config = _ref4._config,
+          _sendRequest = _ref4._sendRequest,
+          _execute = _ref4._execute,
+          _hook = _ref4._hook;
 
       cov_6cbswsomc.s[16]++;
       this.request = (0, _createRequest["default"])(_config, _sendRequest.bind(this), _execute.bind(this), _hook);
@@ -7381,21 +7395,21 @@ function (_Scheduler) {
       _regenerator["default"].mark(function _callee() {
         var params,
             type,
-            _ref3,
+            _ref5,
             url,
             method,
             cookie,
-            _ref4,
+            _ref6,
             errorHook,
-            _ref5,
+            _ref7,
             reqPipes,
             resPipes,
-            _ref6,
+            _ref8,
             beforeReq,
             afterReq,
             beforeRes,
             afterRes,
-            _ref7,
+            _ref9,
             globalReqPipes,
             globalResPipes,
             globalBeforeReq,
@@ -7416,11 +7430,11 @@ function (_Scheduler) {
                 params = _args.length > 0 && _args[0] !== undefined ? _args[0] : (cov_6cbswsomc.b[19][0]++, this._http.params);
                 type = _args.length > 1 ? _args[1] : undefined;
                 cov_6cbswsomc.f[16]++;
-                _ref3 = (cov_6cbswsomc.s[65]++, this._http), url = _ref3.url, method = _ref3.method, cookie = _ref3.cookie;
-                _ref4 = (cov_6cbswsomc.s[66]++, this._hook), errorHook = _ref4.errorHook;
-                _ref5 = (cov_6cbswsomc.s[67]++, this._pipes), reqPipes = _ref5.reqPipes, resPipes = _ref5.resPipes;
-                _ref6 = (cov_6cbswsomc.s[68]++, this._interceptors), beforeReq = _ref6.beforeReq, afterReq = _ref6.afterReq, beforeRes = _ref6.beforeRes, afterRes = _ref6.afterRes;
-                _ref7 = (cov_6cbswsomc.s[69]++, this.constructor.global), globalReqPipes = _ref7.reqPipes, globalResPipes = _ref7.resPipes, globalBeforeReq = _ref7.beforeReq, globalAfterReq = _ref7.afterReq, globalBeforeRes = _ref7.beforeRes, globalAfterRes = _ref7.afterRes;
+                _ref5 = (cov_6cbswsomc.s[65]++, this._http), url = _ref5.url, method = _ref5.method, cookie = _ref5.cookie;
+                _ref6 = (cov_6cbswsomc.s[66]++, this._hook), errorHook = _ref6.errorHook;
+                _ref7 = (cov_6cbswsomc.s[67]++, this._pipes), reqPipes = _ref7.reqPipes, resPipes = _ref7.resPipes;
+                _ref8 = (cov_6cbswsomc.s[68]++, this._interceptors), beforeReq = _ref8.beforeReq, afterReq = _ref8.afterReq, beforeRes = _ref8.beforeRes, afterRes = _ref8.afterRes;
+                _ref9 = (cov_6cbswsomc.s[69]++, this.constructor.global), globalReqPipes = _ref9.reqPipes, globalResPipes = _ref9.resPipes, globalBeforeReq = _ref9.beforeReq, globalAfterReq = _ref9.afterReq, globalBeforeRes = _ref9.beforeRes, globalAfterRes = _ref9.afterRes;
                 requestType = (cov_6cbswsomc.s[70]++, type ? (cov_6cbswsomc.b[20][0]++, type) : (cov_6cbswsomc.b[20][1]++, method));
                 requestParams = (cov_6cbswsomc.s[71]++, this._getParams(params)); // Front request interceptor
 
@@ -7467,7 +7481,7 @@ function (_Scheduler) {
               case 28:
                 cov_6cbswsomc.s[79]++;
                 _context.next = 31;
-                return request[requestType](url, finalParams, this.requesetHeader, cookie);
+                return request[requestType](url, finalParams, this.requesetHeader(), cookie);
 
               case 31:
                 data = _context.sent;
@@ -7529,20 +7543,6 @@ function (_Scheduler) {
 
       return _sendRequest;
     }()
-  }, {
-    key: "requesetHeader",
-    get: function get() {
-      cov_6cbswsomc.f[1]++;
-
-      var _ref8 = (cov_6cbswsomc.s[8]++, this._http),
-          header = _ref8.header;
-
-      var _ref9 = (cov_6cbswsomc.s[9]++, Reixs.global),
-          globalHeader = _ref9.globalHeader;
-
-      cov_6cbswsomc.s[10]++;
-      return Object.assign(globalHeader, header);
-    }
   }]);
   return Reixs;
 }(_scheduler["default"]); // Bind request category 

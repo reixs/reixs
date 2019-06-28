@@ -67,7 +67,7 @@ class Reixs  extends Scheduler {
      * 
      * @return {Object} 
      */
-    get requesetHeader() {
+    requesetHeader() {
         const {header} = this._http
         const {globalHeader} = Reixs.global
         return Object.assign(globalHeader, header)
@@ -291,7 +291,7 @@ class Reixs  extends Scheduler {
         const data = await request[requestType](
             url, 
             finalParams,
-            this.requesetHeader,
+            this.requesetHeader(),
             cookie
         )
         
