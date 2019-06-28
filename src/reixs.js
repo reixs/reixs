@@ -1,6 +1,6 @@
 import {Reixs, ReixsAll, ReixsRace} from './core/constructor'
 
-import {isPlainObject} from './shared/utils'
+import isPlainObject from 'is-plain-object'
 
 /**
  * Set pipe 

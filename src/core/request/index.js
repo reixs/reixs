@@ -1,6 +1,6 @@
 import {CONTENT_TYPE} from '../../shared/constants'
 import handleFetch from './handle-fetch'
-import {isPlainObject} from '../../shared/utils'
+import isPlainObject from 'is-plain-object'
 
 /**
  * Query String Parameters

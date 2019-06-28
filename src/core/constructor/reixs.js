@@ -1,4 +1,5 @@
-import {dataFiltering, isPlainObject} from '../../shared/utils'
+import isPlainObject from 'is-plain-object'
+import {dataFiltering} from '../../shared/utils'
 import {METHOD_TYPES} from '../../shared/constants'
 
 import createRequest from '../create-request'

@@ -69,6 +69,7 @@
     "eslint"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.4.4"
+    "@babel/runtime": "^7.4.4",
+    "is-plain-object": "^3.0.0"
   }
 }
