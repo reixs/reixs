@@ -2,19 +2,18 @@ import kindOf from 'kind-of'
 
 /**
  * Data processing
- * 
- * @param {Array} pipes 
- * @param {*} data 
+ *
+ * @param {Array} pipes
+ * @param {*} data
  */
 export function dataFiltering(pipes, data) {
-    const newData = pipes.reduce((prev, cur) => cur(prev), data)
-    return newData
+    return pipes.reduce((prev, cur) => cur(prev), data)
 }
 
 /**
  * Convert to string
- * 
- * @param {*} value 
+ *
+ * @param {*} value
  */
 export function toString(value) {
     if (kindOf(value) === 'undefined') {
