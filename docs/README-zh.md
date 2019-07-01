@@ -24,7 +24,7 @@
     </a>
 </p>
 
-[English](https://www.github.com/reixs/reixs/blob/master/docs/REAME-en.md) | 简体中文  
+[English](https://github.com/reixs/reixs/blob/master/docs/REAME-en.md) | 简体中文  
 reixs 是在浏览器环境下运行的现代化 HTTP 请求库，可实现灵活且可控的 HTTP 请求管理
 
 ## 概述
@@ -43,7 +43,6 @@ reixs 的工作原理是预先声明 HTTP 请求的回调内容，以注册任�
 ```bash
 npm install reixs --save
 ```
-&emsp;
 reixs 底层使用 [fetch api](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API "Web API 接口参考 | MDN") 发送请求，在不支持 fetch 的环境下，请手动引入 fetch 的 [polyfill](https://developer.mozilla.org/zh-CN/docs/Glossary/Polyfill "Web API 接口参考 | MDN") 。
 ```bash
 npm install fetch-polyfill --save
