@@ -1,6 +1,7 @@
 *.iml
 .idea
 .DS_Store
+dist/
 node_modules/
 coverage/
 package-lock.json
