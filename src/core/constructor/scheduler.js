@@ -29,7 +29,7 @@ class Scheduler {
      */
     _execute(data) {
         const {errorHook} = this._hook
-        if (data !== undefined) {
+        if (kindOf(data) !== undefined) {
             try {
                 [...this._taskList.keys()].forEach(task =>{
                     task(data)

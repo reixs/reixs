@@ -1,3 +1,5 @@
+import kindOf from 'kind-of'
+
 import MarkMap from './mark-map'
 import {ThrottleWait, DebounceWait} from './wait'
 import requestTimer from './request-timer'
@@ -33,7 +35,7 @@ export default function(config, sendRequest, execute, hook) {
         startHook && startHook()
         const {timeout, data} = await requestTimer(sendRequest(...par), overtime)
 
-        if (data === undefined) {
+        if (kindOf(data) === undefined) {
             endHook && endHook()
             return 
         }
