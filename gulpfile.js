@@ -1,5 +1,4 @@
 'use strict'
-
 const del = require('del')
 const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
