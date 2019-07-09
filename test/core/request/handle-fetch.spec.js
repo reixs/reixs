@@ -18,6 +18,7 @@ describe('HandleFetch handles promise objects', function () {
         }
     }
     it('Can throw error', async function (done) {
+        let result
         try {
             const requestBody1 = await handleFetch(Promise.resolve(createResponse({
                 'content-type': 'application/json'
@@ -30,11 +31,12 @@ describe('HandleFetch handles promise objects', function () {
                 name: 1
             })
             expect(requestBody2).toEqual('1,2,3')
-        } catch (error) {
-            const requestError = await handleFetch(Promise.reject(createResponse({
-                'content-type': 'application/json'
+            const requestError = await handleFetch(Promise.resolve(createResponse({
+                'content-type': 'application/text'
             }, '{"id":1,"name":1}', 404)))
-            expect(requestError).toEqual(error)
+            expect(requestError).toEqual(false)
+        } catch (error) {
+            result = error
         }
         done()
     })
