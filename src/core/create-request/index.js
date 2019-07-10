@@ -8,7 +8,7 @@ import requestTimer from './request-timer'
  * The method to create the request
  * 
  * @param {Object} config 
- * @param {Function} sendRequest 
+ * @param {Function} sendRequest x
  * @param {Array} execute 
  * @param {Object} hook 
  */ 

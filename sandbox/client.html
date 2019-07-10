@@ -47,6 +47,7 @@
         .start(() => {
             datadiv.innerHTML = 'loading...'
         })
+        .throttle(500)
         .task(data => {
             datadiv.innerHTML = JSON.stringify(data)
         })
