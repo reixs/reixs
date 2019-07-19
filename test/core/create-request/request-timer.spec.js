@@ -1,5 +1,6 @@
 import requestTimer from '../../../src/core/create-request/request-timer'
 
+// Simulation of the request
 function requestHandle () {
     return new Promise(resolve => {
         setTimeout(() => {
