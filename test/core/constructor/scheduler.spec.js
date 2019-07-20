@@ -231,7 +231,7 @@ describe('Different task methods', function () {
     it('The _execute function can throw error ', function (done) {
         let result
         const scheduler = new Scheduler()
-        scheduler.task(function (data) {
+        scheduler.task(function () {
             throw 'The _execute function can throw error'
         })
         scheduler.error(function (error) {
