@@ -1,4 +1,5 @@
 import {Reixs, ReixsAll, ReixsRace} from './core/constructor'
+import copy from './core/other/copy'
 
 import kindOf from 'kind-of'
 import isPlainObject from 'is-plain-object'
@@ -60,6 +61,9 @@ reixs.beforeReq = setInterceptor.bind(null, 'beforeReq')
 reixs.afterReq = setInterceptor.bind(null, 'afterReq')
 reixs.beforeRes = setInterceptor.bind(null, 'beforeRes')
 reixs.afterRes = setInterceptor.bind(null, 'afterRes')
+
+// Copy of the scheduler
+reixs.copy = copy
 
 // Set global header
 Reflect.defineProperty(reixs, 'globalHeader', {
