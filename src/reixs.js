@@ -1,4 +1,4 @@
-import {Reixs, ReixsAll, ReixsRace} from './core/constructor'
+import {Reixs, ReixsAll, ReixsRace, ReixsSuccession} from './core/constructor'
 import copy from './core/other/copy'
 
 import kindOf from 'kind-of'
@@ -48,6 +48,8 @@ function reixs(url, method, params) {
 reixs.all = (...scheduler) => new ReixsAll(...scheduler)
 // reixs.race
 reixs.race = (...scheduler) => new ReixsRace(...scheduler)
+// reixs.succession
+reixs.succession = (...scheduler) => new ReixsSuccession(...scheduler)
 
 // Replaced by browserify-versionify transform
 reixs.version = '__VERSION__'
