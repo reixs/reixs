@@ -11,5 +11,9 @@ export default function(scheduler) {
     
     // Pasting properties
     Object.keys(attribute).forEach(key => newScheduler[key] = attribute[key])
+
+    // Initialize request
+    newScheduler._initRequest()
+    
     return newScheduler
 }
