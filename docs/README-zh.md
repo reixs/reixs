@@ -29,7 +29,7 @@ reixs 是在浏览器环境下运行的现代化 HTTP 请求库，可实现灵�
 
 ## 概述
 reixs 的工作原理是预先声明 HTTP 请求的回调内容，以注册任务的形式处理服务器响应。当 reixs 发起的请求完成时，将逐步执行已注册的任务。
-一直以来，网络请求的异步处理都是让开发者异常头疼的问题， reixs 使用将请求与响应拆分的模式可以有效的解决 Callback Hell 等异步处理问题。和其他现代化的 HTTP 请求库不同的是，reixs 的设计并不依赖于 [promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise "Web API 接口参考 | MDN") 实现。reixs 通过动态的绑定与解绑请求任务，可对 HTTP 请求做更加灵活的操作。
+一直以来，网络请求的异步处理都是让开发者异常头疼的问题， reixs 使用将请求与响应拆分的模式可以有效的解决 Callback Hell 等异步处理问题。和其他现代化的 HTTP 请求库不同的是，reixs 使用时不依赖于 [promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise "Web API 接口参考 | MDN") 。reixs 通过动态的绑定与解绑请求任务，可对 HTTP 请求做更加灵活的操作。
 
 ## 特性 
 - 从浏览器中创建 [fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API "Web API 接口参考 | MDN") 请求
@@ -230,6 +230,15 @@ reixs.beforeRes(fn)
 reixs.afterRes(fn)
 ```
 
+## 调度器复制
+有些场景下需要我们复用一个调度器的配置，我们可以使用copy函数实现
+
+```javascript
+let scheduler = reixs('http://api...')
+let newScheduler = reixs.copy(scheduler)
+```
+新调度器继承了原始调度器的所有属性，并且对新调度器的操作并不会作用在原始调度器上。
+
 ## 调度器组
 ```javascript
 let scheduler1 = reixs('http://api1...')
@@ -241,7 +250,7 @@ let allScheduler = reixs.all(scheduler1, scheduler2)
         console.log(data1, data2)
     })
 
-allScheduler.get()
+allScheduler.request()
 
 // 最先响应的请求调用任务
 let raceScheduler = reixs.race(scheduler1, scheduler2)
@@ -249,7 +258,29 @@ let raceScheduler = reixs.race(scheduler1, scheduler2)
         console.log(data)
     })
 
-raceScheduler.get()
+raceScheduler.request()
+
+// 请求会串联处理
+let successionScheduler = reixs.succession(scheduler1, scheduler2)
+    .test((data) => {
+        console.log(data)
+    })
+
+successionScheduler.request()
+```
+调度器组会在处理数据时经过组内调度器的过滤器以及拦截器
+
+```javascript
+let scheduler1 = reixs('http://api1...')
+    .resPipes(data => data + 1)
+
+let scheduler2 = reixs('http://api2...')
+    
+// 在请求api1后，数据会在加工后作为请求api2的参数
+let successionScheduler = reixs.succession(scheduler1, scheduler2)
+    .test((data) => {
+        console.log(data)
+    })
 ```
 调度器组继承了 reixs 调度器的生命周期以及节流操作
 
@@ -269,7 +300,19 @@ let allScheduler = reixs.all(scheduler1, scheduler2)
         console.log(data1, data2)
     })
 
-allScheduler.get()
+allScheduler.request()
+```
+因为调度器组本身也是调度器的一种，所以可以自由嵌套
+
+```javascript
+let scheduler1 = reixs('http://api1...')
+let scheduler2 = reixs('http://api2...')
+
+let raceScheduler = reixs.race(scheduler1, scheduler2)
+
+let allScheduler = reixs.all(raceScheduler, scheduler2)
+
+let successionScheduler = reixs.succession(allScheduler, raceScheduler)
 ```
 
 ## 贡献者

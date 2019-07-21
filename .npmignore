@@ -13,3 +13,4 @@ karma.conf.js
 .eslintrc.js
 .gitignore
 gulpfile.js
+docs/

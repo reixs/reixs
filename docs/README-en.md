@@ -30,7 +30,7 @@ Reixs is a modern HTTP request library running in a browser environment that ena
 ## Overview
 Reixs works by predeclaring the callback content of an HTTP request and processing the server response in the form of a registration task. When the reixs-initiated request completes, the registered tasks are incrementally executed.
   
-Asynchronous processing of network requests has always been a headache for developers. Reixs can effectively solve Callback Hell and other asynchronous processing problems by splitting the request and response. Unlike other modern HTTP request libraries, the reixs design does not rely on [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Web API  Interface reference | MDN") implementations. Reixs can do more flexible operation on HTTP request through dynamic binding and unbinding request task.
+Asynchronous processing of network requests has always been a headache for developers. Reixs can effectively solve Callback Hell and other asynchronous processing problems by splitting the request and response. Unlike other modern HTTP request libraries, reixs is not dependent on [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Web API  Interface reference | MDN") implementations. Reixs can do more flexible operation on HTTP request through dynamic binding and unbinding request task.
 
 ## Features 
 - Make [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API "Web API  Interface reference | MDN") from the browse
@@ -231,6 +231,14 @@ reixs.beforeRes(fn)
 reixs.afterRes(fn)
 ```
 
+## Scheduler replication
+For scenarios where we need to reuse a scheduler configuration, we can use the copy function.
+```javascript
+let scheduler = reixs('http://api...')
+let newScheduler = reixs.copy(scheduler)
+```
+The new scheduler inherits all the properties of the original scheduler, and operations on the new scheduler do not apply to the original scheduler.
+
 ## Scheduler Group
 ```javascript
 let scheduler1 = reixs('http://api1...')
@@ -242,7 +250,7 @@ let allScheduler = reixs.all(scheduler1, scheduler2)
         console.log(data1, data2)
     })
 
-allScheduler.get()
+allScheduler.request()
 
 // The first request to respond invokes the task
 let raceScheduler = reixs.race(scheduler1, scheduler2)
@@ -250,7 +258,29 @@ let raceScheduler = reixs.race(scheduler1, scheduler2)
         console.log(data)
     })
 
-raceScheduler.get()
+raceScheduler.request()
+
+// Requests are processed in tandem
+let successionScheduler = reixs.succession(scheduler1, scheduler2)
+    .test((data) => {
+        console.log(data)
+    })
+
+successionScheduler.request()
+```
+The scheduler group passes through the scheduler's filters and interceptors within the group as it processes the data.
+
+```javascript
+let scheduler1 = reixs('http://api1...')
+    .resPipes(data => data + 1)
+
+let scheduler2 = reixs('http://api2...')
+    
+// After requesting api1, the data is filtered as a parameter to the request api2.
+let successionScheduler = reixs.succession(scheduler1, scheduler2)
+    .test((data) => {
+        console.log(data)
+    })
 ```
 The scheduler group inherits the life cycle of the reixs scheduler and the throttling operations
 
@@ -270,7 +300,19 @@ let allScheduler = reixs.all(scheduler1, scheduler2)
         console.log(data1, data2)
     })
 
-allScheduler.get()
+allScheduler.request()
+```
+Because a scheduler group is itself a scheduler, it can be nested freely.
+
+```javascript
+let scheduler1 = reixs('http://api1...')
+let scheduler2 = reixs('http://api2...')
+
+let raceScheduler = reixs.race(scheduler1, scheduler2)
+
+let allScheduler = reixs.all(raceScheduler, scheduler2)
+
+let successionScheduler = reixs.succession(allScheduler, raceScheduler)
 ```
 
 ## Contributors
